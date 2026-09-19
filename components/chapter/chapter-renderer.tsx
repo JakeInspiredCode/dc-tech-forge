@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import Link from "next/link";
 import type { Block, ChapterSection } from "@/lib/types/chapter";
 import { getChapterSection } from "@/lib/seeds/chapters";
 import {
@@ -202,7 +203,7 @@ export default function ChapterRenderer({
           flexShrink: 0,
         }}
       >
-        <a
+        <Link
           href="/"
           style={{
             color: "#50C8FF",
@@ -214,7 +215,7 @@ export default function ChapterRenderer({
           }}
         >
           ← L1NX
-        </a>
+        </Link>
         <span style={{ color: "rgba(255,255,255,0.08)", fontSize: 13 }}>|</span>
         <div
           style={{

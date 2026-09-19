@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import Link from "next/link";
 import { SECTIONS, QUICK_REF } from "@/lib/seeds/foundations-content";
 import FoundationsNav from "@/components/foundations/foundations-nav";
 import { useLessonScale, scaleLabel } from "@/lib/use-lesson-scale";
@@ -2516,12 +2517,12 @@ export default function LinuxFoundations({ initialSection, missionMode, onMissio
         borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "0 20px",
         display: "flex", alignItems: "center", height: 56, gap: 14, flexShrink: 0,
       }}>
-        <a href="/" style={{
+        <Link href="/" style={{
           color: "#50C8FF", fontSize: 11, cursor: "pointer", textDecoration: "none",
           padding: "4px 8px", display: "flex", alignItems: "center", fontWeight: 600,
           opacity: 0.8, transition: "opacity 0.15s",
         }} onMouseEnter={e => e.currentTarget.style.opacity = 1} onMouseLeave={e => e.currentTarget.style.opacity = 0.8}
-        >← L1NX</a>
+        >← L1NX</Link>
         <span style={{ color: "rgba(255,255,255,0.08)", fontSize: 13 }}>|</span>
         <button onClick={() => setSidebarOpen(!sidebarOpen)} style={{
           background: "none", border: "none", color: "#AAB4BE", fontSize: 15, cursor: "pointer",
