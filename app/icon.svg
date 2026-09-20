@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- A server rack inside the app's hex panel, with one amber status LED. -->
+  <rect width="64" height="64" rx="14" fill="#050508"/>
+  <path d="M32 6 54.5 19v26L32 58 9.5 45V19Z" fill="#0a1a1f" stroke="#06d6d6" stroke-width="3.5" stroke-linejoin="round"/>
+  <rect x="20" y="22" width="24" height="5" rx="1.5" fill="#06d6d6"/>
+  <rect x="20" y="30" width="24" height="5" rx="1.5" fill="#06d6d6" opacity=".75"/>
+  <rect x="20" y="38" width="24" height="5" rx="1.5" fill="#06d6d6" opacity=".5"/>
+  <circle cx="40" cy="24.5" r="1.6" fill="#fbbf24"/>
+</svg>

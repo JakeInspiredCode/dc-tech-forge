@@ -125,7 +125,7 @@ export default function CardsPage() {
               const file = e.target.files?.[0];
               if (!file) return;
               const text = await file.text();
-              const { cards: imported, error } = parseImportedCards(text);
+              const { cards: imported, skipped, error } = parseImportedCards(text);
               if (error) { setImportMsg(error); return; }
               const batch = imported.map((c) => ({
                 cardId: c.cardId, topicId: c.topicId, type: c.type,
@@ -135,7 +135,10 @@ export default function CardsPage() {
                 dueDate: new Date().toISOString().split("T")[0],
               }));
               await seedCards({ cards: batch });
-              setImportMsg(`Imported ${imported.length} cards (duplicates skipped).`);
+              setImportMsg(
+                `Imported ${imported.length} cards (duplicates skipped).` +
+                  (skipped > 0 ? ` Ignored ${skipped} that were malformed.` : ""),
+              );
               if (fileInputRef.current) fileInputRef.current.value = "";
             }} />
             <button onClick={() => fileInputRef.current?.click()}
