@@ -2,6 +2,8 @@
 
 import { useState, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useMutation } from "@/lib/convex-shim";
+import { api } from "@/convex/_generated/api";
 import { getBounty } from "@/lib/seeds/campaigns";
 import type { MissionStep } from "@/lib/types/campaign";
 import HexPanel from "@/components/ui/hex-panel";
@@ -95,8 +97,21 @@ const diffColor = (d?: string) =>
 function BountyActivity({ bountyId }: { bountyId: string }) {
   const router = useRouter();
   const bounty = getBounty(bountyId);
+  const completeBounty = useMutation(api.forgeBounties.completeBounty);
+  const addPoints = useMutation(api.forgeProfile.addPoints);
 
-  const handleComplete = useCallback(() => {
+  // Finishing the activity pays the XP the header advertises and records the
+  // run. Backing out does neither. (The runner only learns that the activity
+  // was finished, not how well, so the recorded score is completion: 100.)
+  const handleComplete = useCallback(async () => {
+    if (bounty) {
+      await completeBounty({ bountyId: bounty.id, score: 100, xpEarned: bounty.xpReward });
+      await addPoints({ points: bounty.xpReward });
+    }
+    router.back();
+  }, [bounty, completeBounty, addPoints, router]);
+
+  const handleLeave = useCallback(() => {
     router.back();
   }, [router]);
 
@@ -142,7 +157,7 @@ function BountyActivity({ bountyId }: { bountyId: string }) {
           </div>
         </div>
         <div className="flex-1 min-h-0 overflow-auto">
-          <StepRenderer step={syntheticStep} onStepComplete={handleComplete} />
+          <StepRenderer step={syntheticStep} onStepComplete={handleComplete} onStepLeave={handleLeave} />
         </div>
       </div>
     </div>
