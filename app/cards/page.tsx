@@ -5,6 +5,7 @@ import { TOPICS, mapConvexCard, ForgeCard } from "@/lib/types";
 import { useCards, useSeedCards } from "@/lib/convex-hooks";
 import CardEditor from "@/components/card-editor";
 import { exportCardsToJSON, downloadJSON, parseImportedCards } from "@/lib/import-export";
+import { BRAND } from "@/lib/brand";
 
 type SortKey = "topic" | "type" | "difficulty" | "due" | "mastery";
 type StatusFilter = "all" | "new" | "learning" | "mastered" | "overdue";
@@ -115,7 +116,7 @@ export default function CardsPage() {
                 front: c.front, back: c.back, difficulty: c.difficulty,
                 tier: c.tier, steps: c.steps as string[] | undefined,
               }));
-              downloadJSON(exportCardsToJSON(exportData), `l1nx-cards-${new Date().toISOString().split("T")[0]}.json`);
+              downloadJSON(exportCardsToJSON(exportData), `${BRAND.slug}-cards-${new Date().toISOString().split("T")[0]}.json`);
             }}
               className="px-3 py-1.5 text-xs mono border border-forge-border rounded-lg hover:bg-forge-surface-2 transition-colors">
               Export

@@ -33,9 +33,6 @@ export interface MascotEventDetail {
 }
 
 export const MASCOT_EVENT_NAME = "mascot-trigger";
-export const PERSONALITY_STORAGE_KEY = "l1nx-mascot-personality";
-export const MUTED_STORAGE_KEY = "l1nx-mascot-muted";
-export const WELCOMED_SESSION_KEY = "l1nx-mascot-welcomed";
 
 // Card-review triggers are throttled to this cooldown
 export const CARD_REVIEW_COOLDOWN_MS = 10_000;

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { STORAGE_KEYS } from "@/lib/storage-keys";
 
 type SoundName =
   | "menuOpen"
@@ -44,7 +45,7 @@ class SoundEngine {
   setEnabled(val: boolean) {
     this.enabled = val;
     if (typeof window !== "undefined") {
-      localStorage.setItem("l1nx-sound", val ? "on" : "off");
+      localStorage.setItem(STORAGE_KEYS.sound, val ? "on" : "off");
     }
   }
 
@@ -54,7 +55,7 @@ class SoundEngine {
 
   init() {
     if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("l1nx-sound");
+      const stored = localStorage.getItem(STORAGE_KEYS.sound);
       if (stored === "off") this.enabled = false;
     }
   }

@@ -220,7 +220,7 @@ export default function GalaxyMap() {
   }, []);
 
   return (
-    <div className="h-[calc(100vh-56px)] w-full relative overflow-hidden">
+    <div className="h-[calc(100vh-var(--chrome-h))] w-full relative overflow-hidden">
       {/* Starfield background */}
       <StarfieldCanvas />
       <ScanOverlay />

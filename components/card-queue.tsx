@@ -9,6 +9,7 @@ import Flashcard from "./flashcard";
 import StepReveal from "./step-reveal";
 import SessionSummary from "./session-summary";
 import { dispatchMascotEvent, MascotTrigger } from "@/lib/mascot/types";
+import { SESSION_KEYS } from "@/lib/storage-keys";
 import TierUnlockToast from "./tier-unlock-toast";
 
 interface CardQueueProps {
@@ -24,7 +25,7 @@ interface ReviewResult {
   topicId: string;
 }
 
-const CHECKPOINT_KEY = "l1nx-session-checkpoint";
+const CHECKPOINT_KEY = SESSION_KEYS.sessionCheckpoint;
 
 interface Checkpoint {
   sessionType: string;

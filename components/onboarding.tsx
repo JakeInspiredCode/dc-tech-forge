@@ -4,13 +4,15 @@ import { useState } from "react";
 import Link from "next/link";
 import HexPanel from "@/components/ui/hex-panel";
 import ActionButton from "@/components/ui/action-button";
+import { BRAND } from "@/lib/brand";
+import { STORAGE_KEYS } from "@/lib/storage-keys";
 
-const STORAGE_KEY = "l1nx-onboarding-done";
+const STORAGE_KEY = STORAGE_KEYS.onboardingDone;
 
 const SCREENS = [
   {
     title: "Welcome, Operator",
-    body: "L1NX is your training platform for data center operations. You'll master Linux administration, networking, hardware, and ops through missions, campaigns, and bounties.",
+    body: `${BRAND.name} is your training platform for data center operations. You'll master Linux administration, networking, hardware, and ops through missions, campaigns, and bounties.`,
   },
   {
     title: "The Galaxy Map",

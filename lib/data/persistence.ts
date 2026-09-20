@@ -1,9 +1,10 @@
 "use client";
 
+import { STORAGE_KEYS, isAppKey } from "@/lib/storage-keys";
 import { ENTITY_KEYS, type State } from "./schema";
 import { getState, onChange, replaceState } from "./store";
 
-const PREFIX = "l1nx:data:";
+const PREFIX = STORAGE_KEYS.dataPrefix;
 const FLUSH_DEBOUNCE_MS = 400;
 
 function isBrowser() {
@@ -35,9 +36,15 @@ export function hydrate(): boolean {
 
 let flushTimer: ReturnType<typeof setTimeout> | null = null;
 let pendingState: State | null = null;
+// Set by resetPersistedData(). Once the user has asked for their data to be
+// erased, nothing in this page's lifetime may write it back.
+let suspended = false;
 
 function flushNow() {
-  if (!isBrowser() || !pendingState) return;
+  // Clear the handle so the unload handler can tell "a flush is pending" from
+  // "a flush happened at some point this session".
+  flushTimer = null;
+  if (suspended || !isBrowser() || !pendingState) return;
   const snap = pendingState;
   pendingState = null;
   for (const key of ENTITY_KEYS) {
@@ -50,7 +57,7 @@ function flushNow() {
 }
 
 function queueFlush(next: State) {
-  if (!isBrowser()) return;
+  if (suspended || !isBrowser()) return;
   pendingState = next;
   if (flushTimer) clearTimeout(flushTimer);
   flushTimer = setTimeout(flushNow, FLUSH_DEBOUNCE_MS);
@@ -64,17 +71,38 @@ export function installPersistence(): void {
   onChange(queueFlush);
   // Flush on unload so recent edits survive a hard refresh.
   window.addEventListener("beforeunload", () => {
-    if (flushTimer) {
-      clearTimeout(flushTimer);
-      pendingState = getState();
-      flushNow();
-    }
+    if (suspended || !flushTimer) return;
+    clearTimeout(flushTimer);
+    pendingState = getState();
+    flushNow();
   });
 }
 
+// Write the current state right now instead of waiting out the debounce. For
+// callers that are about to reload the page.
+export function flushPersistenceNow(): void {
+  if (suspended || !isBrowser()) return;
+  if (flushTimer) clearTimeout(flushTimer);
+  pendingState = getState();
+  flushNow();
+}
+
+// Erase everything this app has stored in the browser: progress, preferences,
+// the onboarding flag, in-flight session state. Callers reload afterwards.
 export function resetPersistedData(): void {
   if (!isBrowser()) return;
-  for (const key of ENTITY_KEYS) {
-    window.localStorage.removeItem(PREFIX + key);
+  suspended = true;
+  if (flushTimer) clearTimeout(flushTimer);
+  flushTimer = null;
+  pendingState = null;
+
+  for (const storage of [window.localStorage, window.sessionStorage]) {
+    // Collect first: removing while iterating shifts the indices.
+    const doomed: string[] = [];
+    for (let i = 0; i < storage.length; i++) {
+      const key = storage.key(i);
+      if (key !== null && isAppKey(key)) doomed.push(key);
+    }
+    doomed.forEach((key) => storage.removeItem(key));
   }
 }

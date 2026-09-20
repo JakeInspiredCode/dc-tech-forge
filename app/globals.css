@@ -81,6 +81,17 @@
    Base
    ═══════════════════════════════════════════════════════════════════════════ */
 
+/* Height of the fixed chrome above a page: the 56px nav, plus the 36px
+   sample-data banner while it is showing. Full-height screens size themselves
+   as calc(100vh - var(--chrome-h)) rather than hard-coding the nav. */
+:root {
+  --chrome-h: 56px;
+}
+
+html.has-sample-banner {
+  --chrome-h: 92px;
+}
+
 body {
   background: var(--color-v2-bg-deep);
   color: var(--color-v2-text);

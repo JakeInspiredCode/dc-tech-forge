@@ -214,7 +214,7 @@ export default function ChapterRenderer({
             opacity: 0.8,
           }}
         >
-          ← L1NX
+          ← Galaxy Map
         </Link>
         <span style={{ color: "rgba(255,255,255,0.08)", fontSize: 13 }}>|</span>
         <div

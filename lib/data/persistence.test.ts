@@ -1,7 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { SESSION_KEYS, STORAGE_KEYS } from "@/lib/storage-keys";
 import { ENTITY_KEYS, type State } from "./schema";
 
-const PREFIX = "l1nx:data:";
+const PREFIX = STORAGE_KEYS.dataPrefix;
 const FLUSH_MS = 400;
 
 // persistence.ts and store.ts keep module-level singletons (the state, the
@@ -29,6 +30,7 @@ let registered: Array<[string, EventListenerOrEventListenerObject]> = [];
 
 beforeEach(() => {
   localStorage.clear();
+  sessionStorage.clear();
   vi.useFakeTimers();
   const add = window.addEventListener.bind(window);
   vi.spyOn(window, "addEventListener").mockImplementation((type, listener, options) => {
@@ -138,15 +140,11 @@ describe("resetPersistedData", () => {
     expect(dataKeys()).toHaveLength(0);
   });
 
-  // KNOWN BUG, reproduced in the browser on 2026-09-19: Profile -> "Reset all
-  // local data" calls resetPersistedData() and then reloads. flushNow() never
-  // clears `flushTimer`, so after the first flush of a session the
-  // beforeunload handler always sees a truthy timer id and rewrites the whole
-  // in-memory state -- undoing the reset before the page has even unloaded.
-  //
-  // `it.fails` passes while the bug exists and FAILS once it is fixed. When
-  // that happens, change it to a plain `it`: it becomes the regression test.
-  it.fails("stays empty through the page reload that follows a reset", async () => {
+  // Regression: flushNow() used to leave `flushTimer` set, so after the first
+  // flush of a session the beforeunload handler always rewrote the whole
+  // in-memory state -- undoing "Reset all local data" before the page had even
+  // finished unloading. Reproduced in the browser on 2026-09-19.
+  it("stays empty through the page reload that follows a reset", async () => {
     const { installPersistence, mutate, resetPersistedData } = await load();
     installPersistence();
     mutate("forgeStories", () => [story("s1")]);
@@ -156,5 +154,39 @@ describe("resetPersistedData", () => {
     window.dispatchEvent(new Event("beforeunload")); // window.location.reload()
 
     expect(dataKeys()).toHaveLength(0);
+  });
+
+  it("ignores edits that land between the reset and the reload", async () => {
+    const { installPersistence, mutate, resetPersistedData } = await load();
+    installPersistence();
+
+    resetPersistedData();
+    mutate("forgeStories", () => [story("late")]);
+    vi.advanceTimersByTime(FLUSH_MS);
+    window.dispatchEvent(new Event("beforeunload"));
+
+    expect(dataKeys()).toHaveLength(0);
+  });
+
+  it("is a full factory reset: preferences and session state go too", async () => {
+    const { resetPersistedData } = await load();
+    localStorage.setItem(STORAGE_KEYS.onboardingDone, "true");
+    localStorage.setItem(STORAGE_KEYS.sampleData, "1");
+    sessionStorage.setItem(SESSION_KEYS.loadout("linux-m01"), "{}");
+
+    resetPersistedData();
+
+    expect(localStorage.getItem(STORAGE_KEYS.onboardingDone)).toBeNull();
+    expect(localStorage.getItem(STORAGE_KEYS.sampleData)).toBeNull();
+    expect(sessionStorage.getItem(SESSION_KEYS.loadout("linux-m01"))).toBeNull();
+  });
+
+  it("leaves other apps on the same origin alone", async () => {
+    const { resetPersistedData } = await load();
+    localStorage.setItem("some-other-app:token", "abc");
+
+    resetPersistedData();
+
+    expect(localStorage.getItem("some-other-app:token")).toBe("abc");
   });
 });

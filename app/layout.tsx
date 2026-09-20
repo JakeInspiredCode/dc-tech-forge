@@ -3,10 +3,12 @@ import "./globals.css";
 import DataProvider from "@/lib/data/provider";
 import BadgeBanner from "@/components/badge-banner";
 import Nav from "@/components/nav";
+import SampleDataBanner from "@/components/sample-data-banner";
+import { BRAND } from "@/lib/brand";
 
 export const metadata: Metadata = {
-  title: "L1NX",
-  description: "Train for a data center technician role — Linux, networking, hardware, and ops",
+  title: BRAND.name,
+  description: BRAND.description,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -20,6 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen">
         <DataProvider>
           <Nav />
+          <SampleDataBanner />
           {children}
           <BadgeBanner />
         </DataProvider>
