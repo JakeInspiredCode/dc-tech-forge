@@ -56,7 +56,7 @@ export default function Dashboard() {
 
   if (seeding) {
     return (
-      <div className="h-[calc(100vh-56px)] w-full flex items-center justify-center">
+      <div className="h-[calc(100vh-var(--chrome-h))] w-full flex items-center justify-center">
         <span className="telemetry-font text-v2-cyan animate-pulse tracking-wider">
           Initializing ship systems...
         </span>

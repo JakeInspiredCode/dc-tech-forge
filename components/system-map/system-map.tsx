@@ -294,7 +294,7 @@ export default function SystemMap() {
   const hasNoCampaign = !isLoading && !activeCampaign;
 
   return (
-    <div className="h-[calc(100vh-56px)] w-full relative overflow-hidden" onMouseMove={handleMouseMove}>
+    <div className="h-[calc(100vh-var(--chrome-h))] w-full relative overflow-hidden" onMouseMove={handleMouseMove}>
       <StarfieldCanvas />
       <ScanOverlay />
 

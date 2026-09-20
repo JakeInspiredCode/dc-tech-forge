@@ -102,7 +102,7 @@ function BountyActivity({ bountyId }: { bountyId: string }) {
 
   if (!bounty) {
     return (
-      <div className="h-[calc(100vh-56px)] w-full flex items-center justify-center">
+      <div className="h-[calc(100vh-var(--chrome-h))] w-full flex items-center justify-center">
         <HexPanel>
           <div className="py-8 text-center">
             <p className="text-[#8eafc8] text-sm mb-4">Bounty not found: {bountyId}</p>
@@ -126,7 +126,7 @@ function BountyActivity({ bountyId }: { bountyId: string }) {
   };
 
   return (
-    <div className="h-[calc(100vh-56px)] w-full relative overflow-hidden">
+    <div className="h-[calc(100vh-var(--chrome-h))] w-full relative overflow-hidden">
       <ScanOverlay />
       <div className="relative z-10 h-full flex flex-col">
         <div className="flex items-center gap-3 px-4 py-2 border-b border-v2-border shrink-0">
@@ -177,7 +177,7 @@ export default function Arsenal() {
   const catLabel = CATEGORIES.find((c) => c.key === activeCategory)?.label ?? "";
 
   return (
-    <div className="h-[calc(100vh-56px)] w-full relative overflow-hidden">
+    <div className="h-[calc(100vh-var(--chrome-h))] w-full relative overflow-hidden">
       <StarfieldCanvas />
       <ScanOverlay />
       <div className="viewport-vignette fixed inset-0 z-[8] pointer-events-none" />
