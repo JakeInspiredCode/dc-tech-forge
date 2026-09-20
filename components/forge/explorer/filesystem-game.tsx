@@ -8,6 +8,8 @@ type Mode = "learn" | "label";
 interface Props {
   mode: Mode;
   onBack: () => void;
+  /** Called when the navigation exercise is finished. Defaults to onBack. */
+  onComplete?: () => void;
   /** Cap the navigation exercise to this many questions. Omit for all. */
   maxQuestions?: number;
   /** Lock to a specific difficulty (used by mission steps). Omit for user-selectable. */
@@ -399,7 +401,7 @@ const DIFFICULTY_OPTIONS: { value: FSDifficulty; label: string; color: string }[
   { value: "hard", label: "Hard", color: "#ef4444" },
 ];
 
-export default function FilesystemGame({ mode, onBack, maxQuestions, difficulty: fixedDifficulty }: Props) {
+export default function FilesystemGame({ mode, onBack, onComplete, maxQuestions, difficulty: fixedDifficulty }: Props) {
   const [exerciseActive, setExerciseActive] = useState(false);
   const [selectedDifficulty, setSelectedDifficulty] = useState<FSDifficulty | undefined>(fixedDifficulty);
 
@@ -435,7 +437,7 @@ export default function FilesystemGame({ mode, onBack, maxQuestions, difficulty:
           </button>
         </div>
         <NavigateExercise
-          onEnd={onBack}
+          onEnd={onComplete ?? onBack}
           maxQuestions={maxQuestions}
           difficulty={selectedDifficulty}
         />

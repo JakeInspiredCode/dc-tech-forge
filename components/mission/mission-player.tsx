@@ -1,11 +1,15 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMutation } from "@/lib/convex-shim";
+import { useMutation, useQuery } from "@/lib/convex-shim";
 import { api } from "@/convex/_generated/api";
+import type { Doc, MissionProgressFields } from "@/lib/data/schema";
 import type { Mission, MissionStep } from "@/lib/types/campaign";
 import { XP, XP_MULTIPLIERS } from "@/lib/types/campaign";
+import { STEP_TYPE_LABELS } from "@/lib/constants/mission";
+import { campaignHref, isOpenEnded, nextMissionId, resumePoint } from "@/lib/mission/flow";
 import { getCampaign, getMissionsForCampaign } from "@/lib/seeds/campaigns";
 import { SESSION_KEYS } from "@/lib/storage-keys";
 import MissionBriefing from "./mission-briefing";
@@ -19,6 +23,40 @@ import TelemetryBar from "@/components/ui/telemetry-bar";
 import ActionButton from "@/components/ui/action-button";
 
 type Phase = "briefing" | "playing" | "knowledge-check" | "debrief";
+
+// Title, position, and a way out. Shown on every working screen of a mission,
+// which previously had none of the three.
+function MissionHeader({
+  mission,
+  campaignId,
+  campaignTitle,
+  position,
+}: {
+  mission: Mission;
+  campaignId?: string;
+  campaignTitle?: string;
+  position: string;
+}) {
+  return (
+    <header className="flex items-end justify-between gap-4 pb-3 border-b border-v2-border">
+      <div className="min-w-0">
+        {campaignTitle && (
+          <p className="text-[11px] tracking-widest uppercase text-v2-amber-bright">{campaignTitle}</p>
+        )}
+        <h1 className="display-font text-base text-v2-text truncate">{mission.title}</h1>
+      </div>
+      <div className="flex items-center gap-4 shrink-0">
+        <span className="telemetry-font text-xs text-v2-text">{position}</span>
+        <Link
+          href={campaignId ? campaignHref(campaignId) : "/"}
+          className="text-xs text-v2-cyan hover:text-v2-cyan-bright underline underline-offset-4 decoration-dotted hover:decoration-solid"
+        >
+          Exit to campaign
+        </Link>
+      </div>
+    </header>
+  );
+}
 
 /** Resolve custom loadout from sessionStorage (set by system-map overlay) */
 function resolveLoadout(mission: Mission): MissionStep[] {
@@ -48,6 +86,10 @@ export default function MissionPlayer({ mission }: MissionPlayerProps) {
   const initMissionState = useMutation(api.forgeMissions.initMissionState);
   const advanceMission = useMutation(api.forgeCampaigns.advanceMission);
   const addPoints = useMutation(api.forgeProfile.addPoints);
+  // undefined until the data layer has hydrated; then the saved row, or null.
+  const saved = useQuery<Doc<MissionProgressFields> | null>(api.forgeMissions.getMissionState, {
+    missionId: mission.id,
+  });
 
   // Determine initial phase from query params (system-map passes autostart/skipToCheck)
   const autostart = searchParams.get("autostart") === "true";
@@ -67,25 +109,46 @@ export default function MissionPlayer({ mission }: MissionPlayerProps) {
     xpEarned: number;
   } | null>(null);
 
-  // Auto-init mission state when arriving from system-map with autostart or skipToCheck
+  // Step progress is saved as you go, so pick up where you left off instead of
+  // restarting on every refresh. Decided once, from what was saved *before*
+  // this visit touched anything.
+  const resumeFrom = useCallback(
+    (row: Doc<MissionProgressFields> | null) => {
+      const point = resumePoint(loadout, row);
+      if (point.phase === "knowledge-check") {
+        setPhase("knowledge-check");
+      } else {
+        setCurrentStepIndex(point.stepIndex);
+        setStepsCompleted(row?.status === "in-progress" ? row.stepsCompleted : []);
+      }
+    },
+    [loadout],
+  );
+
+  // Arriving from the map with autostart or skipToCheck. This waits for the
+  // data layer: on a direct load (a refresh) child effects run before the
+  // store hydrates, and a write made then is overwritten by hydration.
   const didAutoInit = useRef(false);
   useEffect(() => {
-    if ((autostart || skipToCheck) && !didAutoInit.current) {
-      didAutoInit.current = true;
+    if (saved === undefined || didAutoInit.current) return;
+    didAutoInit.current = true;
+    if (autostart) resumeFrom(saved);
+    if (autostart || skipToCheck) {
       initMissionState({ missionId: mission.id, status: "in-progress" });
       updateMissionStatus({ missionId: mission.id, status: "in-progress" });
     }
-  }, [autostart, skipToCheck, mission.id, initMissionState, updateMissionStatus]);
+  }, [saved, autostart, skipToCheck, mission.id, initMissionState, updateMissionStatus, resumeFrom]);
 
   const campaign = getCampaign(mission.campaignId);
   const currentStep = loadout[currentStepIndex];
   const stepProgress = loadout.length > 0 ? (stepsCompleted.length / loadout.length) * 100 : 0;
 
   const handleDeploy = useCallback(async () => {
+    resumeFrom(saved ?? null);
     await initMissionState({ missionId: mission.id, status: "in-progress" });
     await updateMissionStatus({ missionId: mission.id, status: "in-progress" });
-    setPhase("playing");
-  }, [mission.id, initMissionState, updateMissionStatus]);
+    setPhase((p) => (p === "briefing" ? "playing" : p));
+  }, [mission.id, saved, resumeFrom, initMissionState, updateMissionStatus]);
 
   const handleSkipToCheck = useCallback(async () => {
     await initMissionState({ missionId: mission.id, status: "in-progress" });
@@ -97,8 +160,9 @@ export default function MissionPlayer({ mission }: MissionPlayerProps) {
     if (!currentStep) return;
 
     await completeMissionStep({ missionId: mission.id, stepId: currentStep.id });
-    const newCompleted = [...stepsCompleted, currentStep.id];
-    setStepsCompleted(newCompleted);
+    if (!stepsCompleted.includes(currentStep.id)) {
+      setStepsCompleted([...stepsCompleted, currentStep.id]);
+    }
 
     // Award activity XP
     const activityXp = Math.round(
@@ -114,7 +178,8 @@ export default function MissionPlayer({ mission }: MissionPlayerProps) {
     }
   }, [currentStep, currentStepIndex, loadout.length, mission.id, stepsCompleted, completeMissionStep, addPoints]);
 
-  const handleSkipStep = useCallback(() => {
+  // Move on without credit: "Skip", quitting a game, or backing out of a tool.
+  const handleLeaveStep = useCallback(() => {
     if (currentStepIndex + 1 < loadout.length) {
       setCurrentStepIndex(currentStepIndex + 1);
     } else {
@@ -158,27 +223,29 @@ export default function MissionPlayer({ mission }: MissionPlayerProps) {
     [mission.id, campaign, addPoints, advanceMission, submitKnowledgeCheck]
   );
 
-  const handleNextMission = useCallback(() => {
-    if (!campaign) return;
-    const campaignMissions = getMissionsForCampaign(campaign.id);
-    const currentIdx = campaignMissions.findIndex((m) => m.id === mission.id);
-    const next = campaignMissions[currentIdx + 1];
-    if (next) {
-      router.push(`/missions/${next.id}`);
-    } else {
-      router.push("/");
-    }
-  }, [campaign, mission.id, router]);
+  const nextId = campaign
+    ? nextMissionId(getMissionsForCampaign(campaign.id).map((m) => m.id), mission.id)
+    : null;
 
-  const handleReturnToMap = useCallback(() => {
-    router.push("/");
-  }, [router]);
+  const handleNextMission = useCallback(() => {
+    if (nextId) router.push(`/missions/${nextId}`);
+  }, [nextId, router]);
+
+  // Back to where you came from: this campaign's map, not the galaxy.
+  const handleReturnToCampaign = useCallback(() => {
+    router.push(campaign ? campaignHref(campaign.id) : "/");
+  }, [campaign, router]);
 
   const handleRetry = useCallback(() => {
     setPhase("knowledge-check");
     setDebriefData(null);
+  }, []);
+
+  // "Review the material" has to lead somewhere: back to the first step.
+  const handleReviewLesson = useCallback(() => {
+    setDebriefData(null);
     setCurrentStepIndex(0);
-    setStepsCompleted([]);
+    setPhase("playing");
   }, []);
 
   // ── Phase rendering ──
@@ -208,40 +275,57 @@ export default function MissionPlayer({ mission }: MissionPlayerProps) {
     );
   }
 
+  // Until the data layer is live we don't know where to resume, and showing
+  // step 1 for a moment before jumping to step 3 would be worse than waiting.
+  if (saved === undefined) {
+    return (
+      <div className="max-w-2xl mx-auto py-16 text-center">
+        <span className="telemetry-font text-sm text-v2-cyan animate-pulse tracking-wider">Loading mission…</span>
+      </div>
+    );
+  }
+
   if (phase === "playing") {
+    const openEnded = currentStep ? isOpenEnded(currentStep.contentRef.kind) : false;
     return (
       <div className="max-w-2xl mx-auto space-y-4">
-        {/* Step progress */}
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-v2-text-dim">
-            Step {currentStepIndex + 1} of {loadout.length}
-          </span>
-          <span className="text-xs mono text-v2-text-dim">
-            {stepsCompleted.length} completed
-          </span>
-        </div>
+        <MissionHeader
+          mission={mission}
+          campaignId={campaign?.id}
+          campaignTitle={campaign?.title}
+          position={`Step ${currentStepIndex + 1} of ${loadout.length}`}
+        />
         <TelemetryBar value={stepProgress} segments={loadout.length} />
 
         {/* Current step */}
         {currentStep && (
           <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs text-v2-text-muted uppercase tracking-wider">
-                  {currentStep.type}
+            <div className="flex items-center justify-between gap-3">
+              <div className="min-w-0">
+                <p className="text-xs text-v2-amber-bright uppercase tracking-wider">
+                  {STEP_TYPE_LABELS[currentStep.type] ?? currentStep.type}
                 </p>
                 <h2 className="text-base text-v2-text font-medium">
                   {currentStep.label}
                 </h2>
               </div>
-              <ActionButton variant="ghost" size="sm" onClick={handleSkipStep}>
-                Skip →
-              </ActionButton>
+              <div className="flex items-center gap-2 shrink-0">
+                <ActionButton variant="secondary" size="sm" onClick={handleLeaveStep}>
+                  Skip →
+                </ActionButton>
+                {/* Open-ended tools have no finish line, so you say when you're done. */}
+                {openEnded && (
+                  <ActionButton variant="primary" size="sm" onClick={handleStepComplete}>
+                    Done — continue →
+                  </ActionButton>
+                )}
+              </div>
             </div>
 
             <StepRenderer
               step={currentStep}
               onStepComplete={handleStepComplete}
+              onStepLeave={handleLeaveStep}
             />
           </div>
         )}
@@ -252,20 +336,24 @@ export default function MissionPlayer({ mission }: MissionPlayerProps) {
   if (phase === "knowledge-check") {
     // Use multiple-choice questions if available for this mission, otherwise fall back to flashcard self-assessment
     const mcQuestions = getMCQuestions(mission.id);
-    if (mcQuestions) {
-      return (
-        <MCKnowledgeCheck
-          questions={mcQuestions}
-          passThreshold={mission.knowledgeCheck.passThreshold}
-          onComplete={handleKnowledgeCheckComplete}
-        />
-      );
-    }
     return (
-      <KnowledgeCheckScreen
-        check={mission.knowledgeCheck}
-        onComplete={handleKnowledgeCheckComplete}
-      />
+      <div className="max-w-2xl mx-auto space-y-4">
+        <MissionHeader
+          mission={mission}
+          campaignId={campaign?.id}
+          campaignTitle={campaign?.title}
+          position="Knowledge check"
+        />
+        {mcQuestions ? (
+          <MCKnowledgeCheck
+            questions={mcQuestions}
+            passThreshold={mission.knowledgeCheck.passThreshold}
+            onComplete={handleKnowledgeCheckComplete}
+          />
+        ) : (
+          <KnowledgeCheckScreen check={mission.knowledgeCheck} onComplete={handleKnowledgeCheckComplete} />
+        )}
+      </div>
     );
   }
 
@@ -277,9 +365,12 @@ export default function MissionPlayer({ mission }: MissionPlayerProps) {
         score={debriefData.score}
         total={debriefData.total}
         xpEarned={debriefData.xpEarned}
-        onNextMission={campaign ? handleNextMission : undefined}
-        onReturnToMap={handleReturnToMap}
+        campaignTitle={campaign?.title}
+        campaignComplete={debriefData.passed && campaign !== undefined && nextId === null}
+        onNextMission={nextId ? handleNextMission : undefined}
+        onReturnToCampaign={handleReturnToCampaign}
         onRetry={handleRetry}
+        onReviewLesson={handleReviewLesson}
       />
     );
   }

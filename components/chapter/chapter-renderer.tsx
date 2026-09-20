@@ -188,10 +188,12 @@ export default function ChapterRenderer({
       }}
     >
       <div
+        // Sticks below the app's own chrome (nav, plus the sample-data banner
+        // when it shows) instead of colliding with it at top: 0.
         style={{
           position: "sticky",
-          top: 0,
-          zIndex: 100,
+          top: "var(--chrome-h)",
+          zIndex: 40,
           background: "rgba(18,18,31,0.92)",
           backdropFilter: "blur(12px)",
           borderBottom: "1px solid rgba(255,255,255,0.06)",
@@ -203,20 +205,25 @@ export default function ChapterRenderer({
           flexShrink: 0,
         }}
       >
-        <Link
-          href="/"
-          style={{
-            color: "#50C8FF",
-            fontSize: 11,
-            textDecoration: "none",
-            padding: "4px 8px",
-            fontWeight: 600,
-            opacity: 0.8,
-          }}
-        >
-          ← Galaxy Map
-        </Link>
-        <span style={{ color: "rgba(255,255,255,0.08)", fontSize: 13 }}>|</span>
+        {/* Inside a mission, the mission header owns the way out. */}
+        {!missionMode && (
+          <>
+            <Link
+              href="/"
+              style={{
+                color: "#50C8FF",
+                fontSize: 11,
+                textDecoration: "none",
+                padding: "4px 8px",
+                fontWeight: 600,
+                opacity: 0.8,
+              }}
+            >
+              ← Galaxy Map
+            </Link>
+            <span style={{ color: "rgba(255,255,255,0.08)", fontSize: 13 }}>|</span>
+          </>
+        )}
         <div
           style={{
             display: "flex",
