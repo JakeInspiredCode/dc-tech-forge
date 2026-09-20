@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode } from "react";
+import { type ReactNode, type Ref } from "react";
 
 interface ActionButtonProps {
   children: ReactNode;
@@ -10,6 +10,8 @@ interface ActionButtonProps {
   disabled?: boolean;
   className?: string;
   type?: "button" | "submit";
+  /** For callers that manage focus, e.g. a dialog focusing its primary action. */
+  ref?: Ref<HTMLButtonElement>;
 }
 
 const variantStyles = {
@@ -35,9 +37,11 @@ export default function ActionButton({
   disabled = false,
   className = "",
   type = "button",
+  ref,
 }: ActionButtonProps) {
   return (
     <button
+      ref={ref}
       type={type}
       onClick={onClick}
       disabled={disabled}

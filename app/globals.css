@@ -92,6 +92,19 @@ html.has-sample-banner {
   --chrome-h: 92px;
 }
 
+/* First-run tour: the spotlight and its card glide between targets. */
+.tour-spot,
+.tour-card {
+  transition: left 260ms ease, top 260ms ease, width 260ms ease, height 260ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tour-spot,
+  .tour-card {
+    transition: none;
+  }
+}
+
 body {
   background: var(--color-v2-bg-deep);
   color: var(--color-v2-text);

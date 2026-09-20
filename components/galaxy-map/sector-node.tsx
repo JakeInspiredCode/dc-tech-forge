@@ -102,6 +102,7 @@ export default function SectorNode({ sector, progress, onHover, onClick }: Secto
   return (
     <g
       className="sector-node cursor-pointer"
+      data-sector-id={sector.id}
       onMouseEnter={() => onHover(sector)}
       onMouseLeave={() => onHover(null)}
       onClick={() => onClick(sector)}
