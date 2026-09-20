@@ -81,6 +81,8 @@ function EnergyStream({
 }
 
 import type { Doc, CampaignProgressFields, MissionProgressFields, ProfileFields, ProgressFields } from "@/lib/data/schema";
+import { nextUp } from "@/lib/mission/next-up";
+import { STORAGE_KEYS } from "@/lib/storage-keys";
 
 interface GalaxyMapProps {
   /** Set by the first-run tour to hold a sector's preview open without a hover. */
@@ -155,22 +157,34 @@ export default function GalaxyMap({ tourSectorId = null }: GalaxyMapProps) {
   // Derived stats
   const totalMissions = Object.values(sectorProgressMap).reduce((s, p) => s + p.totalMissions, 0);
   const totalAccomplished = Object.values(sectorProgressMap).reduce((s, p) => s + p.completedMissions, 0);
-  const sectorsExplored = Object.values(sectorProgressMap).filter((p) => p.hasVolunteered).length;
+  // Sectors you've actually completed something in. (Every account is enrolled
+  // in every campaign, so counting enrollment read "8/8" on day one.)
+  const sectorsStarted = Object.values(sectorProgressMap).filter((p) => p.completedMissions > 0).length;
 
-  // Active campaign info for stats panel
-  const enrolledState = campaignStates?.find((c) => c.enrolled);
-  const activeCampaign = enrolledState
-    ? ALL_CAMPAIGNS.find((c) => c.id === enrolledState.campaignId)
-    : undefined;
-  const activeCampaignMissions = activeCampaign
-    ? getMissionsForCampaign(activeCampaign.id)
-    : [];
-  const activeCampaignCompleted = activeCampaignMissions.filter(
-    (m) => missionStatusMap[m.id] === "accomplished"
-  ).length;
-  const activeCampaignPct = activeCampaignMissions.length > 0
-    ? Math.round((activeCampaignCompleted / activeCampaignMissions.length) * 100)
-    : undefined;
+  // The campaign the learner was last in, read after mount (localStorage).
+  const [lastCampaignId, setLastCampaignId] = useState<string | null>(null);
+  useEffect(() => {
+    try {
+      setLastCampaignId(window.localStorage.getItem(STORAGE_KEYS.lastCampaign));
+    } catch {
+      // Storage blocked: fall back to curriculum order.
+    }
+  }, []);
+
+  const next = useMemo(
+    () =>
+      isLoading ? null :
+      nextUp(
+        ALL_CAMPAIGNS.map((c) => ({
+          id: c.id,
+          title: c.title,
+          missions: getMissionsForCampaign(c.id).map((m) => ({ id: m.id, title: m.title })),
+        })),
+        (missionId) => missionStatusMap[missionId],
+        lastCampaignId,
+      ),
+    [isLoading, missionStatusMap, lastCampaignId],
+  );
 
   const handleSectorHover = useCallback((sector: Sector | null) => {
     if (hideTimerRef.current) {
@@ -314,12 +328,11 @@ export default function GalaxyMap({ tourSectorId = null }: GalaxyMapProps) {
               <StatsPanel
                 totalXp={profile?.totalPoints ?? 0}
                 streak={profile?.streak ?? 0}
-                sectorsExplored={sectorsExplored}
+                sectorsExplored={sectorsStarted}
                 totalSectors={ALL_SECTORS.length}
                 missionsAccomplished={totalAccomplished}
                 totalMissions={totalMissions}
-                activeCampaignTitle={activeCampaign?.title}
-                activeCampaignPct={activeCampaignPct}
+                next={next}
                 topicProgress={topicProgress ?? []}
               />
             )}

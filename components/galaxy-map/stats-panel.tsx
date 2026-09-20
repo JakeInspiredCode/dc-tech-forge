@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import ReadinessRadar from "./readiness-radar";
+import NextUpCta from "@/components/ui/next-up-cta";
+import type { NextUp } from "@/lib/mission/next-up";
 
 interface StatsPanelProps {
   totalXp: number;
@@ -10,8 +12,8 @@ interface StatsPanelProps {
   totalSectors: number;
   missionsAccomplished: number;
   totalMissions: number;
-  activeCampaignTitle?: string;
-  activeCampaignPct?: number;
+  /** null while saved progress is still loading. */
+  next: NextUp | null;
   topicProgress: { topicId: string; masteryPercent: number }[];
 }
 
@@ -161,8 +163,7 @@ export default function StatsPanel({
   totalSectors,
   missionsAccomplished,
   totalMissions,
-  activeCampaignTitle,
-  activeCampaignPct,
+  next,
   topicProgress,
 }: StatsPanelProps) {
   const panelRef = useRef<HTMLDivElement>(null);
@@ -198,40 +199,10 @@ export default function StatsPanel({
         </div>
       )}
 
-      {/* Active Mission */}
-      {activeCampaignTitle && (
-        <div
-          className="flex items-center gap-2 px-2.5 py-1.5 rounded-md mb-2"
-          style={{
-            background: "rgba(6, 214, 214, 0.04)",
-            border: "1px solid rgba(6, 214, 214, 0.1)",
-          }}
-        >
-          <div className="w-1.5 h-1.5 rounded-full bg-[#06d6d6] shadow-[0_0_6px_rgba(6,214,214,0.5)] shrink-0" />
-          <div className="flex-1 min-w-0">
-            <span className="text-xs text-[#e0e4ec] display-font tracking-wider block truncate">
-              {activeCampaignTitle}
-            </span>
-            {activeCampaignPct !== undefined && (
-              <div className="flex items-center gap-1.5 mt-1">
-                <div className="flex-1 h-[3px] rounded-full overflow-hidden" style={{ background: "rgba(6, 214, 214, 0.1)" }}>
-                  <div
-                    className="h-full rounded-full transition-all duration-700"
-                    style={{
-                      width: `${activeCampaignPct}%`,
-                      background: "linear-gradient(90deg, #06d6d6, #06d6d6cc)",
-                      boxShadow: "0 0 6px rgba(6,214,214,0.4)",
-                    }}
-                  />
-                </div>
-                <span className="text-[10px] telemetry-font text-[#8eafc8]">
-                  {activeCampaignPct}%
-                </span>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+      {/* The one thing to do next */}
+      <div className="mb-2">
+        <NextUpCta next={next} scope="galaxy" />
+      </div>
 
       {/* Divider + Readiness radar — hidden on mobile, takes remaining space on desktop */}
       <div className="max-md:hidden flex flex-1 min-h-0 flex-col">
