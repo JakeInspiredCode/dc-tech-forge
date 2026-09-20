@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { clearOnboardingFlag } from "@/components/onboarding";
+import { BRAND } from "@/lib/brand";
 
 const NAV_ITEMS = [
   { href: "/", label: "Galaxy Map", icon: "✦", color: "var(--color-v2-cyan)" },
@@ -41,12 +42,14 @@ export default function Nav() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-14">
-          <Link href="/" className="flex items-center gap-2 shrink-0">
+          <Link href="/" aria-label={`${BRAND.name} home`} className="flex items-center gap-2 shrink-0">
             <span
-              className="mono font-bold text-lg tracking-wider"
+              className="mono font-bold text-lg md:text-base lg:text-lg tracking-wider"
               style={{ color: "var(--color-v2-cyan)" }}
             >
-              L1NX
+              {/* The full wordmark only fits beside labelled tabs from md up. */}
+              <span className="md:hidden">{BRAND.shortMark}</span>
+              <span className="hidden md:inline">{BRAND.wordmark}</span>
             </span>
           </Link>
           <div className="flex items-center gap-1 sm:gap-1.5 ml-4 flex-1 justify-center">

@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// L1NX Phase 2 — Campaign / Mission / Bounty Types
+// Campaign / Mission / Bounty Types
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import type { TopicId } from "../types";
