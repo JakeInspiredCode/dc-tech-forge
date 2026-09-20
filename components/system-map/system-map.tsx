@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useMemo, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useQuery, useMutation } from "@/lib/convex-shim";
+import { useQuery } from "@/lib/convex-shim";
 import { api } from "@/convex/_generated/api";
 import type { Doc, CampaignProgressFields, MissionProgressFields, ProfileFields } from "@/lib/data/schema";
 import { ALL_CAMPAIGNS, getMissionsForCampaign } from "@/lib/seeds/campaigns";
@@ -74,19 +74,13 @@ function computeOrbitalPositions(count: number): OrbitalPos[] {
 
 // ── Effective mission status ──
 
+// Everything is open: there is no enrollment and nothing unlocks. A mission
+// with no saved row simply hasn't been opened yet.
 function getEffectiveStatus(
   missionId: string,
-  missionIndex: number,
   missionStatusMap: Record<string, MissionStatus>,
-  enrolled: boolean,
-  campaignMissions: Mission[],
 ): MissionStatus {
-  if (missionStatusMap[missionId]) return missionStatusMap[missionId];
-  if (!enrolled) return "locked";
-  if (missionIndex === 0) return "available";
-  const prev = campaignMissions[missionIndex - 1];
-  if (prev && missionStatusMap[prev.id] === "accomplished") return "available";
-  return "locked";
+  return missionStatusMap[missionId] ?? "available";
 }
 
 // ── Component ──
@@ -99,7 +93,6 @@ export default function SystemMap() {
   const profile = useQuery<Doc<ProfileFields> | null>(api.forgeProfile.get);
   const campaignStates = useQuery<Doc<CampaignProgressFields>[]>(api.forgeCampaigns.getAllCampaignStates);
   const missionStates = useQuery<Doc<MissionProgressFields>[]>(api.forgeMissions.getAllMissionStates);
-  const enrollCampaign = useMutation(api.forgeCampaigns.enrollCampaign);
 
   // activeHover = what's under the cursor right now (drives cursor tooltip + planet ring/badge)
   // pinnedMission = what the side panel shows; sticky — only changes when a different
@@ -192,12 +185,11 @@ export default function SystemMap() {
   // Effective statuses
   const effectiveStatuses: Record<string, MissionStatus> = useMemo(() => {
     const map: Record<string, MissionStatus> = {};
-    const enrolled = enrolledState?.enrolled ?? false;
-    missions.forEach((m, i) => {
-      map[m.id] = getEffectiveStatus(m.id, i, missionStatusMap, enrolled, missions);
+    missions.forEach((m) => {
+      map[m.id] = getEffectiveStatus(m.id, missionStatusMap);
     });
     return map;
-  }, [missions, missionStatusMap, enrolledState]);
+  }, [missions, missionStatusMap]);
 
   // Orbital positions
   const orbitalPositions = useMemo(() => computeOrbitalPositions(missions.length), [missions.length]);
@@ -275,11 +267,6 @@ export default function SystemMap() {
   const handleSkipToCheck = useCallback((missionId: string) => {
     router.push(`/missions/${missionId}?skipToCheck=true`);
   }, [router]);
-
-  const handleEnroll = useCallback(async () => {
-    if (!activeCampaignId) return;
-    await enrollCampaign({ campaignId: activeCampaignId });
-  }, [activeCampaignId, enrollCampaign]);
 
   // Only track mouse position while a mission is actively under the cursor.
   // Without this guard, every idle mouse movement re-renders the whole map.
@@ -393,7 +380,6 @@ export default function SystemMap() {
                       campaignColor={campaignColor}
                       isCurrent={i === currentMissionIndex}
                       isHovered={activeHover?.id === mission.id}
-                      enrolled={enrolledState?.enrolled ?? false}
                       onHover={handleMissionHover}
                       onClick={handleMissionClick}
                     />
@@ -448,11 +434,10 @@ export default function SystemMap() {
             {pinnedMission ? (
               <MissionPreviewPanel
                 mission={pinnedMission}
-                status={effectiveStatuses[pinnedMission.id] ?? "locked"}
+                status={effectiveStatuses[pinnedMission.id] ?? "available"}
                 missionNumber={pinnedMissionNumber}
                 totalMissions={missions.length}
                 campaignColor={campaignColor}
-                enrolled={enrolledState?.enrolled ?? false}
                 onDeploy={handleDeploy}
                 onSkipToCheck={handleSkipToCheck}
               />
@@ -470,8 +455,7 @@ export default function SystemMap() {
                 decayingMissionIds={decayingMissionIds}
                 hasNoCampaign={hasNoCampaign}
                 campaignColor={campaignColor}
-                enrolled={enrolledState?.enrolled ?? false}
-                onEnroll={handleEnroll}
+                ready={!isLoading}
               />
             )}
           </div>
