@@ -15,7 +15,6 @@ interface MissionNodeProps {
   campaignColor: string;
   isCurrent: boolean;
   isHovered: boolean;
-  enrolled: boolean;
   onHover: (mission: Mission | null) => void;
   onClick: (mission: Mission) => void;
 }
@@ -55,13 +54,12 @@ export default function MissionNode({
   campaignColor,
   isCurrent,
   isHovered,
-  enrolled,
   onHover,
   onClick,
 }: MissionNodeProps) {
   const colors = MISSION_NODE_COLORS[status];
   const isLocked = status === "locked";
-  const isInteractive = !isLocked || enrolled;
+  const isInteractive = !isLocked;
   const isAccomplished = status === "accomplished";
   const showHoverAffordance = isHovered && isInteractive;
 

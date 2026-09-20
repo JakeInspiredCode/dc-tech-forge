@@ -15,7 +15,6 @@ interface MissionPreviewPanelProps {
   missionNumber: number;
   totalMissions: number;
   campaignColor: string;
-  enrolled: boolean;
   onDeploy: (missionId: string, loadout: MissionStep[]) => void;
   onSkipToCheck: (missionId: string) => void;
 }
@@ -26,7 +25,6 @@ export default function MissionPreviewPanel({
   missionNumber,
   totalMissions,
   campaignColor,
-  enrolled,
   onDeploy,
   onSkipToCheck,
 }: MissionPreviewPanelProps) {
@@ -35,8 +33,6 @@ export default function MissionPreviewPanel({
     0,
   );
 
-  const isLocked = status === "locked";
-  const isDeployable = !isLocked || enrolled;
   const isAccomplished = status === "accomplished";
 
   const handleDeploy = () => onDeploy(mission.id, mission.defaultLoadout);
@@ -71,7 +67,6 @@ export default function MissionPreviewPanel({
             {isAccomplished && (
               <StatusBadge label="Accomplished" variant="cyan" />
             )}
-            {isLocked && <StatusBadge label="Locked" variant="muted" />}
           </div>
           <h2
             className="display-font text-sm tracking-[0.12em] uppercase mt-0.5"
@@ -87,28 +82,14 @@ export default function MissionPreviewPanel({
 
       {/* PRIMARY ACTION — Deploy CTA at top */}
       <div className="mb-3">
-        {!isDeployable ? (
-          <div
-            className="text-center py-2.5 rounded"
-            style={{
-              border: `1px dashed ${campaignColor}30`,
-              background: `${campaignColor}06`,
-            }}
-          >
-            <span className="text-[11px] telemetry-font text-[#8eafc8] uppercase tracking-wider">
-              Enroll to deploy
-            </span>
-          </div>
-        ) : (
-          <ActionButton
-            onClick={handleDeploy}
-            variant={isAccomplished ? "secondary" : "primary"}
-            size="lg"
-            className="w-full"
-          >
-            {isAccomplished ? "Review Mission" : "▶ Deploy Mission"}
-          </ActionButton>
-        )}
+        <ActionButton
+          onClick={handleDeploy}
+          variant={isAccomplished ? "secondary" : "primary"}
+          size="lg"
+          className="w-full"
+        >
+          {isAccomplished ? "Review Mission" : "▶ Deploy Mission"}
+        </ActionButton>
       </div>
 
       {/* Description */}
@@ -166,7 +147,7 @@ export default function MissionPreviewPanel({
 
         {/* Final Boss shortcut — skip the loadout, go straight to the assessment.
             Red styling makes it clear this is the challenge path. */}
-        {isDeployable && !isAccomplished && (
+        {!isAccomplished && (
           <button
             onClick={handleSkip}
             className="w-full mt-2.5 px-2 py-1.5 rounded text-[11px] display-font tracking-[0.14em] uppercase font-bold transition-all"

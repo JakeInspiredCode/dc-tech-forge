@@ -8,6 +8,8 @@ import HexPanel from "@/components/ui/hex-panel";
 import ActionButton from "@/components/ui/action-button";
 import StatusBadge from "@/components/ui/status-badge";
 import BountyCard from "@/components/mission-board/bounty-card";
+import NextUpCta from "@/components/ui/next-up-cta";
+import { nextUp } from "@/lib/mission/next-up";
 
 interface StatsSidebarProps {
   campaign: Campaign | undefined;
@@ -22,8 +24,8 @@ interface StatsSidebarProps {
   decayingMissionIds: string[];
   hasNoCampaign: boolean;
   campaignColor: string;
-  enrolled: boolean;
-  onEnroll: () => void;
+  /** False while saved progress is still loading. */
+  ready: boolean;
 }
 
 type PanelSize = "full" | "mid" | "compact";
@@ -366,8 +368,7 @@ export default function StatsSidebar({
   decayingMissionIds,
   hasNoCampaign,
   campaignColor,
-  enrolled,
-  onEnroll,
+  ready,
 }: StatsSidebarProps) {
   const router = useRouter();
   const panelRef = useRef<HTMLDivElement>(null);
@@ -396,13 +397,25 @@ export default function StatsSidebar({
 
   const campaignPct = totalMissions > 0 ? Math.round((completedCount / totalMissions) * 100) : 0;
 
+  const next = useMemo(
+    () =>
+      !ready ? null :
+      nextUp(
+        campaign
+          ? [{ id: campaign.id, title: campaign.title, missions: missions.map((m) => ({ id: m.id, title: m.title })) }]
+          : [],
+        (missionId) => missionStatuses[missionId],
+      ),
+    [ready, campaign, missions, missionStatuses],
+  );
+
   return (
     <div ref={panelRef} className="h-full flex flex-col p-3 overflow-auto scroll-container">
       {hasNoCampaign ? (
         <div className="flex-1 flex items-center justify-center">
           <HexPanel className="text-center">
             <p className="text-xs text-[#8eafc8] mb-3">
-              No active campaign. Volunteer from the Galaxy Map.
+              No campaign selected. Pick a sector on the Galaxy Map to open one.
             </p>
             <ActionButton variant="primary" size="sm" onClick={() => router.push("/")}>
               Galaxy Map
@@ -467,19 +480,10 @@ export default function StatsSidebar({
             </div>
           )}
 
-          {/* Start Campaign CTA — shown when campaign is selected but not enrolled */}
-          {campaign && !enrolled && (
-            <div className="mb-3">
-              <ActionButton
-                onClick={onEnroll}
-                size="sm"
-                className="w-full"
-              >
-                Start Campaign
-              </ActionButton>
-              <p className="text-[10px] telemetry-font text-[#8eafc8] text-center mt-1.5 opacity-80">
-                Enroll to unlock missions
-              </p>
+          {/* The one thing to do next in this campaign */}
+          {campaign && (
+            <div className="mb-3 mt-1">
+              <NextUpCta next={next} scope="campaign" />
             </div>
           )}
 

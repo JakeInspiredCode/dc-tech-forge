@@ -38,7 +38,6 @@ describe("legacy key migration", () => {
       "dctf:onboarding-done": "true",
       "dctf:last-campaign": "linux-core",
       "dctf:lesson-scale": "1.15",
-      "dctf:sound": "off",
       "dctf:schema-version": "1",
     });
   });
@@ -76,9 +75,11 @@ describe("legacy key migration", () => {
     });
   });
 
-  it("drops keys written by the removed mascot feature", async () => {
+  it("drops keys written by features that were removed", async () => {
     localStorage.setItem("l1nx-mascot-personality", "sarcastic");
     localStorage.setItem("l1nx-mascot-muted", "true");
+    localStorage.setItem("l1nx-sound", "off");
+    localStorage.setItem("dctf:sound", "off"); // migrated by an earlier build
     sessionStorage.setItem("l1nx-mascot-welcomed", "1");
 
     await load();
@@ -126,6 +127,6 @@ describe("isAppKey", () => {
     expect(isAppKey(STORAGE_KEYS.dataPrefix + "forgeCards")).toBe(true);
     expect(isAppKey(SESSION_KEYS.loadout("linux-m01"))).toBe(true);
     expect(isAppKey("some-other-app:token")).toBe(false);
-    expect(isAppKey("l1nx-sound")).toBe(false);
+    expect(isAppKey("l1nx-last-campaign")).toBe(false);
   });
 });

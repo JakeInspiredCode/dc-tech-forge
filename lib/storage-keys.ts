@@ -16,7 +16,6 @@ export const STORAGE_KEYS = {
   reseedVersion: `${NS}:reseed-version`,
   lastCampaign: `${NS}:last-campaign`,
   lessonScale: `${NS}:lesson-scale`,
-  sound: `${NS}:sound`,
   /** "1" while the account is pre-filled with sample progress. */
   sampleData: `${NS}:sample-data`,
 } as const;
@@ -42,11 +41,12 @@ const LEGACY_LOCAL_RENAMES: ReadonlyArray<readonly [string, string]> = [
   ["l1nx-onboarding-done", STORAGE_KEYS.onboardingDone],
   ["l1nx-last-campaign", STORAGE_KEYS.lastCampaign],
   ["l1nx:lesson-scale", STORAGE_KEYS.lessonScale],
-  ["l1nx-sound", STORAGE_KEYS.sound],
 ];
 
-// Written by a mascot feature that was removed; nothing reads them.
-const LEGACY_LOCAL_DEAD = ["l1nx-mascot-personality", "l1nx-mascot-muted"];
+// Written by features that were removed (a mascot; a sound toggle whose engine
+// was never actually played). Nothing reads them. "dctf:sound" is here because
+// an earlier build migrated the sound preference before the toggle was cut.
+const LEGACY_LOCAL_DEAD = ["l1nx-mascot-personality", "l1nx-mascot-muted", "l1nx-sound", `${NS}:sound`];
 const LEGACY_SESSION_DEAD = ["l1nx-mascot-welcomed"];
 
 const LEGACY_SESSION_CHECKPOINT = "l1nx-session-checkpoint";
