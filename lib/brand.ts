@@ -12,4 +12,6 @@ export const BRAND = {
   slug: "dc-tech-forge",
   description:
     "Train for a data center technician role — Linux, networking, hardware, and ops",
+  /** Canonical production origin; absolute URLs in metadata resolve against it. */
+  url: "https://forge.jakebuildsfunthings.com",
 } as const;
