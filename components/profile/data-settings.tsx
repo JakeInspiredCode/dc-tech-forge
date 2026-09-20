@@ -9,6 +9,7 @@ import {
   restoreBackup,
   type BackupFile,
 } from "@/lib/data/backup";
+import { hasUserActivity } from "@/lib/data/activity";
 import { flushPersistenceNow } from "@/lib/data/persistence";
 import { isSampleDataLoaded } from "@/lib/data/sample-flag";
 import { subscribe } from "@/lib/data/store";
@@ -109,7 +110,6 @@ export default function DataSettings() {
 
   const requestSample = async () => {
     clearMessages();
-    const { hasUserActivity } = await import("@/lib/data/sample-data");
     if (hasUserActivity()) setPending({ kind: "sample" });
     else await loadSample(false);
   };

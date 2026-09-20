@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { clearOnboardingFlag } from "@/components/onboarding";
 import { BRAND } from "@/lib/brand";
+import { requestTour } from "@/lib/tour/request";
 
 const NAV_ITEMS = [
   { href: "/", label: "Galaxy Map", icon: "✦", color: "var(--color-v2-cyan)" },
@@ -53,7 +53,7 @@ export default function Nav() {
               <span className="hidden lg:inline">{BRAND.wordmark}</span>
             </span>
           </Link>
-          <div className="flex items-center gap-1 sm:gap-1.5 ml-4 flex-1 justify-center">
+          <div data-tour="nav-tabs" className="flex items-center gap-1 sm:gap-1.5 ml-4 flex-1 justify-center">
             {NAV_ITEMS.map((item) => {
               const active = isActive(pathname, item.href);
               return (
@@ -89,14 +89,11 @@ export default function Nav() {
           </div>
           <button
             onClick={() => {
-              clearOnboardingFlag();
-              if (pathname === "/") {
-                window.location.reload();
-              } else {
-                router.push("/");
-              }
+              // The tour points at the Galaxy Map, so it runs there.
+              requestTour();
+              if (pathname !== "/") router.push("/");
             }}
-            title="Relaunch the onboarding guide"
+            title="Replay the tour"
             className="ml-2 px-2.5 h-8 flex items-center gap-1 rounded transition-colors text-xs shrink-0"
             style={{
               color: "var(--color-v2-text-muted)",

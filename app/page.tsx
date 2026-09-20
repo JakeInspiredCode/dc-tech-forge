@@ -1,22 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { TOPICS } from "@/lib/types";
 import { useReseedCards, useRecomputeProgress } from "@/lib/convex-hooks";
 import { getAllSeedCards } from "@/lib/seeds";
 import { STORAGE_KEYS } from "@/lib/storage-keys";
+import { clearTourRequest, isTourRequested, subscribeToTourRequest } from "@/lib/tour/request";
 import Onboarding, { isOnboardingDone } from "@/components/onboarding";
 import GalaxyMap from "@/components/galaxy-map/galaxy-map";
 
 export default function Dashboard() {
-  const [showOnboarding, setShowOnboarding] = useState(false);
-  const [hydrated, setHydrated] = useState(false);
+  const [firstRun, setFirstRun] = useState(false);
+  const [tourSectorId, setTourSectorId] = useState<string | null>(null);
+  // "? Guide" in the nav asks for a replay; no reload needed.
+  const replayRequested = useSyncExternalStore(subscribeToTourRequest, isTourRequested, () => false);
 
   useEffect(() => {
-    setHydrated(true);
-    if (!isOnboardingDone()) {
-      setShowOnboarding(true);
-    }
+    if (!isOnboardingDone()) setFirstRun(true);
   }, []);
 
   const reseedCards = useReseedCards();
@@ -64,9 +64,19 @@ export default function Dashboard() {
     );
   }
 
-  if (hydrated && showOnboarding) {
-    return <Onboarding onComplete={() => setShowOnboarding(false)} />;
-  }
-
-  return <GalaxyMap />;
+  // The tour is an overlay: the map stays on screen behind it.
+  return (
+    <>
+      <GalaxyMap tourSectorId={tourSectorId} />
+      {(firstRun || replayRequested) && (
+        <Onboarding
+          onFocusSector={setTourSectorId}
+          onComplete={() => {
+            setFirstRun(false);
+            clearTourRequest();
+          }}
+        />
+      )}
+    </>
+  );
 }

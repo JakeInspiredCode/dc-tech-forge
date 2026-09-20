@@ -23,10 +23,11 @@ import { TOPICS, type TopicId } from "@/lib/types";
 import { getMissionsForCampaign } from "@/lib/seeds/campaigns";
 import { QUICK_DRAW_MODULES } from "@/lib/seeds/quick-draw-modules";
 import diagnosisScenarios from "@/lib/seeds/diagnosis-scenarios";
+import { hasUserActivity } from "./activity";
 import { mutations } from "./operations";
 import { isSampleDataLoaded, setSampleDataFlag } from "./sample-flag";
 import { seedIfEmpty } from "./seed";
-import { ENTITY_KEYS, getState, mutateMany, uid } from "./store";
+import { ENTITY_KEYS, mutateMany, uid } from "./store";
 import type { CardFields, Doc, ReviewFields, State } from "./schema";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -285,24 +286,7 @@ function buildProfile(prev: State, reviewCount: number): State["forgeProfile"] {
 
 // ── Public API ──
 
-/** Has this browser's account been used for anything real? */
-export function hasUserActivity(state: State = getState()): boolean {
-  return (
-    state.forgeReviews.length > 0 ||
-    state.forgeSessions.length > 0 ||
-    state.forgeStories.length > 0 ||
-    state.forgeSpeedRuns.length > 0 ||
-    state.forgeDrills.length > 0 ||
-    state.forgeBountyHistory.length > 0 ||
-    state.forgeDiagnosisHistory.length > 0 ||
-    state.forgeQuickDrawHistory.length > 0 ||
-    state.forgeTicketHistory.length > 0 ||
-    state.forgeProfile.some((p) => p.totalPoints > 0) ||
-    state.forgeMissionProgress.some((m) => m.status !== "available" || m.stepsCompleted.length > 0)
-  );
-}
-
-export { isSampleDataLoaded };
+export { hasUserActivity, isSampleDataLoaded };
 
 /**
  * Fill the account with sample progress. Refuses to touch an account that has

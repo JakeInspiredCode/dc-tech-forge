@@ -82,14 +82,21 @@ function EnergyStream({
 
 import type { Doc, CampaignProgressFields, MissionProgressFields, ProfileFields, ProgressFields } from "@/lib/data/schema";
 
-export default function GalaxyMap() {
+interface GalaxyMapProps {
+  /** Set by the first-run tour to hold a sector's preview open without a hover. */
+  tourSectorId?: string | null;
+}
+
+export default function GalaxyMap({ tourSectorId = null }: GalaxyMapProps) {
   const router = useRouter();
   const profile = useQuery<Doc<ProfileFields> | null>(api.forgeProfile.get);
   const campaignStates = useQuery<Doc<CampaignProgressFields>[]>(api.forgeCampaigns.getAllCampaignStates);
   const missionStates = useQuery<Doc<MissionProgressFields>[]>(api.forgeMissions.getAllMissionStates);
   const topicProgress = useQuery<Doc<ProgressFields>[]>(api.forgeProgress.getAll);
 
-  const [previewSector, setPreviewSector] = useState<Sector | null>(null);
+  const [hoveredSector, setPreviewSector] = useState<Sector | null>(null);
+  const previewSector =
+    (tourSectorId ? ALL_SECTORS.find((s) => s.id === tourSectorId) : null) ?? hoveredSector;
   const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const isLoading = !profile || !campaignStates || !missionStates;
@@ -288,6 +295,7 @@ export default function GalaxyMap() {
 
         {/* Right sidebar — Navigation Board (default) or Sector Preview (on hover) */}
         <div
+          data-tour="sector-panel"
           className="md:w-[280px] lg:w-[320px] xl:w-[340px] shrink-0 flex flex-col min-h-0 max-h-[40vh] md:max-h-none"
           onMouseEnter={handlePanelEnter}
           onMouseLeave={handlePanelLeave}
