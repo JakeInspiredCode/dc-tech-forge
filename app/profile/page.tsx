@@ -9,6 +9,8 @@ import StarfieldCanvas from "@/components/star-map/starfield-canvas";
 import { TOPICS } from "@/lib/types";
 import { useSoundEngine } from "@/lib/sound-engine";
 import { resetPersistedData } from "@/lib/data/persistence";
+import DataSettings from "@/components/profile/data-settings";
+import { BRAND } from "@/lib/brand";
 
 const RESET_PHRASE = "RESET";
 const dangerColor = "#ef4444";
@@ -128,7 +130,7 @@ export default function ProfilePage() {
   ];
 
   return (
-    <div className="h-[calc(100vh-56px)] w-full relative overflow-hidden">
+    <div className="h-[calc(100vh-var(--chrome-h))] w-full relative overflow-hidden">
       <StarfieldCanvas />
       <ScanOverlay />
       <div className="viewport-vignette fixed inset-0 z-[8] pointer-events-none" />
@@ -334,6 +336,8 @@ export default function ProfilePage() {
                   </button>
                 </div>
 
+                <DataSettings />
+
                 <div>
                   <h2
                     className="text-[11px] tracking-widest uppercase mb-3"
@@ -349,8 +353,9 @@ export default function ProfilePage() {
                     }}
                   >
                     <p className="text-[11px] leading-relaxed" style={{ color: "#e6ebf5" }}>
-                      Wipes all local progress, stories, profile, and session data from this
-                      browser. The app reseeds defaults on reload. This cannot be undone.
+                      Erases everything {BRAND.name} has saved in this browser — progress, stories,
+                      profile, and preferences — and restarts from a fresh account. This cannot be
+                      undone.
                     </p>
 
                     {!resetArming ? (

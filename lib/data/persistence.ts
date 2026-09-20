@@ -78,6 +78,15 @@ export function installPersistence(): void {
   });
 }
 
+// Write the current state right now instead of waiting out the debounce. For
+// callers that are about to reload the page.
+export function flushPersistenceNow(): void {
+  if (suspended || !isBrowser()) return;
+  if (flushTimer) clearTimeout(flushTimer);
+  pendingState = getState();
+  flushNow();
+}
+
 // Erase everything this app has stored in the browser: progress, preferences,
 // the onboarding flag, in-flight session state. Callers reload afterwards.
 export function resetPersistedData(): void {
