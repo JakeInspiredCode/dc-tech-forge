@@ -1,25 +1,14 @@
 /** @type {import('next').NextConfig} */
-const isStaticExport = process.env.L1NX_STATIC_EXPORT === "1";
-
 const nextConfig = {
   reactStrictMode: true,
-  ...(isStaticExport
-    ? {
-        output: "export",
-        trailingSlash: true,
-        images: { unoptimized: true },
-        distDir: ".next-export",
-        basePath: process.env.L1NX_BASE_PATH || "",
-      }
-    : {
-        async redirects() {
-          return [
-            { source: "/train", destination: "/missions", permanent: false },
-            { source: "/explore", destination: "/arsenal", permanent: false },
-            { source: "/progress", destination: "/profile", permanent: false },
-            { source: "/forge/speed-run", destination: "/train/quick-draw", permanent: false },
-          ];
-        },
-      }),
+  // The app has no API routes, server actions, or middleware — every page is
+  // static or prerendered — so it ships as plain files. With no server
+  // runtime, there is no server to attack, and it can be hosted anywhere.
+  //
+  // Static export does not support redirects() or headers() here; those live
+  // in vercel.json. `npm start` serves the export with them applied.
+  output: "export",
+  images: { unoptimized: true },
 };
+
 module.exports = nextConfig;
