@@ -1,6 +1,6 @@
 "use client";
 
-type BadgeVariant =
+export type BadgeVariant =
   | "cyan"
   | "blue"
   | "success"

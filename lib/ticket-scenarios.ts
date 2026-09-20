@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { KeyTermEntry } from "@/lib/scenarios";
+import type { BadgeVariant } from "@/components/ui/status-badge";
 
 // ── Types ──
 
@@ -50,7 +51,7 @@ export const TICKET_LEVELS: Record<TicketDifficulty, {
   label: string;
   bloomsLevel: string;
   description: string;
-  variant: string;
+  variant: BadgeVariant;
   xpBase: number;
   order: number;
 }> = {

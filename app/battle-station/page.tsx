@@ -3,6 +3,7 @@
 import { useState, useMemo, useCallback } from "react";
 import { useMutation, useQuery } from "@/lib/convex-shim";
 import { api } from "@/convex/_generated/api";
+import type { Doc, TicketHistoryFields } from "@/lib/data/schema";
 import TicketTerminal, { TicketAttemptResult } from "@/components/ticket-smash/ticket-terminal";
 import RadarCanvas, { RadarCategory } from "@/components/ticket-smash/radar-canvas";
 import {
@@ -187,22 +188,22 @@ export default function BattleStationPage() {
   const sectorColor = SECTOR_COLORS[activeDifficulty];
 
   // Convex hooks
-  const ticketHistory = useQuery(api.forgeTicketHistory.getAll, {}) ?? [];
+  const ticketHistory = (useQuery(api.forgeTicketHistory.getAll, {}) ?? []) as Doc<TicketHistoryFields>[];
   const addHistory = useMutation(api.forgeTicketHistory.add);
   const addPoints = useMutation(api.forgeProfile.addPoints);
   const checkBadges = useMutation(api.forgeProfile.checkAndAwardBadges);
 
   // Stats
-  const totalCompleted = new Set(ticketHistory.map((h: any) => h.ticketId)).size;
-  const totalXp = ticketHistory.reduce((sum: number, h: any) => sum + (h.xpEarned ?? 0), 0);
+  const totalCompleted = new Set(ticketHistory.map((h) => h.ticketId)).size;
+  const totalXp = ticketHistory.reduce((sum, h) => sum + (h.xpEarned ?? 0), 0);
   const avgScore = ticketHistory.length > 0
-    ? Math.round(ticketHistory.reduce((sum: number, h: any) => sum + h.score, 0) / ticketHistory.length)
+    ? Math.round(ticketHistory.reduce((sum, h) => sum + h.score, 0) / ticketHistory.length)
     : 0;
 
   // Best scores per ticket
   const bestScores = useMemo(() => {
     const map: Record<string, number> = {};
-    for (const h of ticketHistory as any[]) {
+    for (const h of ticketHistory) {
       if (!map[h.ticketId] || h.score > map[h.ticketId]) {
         map[h.ticketId] = h.score;
       }

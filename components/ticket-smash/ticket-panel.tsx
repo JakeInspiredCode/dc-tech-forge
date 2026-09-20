@@ -90,7 +90,7 @@ export default function TicketPanel({
       {/* Header — compact */}
       <div className="px-2.5 py-1.5 border-b border-v2-border shrink-0">
         <div className="flex items-center gap-1.5 mb-0.5 flex-wrap">
-          <StatusBadge label={level.label} variant={level.variant as any} />
+          <StatusBadge label={level.label} variant={level.variant} />
           <StatusBadge label={ticket.category} variant="muted" />
           {totalSteps && currentStep !== undefined && (
             <span className="text-[9px] mono text-v2-text-muted">

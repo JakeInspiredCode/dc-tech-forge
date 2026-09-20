@@ -1,6 +1,8 @@
-# public/
+# Unused assets
 
-Static assets served at the site root.
+Assets kept for reference that the app does not use. They live here rather
+than in `public/` because everything in `public/` is deployed and served at
+the site root.
 
 ## Asset notes
 
