@@ -27,7 +27,10 @@ import GuidedTerminal, { getGuidedTaskSet } from "@/components/mission/guided-te
 
 interface StepRendererProps {
   step: MissionStep;
+  /** The activity was actually finished: credit the step and move on. */
   onStepComplete: () => void;
+  /** The learner backed out or quit: move on without credit. */
+  onStepLeave: () => void;
 }
 
 function shuffle<T>(arr: T[]): T[] {
@@ -78,7 +81,7 @@ function CardSetStep({ step, onStepComplete }: StepRendererProps) {
 }
 
 // ── Quick Draw Step ──
-function QuickDrawStep({ step, onStepComplete }: StepRendererProps) {
+function QuickDrawStep({ step, onStepComplete, onStepLeave }: StepRendererProps) {
   const moduleId = step.contentRef.id;
   const params = step.contentRef.params as {
     categories?: string[];
@@ -117,13 +120,13 @@ function QuickDrawStep({ step, onStepComplete }: StepRendererProps) {
       items={items}
       mode="type"
       onComplete={() => onStepComplete()}
-      onQuit={() => onStepComplete()}
+      onQuit={() => onStepLeave()}
     />
   );
 }
 
 // ── Diagnosis Step ──
-function DiagnosisStep({ step, onStepComplete }: StepRendererProps) {
+function DiagnosisStep({ step, onStepComplete, onStepLeave }: StepRendererProps) {
   const scenarioId = step.contentRef.id;
   const scenario = getScenarioById(scenarioId);
 
@@ -135,7 +138,7 @@ function DiagnosisStep({ step, onStepComplete }: StepRendererProps) {
     <DiagnosisGame
       scenario={scenario}
       onComplete={() => onStepComplete()}
-      onQuit={() => onStepComplete()}
+      onQuit={() => onStepLeave()}
     />
   );
 }
@@ -177,11 +180,13 @@ function ChapterSectionStep({ step, onStepComplete }: StepRendererProps) {
 }
 
 // ── Boot Process Step ──
-function BootStep({ step, onStepComplete }: StepRendererProps) {
+// Open-ended: there is no finish line, so the tool's own Back button can't
+// stand in for completion. The mission header offers "Done" instead.
+function BootStep({ step, onStepLeave }: StepRendererProps) {
   if (step.contentRef.id === "triage") {
-    return <BootTriage onBack={onStepComplete} />;
+    return <BootTriage onBack={onStepLeave} />;
   }
-  return <BootLearn onBack={onStepComplete} />;
+  return <BootLearn onBack={onStepLeave} />;
 }
 
 // ── Terminal Step (guided practice in mission context) ──
@@ -198,9 +203,17 @@ function TerminalStep({ step, onStepComplete }: StepRendererProps) {
 }
 
 // ── Explorer Step ──
-function ExplorerStep({ step, onStepComplete }: StepRendererProps) {
+function ExplorerStep({ step, onStepComplete, onStepLeave }: StepRendererProps) {
   const mode = (step.contentRef.id === "label" ? "label" : "learn") as "learn" | "label";
-  return <FilesystemGame mode={mode} onBack={onStepComplete} maxQuestions={10} difficulty="easy" />;
+  return (
+    <FilesystemGame
+      mode={mode}
+      onBack={onStepLeave}
+      onComplete={onStepComplete}
+      maxQuestions={10}
+      difficulty="easy"
+    />
+  );
 }
 
 // ── Helpers ──
@@ -228,26 +241,27 @@ function FallbackStep({ label, onComplete }: { label: string; onComplete: () => 
 
 // ── Main Renderer ──
 
-export default function StepRenderer({ step, onStepComplete }: StepRendererProps) {
+export default function StepRenderer(props: StepRendererProps) {
+  const { step, onStepComplete } = props;
   switch (step.contentRef.kind) {
     case "foundation-section":
-      return <ReadingStep step={step} onStepComplete={onStepComplete} />;
+      return <ReadingStep {...props} />;
     case "chapter-section":
-      return <ChapterSectionStep step={step} onStepComplete={onStepComplete} />;
+      return <ChapterSectionStep {...props} />;
     case "card-set":
-      return <CardSetStep step={step} onStepComplete={onStepComplete} />;
+      return <CardSetStep {...props} />;
     case "quick-draw-module":
-      return <QuickDrawStep step={step} onStepComplete={onStepComplete} />;
+      return <QuickDrawStep {...props} />;
     case "diagnosis-scenario":
-      return <DiagnosisStep step={step} onStepComplete={onStepComplete} />;
+      return <DiagnosisStep {...props} />;
     case "drill-scenario":
-      return <DrillStep step={step} onStepComplete={onStepComplete} />;
+      return <DrillStep {...props} />;
     case "boot-process":
-      return <BootStep step={step} onStepComplete={onStepComplete} />;
+      return <BootStep {...props} />;
     case "terminal-exercise":
-      return <TerminalStep step={step} onStepComplete={onStepComplete} />;
+      return <TerminalStep {...props} />;
     case "explorer":
-      return <ExplorerStep step={step} onStepComplete={onStepComplete} />;
+      return <ExplorerStep {...props} />;
     default:
       return <FallbackStep label={`Unknown activity: ${step.contentRef.kind}`} onComplete={onStepComplete} />;
   }

@@ -2511,19 +2511,28 @@ export default function LinuxFoundations({ initialSection, missionMode, onMissio
       color: "#D8DCE0", display: "flex", flexDirection: "column",
     }}>
       {/* ─── TOP BAR ─── */}
+      {/* Sticks below the app's own chrome (nav, plus the sample-data banner
+          when it shows) instead of colliding with it at top: 0. z-index stays
+          under the nav's 50. */}
       <div style={{
-        position: "sticky", top: 0, zIndex: 100,
+        position: "sticky", top: "var(--chrome-h)", zIndex: 40,
         background: "rgba(18,18,31,0.92)", backdropFilter: "blur(12px)",
         borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "0 20px",
         display: "flex", alignItems: "center", height: 56, gap: 14, flexShrink: 0,
       }}>
-        <Link href="/" style={{
-          color: "#50C8FF", fontSize: 11, cursor: "pointer", textDecoration: "none",
-          padding: "4px 8px", display: "flex", alignItems: "center", fontWeight: 600,
-          opacity: 0.8, transition: "opacity 0.15s",
-        }} onMouseEnter={e => e.currentTarget.style.opacity = 1} onMouseLeave={e => e.currentTarget.style.opacity = 0.8}
-        >← Galaxy Map</Link>
-        <span style={{ color: "rgba(255,255,255,0.08)", fontSize: 13 }}>|</span>
+        {/* Inside a mission, the mission header owns the way out; a second
+            link here that silently abandons the mission only confuses. */}
+        {!missionMode && (
+          <>
+            <Link href="/" style={{
+              color: "#50C8FF", fontSize: 11, cursor: "pointer", textDecoration: "none",
+              padding: "4px 8px", display: "flex", alignItems: "center", fontWeight: 600,
+              opacity: 0.8, transition: "opacity 0.15s",
+            }} onMouseEnter={e => e.currentTarget.style.opacity = 1} onMouseLeave={e => e.currentTarget.style.opacity = 0.8}
+            >← Galaxy Map</Link>
+            <span style={{ color: "rgba(255,255,255,0.08)", fontSize: 13 }}>|</span>
+          </>
+        )}
         <button onClick={() => setSidebarOpen(!sidebarOpen)} style={{
           background: "none", border: "none", color: "#AAB4BE", fontSize: 15, cursor: "pointer",
           padding: "4px 8px", display: "flex", alignItems: "center",
