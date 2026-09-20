@@ -7,6 +7,7 @@ import { api } from "@/convex/_generated/api";
 import type { Mission, MissionStep } from "@/lib/types/campaign";
 import { XP, XP_MULTIPLIERS } from "@/lib/types/campaign";
 import { getCampaign, getMissionsForCampaign } from "@/lib/seeds/campaigns";
+import { SESSION_KEYS } from "@/lib/storage-keys";
 import MissionBriefing from "./mission-briefing";
 import LoadoutEditor from "./loadout-editor";
 import KnowledgeCheckScreen from "./knowledge-check";
@@ -22,11 +23,11 @@ type Phase = "briefing" | "playing" | "knowledge-check" | "debrief";
 /** Resolve custom loadout from sessionStorage (set by system-map overlay) */
 function resolveLoadout(mission: Mission): MissionStep[] {
   if (typeof window === "undefined") return mission.defaultLoadout;
-  const stored = sessionStorage.getItem(`loadout:${mission.id}`);
+  const stored = sessionStorage.getItem(SESSION_KEYS.loadout(mission.id));
   if (!stored) return mission.defaultLoadout;
   try {
     const stepIds: string[] = JSON.parse(stored);
-    sessionStorage.removeItem(`loadout:${mission.id}`);
+    sessionStorage.removeItem(SESSION_KEYS.loadout(mission.id));
     const filtered = mission.defaultLoadout.filter((s) => stepIds.includes(s.id));
     return filtered.length > 0 ? filtered : mission.defaultLoadout;
   } catch {

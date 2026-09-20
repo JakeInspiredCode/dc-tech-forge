@@ -1,8 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { STORAGE_KEYS } from "@/lib/storage-keys";
 
-const STORAGE_KEY = "l1nx:lesson-scale";
+const STORAGE_KEY = STORAGE_KEYS.lessonScale;
 const SCALES = [0.7, 0.85, 1.0, 1.15] as const;
 const DEFAULT_SCALE = 1.0;
 

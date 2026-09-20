@@ -7,6 +7,7 @@ import { api } from "@/convex/_generated/api";
 import type { Doc, CampaignProgressFields, MissionProgressFields, ProfileFields } from "@/lib/data/schema";
 import { ALL_CAMPAIGNS, getMissionsForCampaign } from "@/lib/seeds/campaigns";
 import { getSectorForCampaign } from "@/lib/seeds/sectors";
+import { SESSION_KEYS, STORAGE_KEYS } from "@/lib/storage-keys";
 import type { Mission, MissionStatus, MissionStep } from "@/lib/types/campaign";
 import StarfieldCanvas from "@/components/star-map/starfield-canvas";
 import ScanOverlay from "@/components/ui/scan-overlay";
@@ -110,7 +111,7 @@ export default function SystemMap() {
 
   // Last-visited campaign memory: when Missions is clicked without a ?campaign=
   // param, fall back to whichever campaign the user was last viewing.
-  const LAST_CAMPAIGN_KEY = "l1nx-last-campaign";
+  const LAST_CAMPAIGN_KEY = STORAGE_KEYS.lastCampaign;
   const [savedCampaign, setSavedCampaign] = useState<string | null>(null);
   useEffect(() => {
     try {
@@ -254,7 +255,7 @@ export default function SystemMap() {
 
   const handleDeploy = useCallback((missionId: string, loadout: MissionStep[]) => {
     sessionStorage.setItem(
-      `loadout:${missionId}`,
+      SESSION_KEYS.loadout(missionId),
       JSON.stringify(loadout.map((s) => s.id)),
     );
     router.push(`/missions/${missionId}?autostart=true`);

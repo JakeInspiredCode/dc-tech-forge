@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { TOPICS } from "@/lib/types";
 import { useReseedCards, useRecomputeProgress } from "@/lib/convex-hooks";
 import { getAllSeedCards } from "@/lib/seeds";
+import { STORAGE_KEYS } from "@/lib/storage-keys";
 import Onboarding, { isOnboardingDone } from "@/components/onboarding";
 import GalaxyMap from "@/components/galaxy-map/galaxy-map";
 
@@ -27,8 +28,9 @@ export default function Dashboard() {
   const RESEED_VERSION = 4;
   useEffect(() => {
     if (seeding) return;
-    const key = `l1nx-reseed-v${RESEED_VERSION}`;
-    if (typeof window === "undefined" || localStorage.getItem(key)) return;
+    if (typeof window === "undefined") return;
+    const applied = Number(localStorage.getItem(STORAGE_KEYS.reseedVersion) ?? -1);
+    if (applied >= RESEED_VERSION) return;
     const doReseed = async () => {
       setSeeding(true);
       const allCards = getAllSeedCards();
@@ -46,7 +48,7 @@ export default function Dashboard() {
       for (const t of TOPICS) {
         await recomputeProgress({ topicId: t.id });
       }
-      localStorage.setItem(key, "done");
+      localStorage.setItem(STORAGE_KEYS.reseedVersion, String(RESEED_VERSION));
       setSeeding(false);
     };
     doReseed();
