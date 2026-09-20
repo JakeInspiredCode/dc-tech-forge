@@ -7,7 +7,6 @@ import TelemetryBar from "@/components/ui/telemetry-bar";
 import ScanOverlay from "@/components/ui/scan-overlay";
 import StarfieldCanvas from "@/components/star-map/starfield-canvas";
 import { TOPICS } from "@/lib/types";
-import { useSoundEngine } from "@/lib/sound-engine";
 import { resetPersistedData } from "@/lib/data/persistence";
 import DataSettings from "@/components/profile/data-settings";
 import { BRAND } from "@/lib/brand";
@@ -111,7 +110,6 @@ export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState<Tab>("stats");
   const [resetArming, setResetArming] = useState(false);
   const [resetPhrase, setResetPhrase] = useState("");
-  const sound = useSoundEngine();
 
   const handleReset = () => {
     resetPersistedData();
@@ -300,42 +298,6 @@ export default function ProfilePage() {
             {/* ── Settings Tab ── */}
             {activeTab === "settings" && (
               <div className="max-w-xl space-y-4">
-                <div>
-                  <h2
-                    className="text-[11px] tracking-widest uppercase mb-3"
-                    style={{ color: accentColor, fontFamily: "'Chakra Petch', sans-serif", opacity: 0.7 }}
-                  >
-                    Audio
-                  </h2>
-                  <button
-                    onClick={() => sound.toggle()}
-                    className="flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200"
-                    style={{
-                      background: `${accentColor}04`,
-                      border: `1px solid ${sound.isEnabled() ? `${accentColor}30` : `${accentColor}10`}`,
-                    }}
-                  >
-                    {/* Speaker icon */}
-                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke={sound.isEnabled() ? accentColor : "#6a7288"} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
-                      <polygon points="2 6 2 10 5 10 9 13 9 3 5 6" />
-                      {sound.isEnabled() ? (
-                        <>
-                          <path d="M11 5.5a3.5 3.5 0 010 5" />
-                          <path d="M12.5 3.5a6 6 0 010 9" />
-                        </>
-                      ) : (
-                        <line x1="12" y1="6" x2="15" y2="10" />
-                      )}
-                    </svg>
-                    <span
-                      className="text-[11px] display-font tracking-wider uppercase"
-                      style={{ color: sound.isEnabled() ? accentColor : "#6a7288" }}
-                    >
-                      Sound: {sound.isEnabled() ? "ON" : "OFF"}
-                    </span>
-                  </button>
-                </div>
-
                 <DataSettings />
 
                 <div>
