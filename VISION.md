@@ -1,8 +1,8 @@
-# L1NX — Vision
+# DC-Tech-Forge — Vision
 
 ## The Goal
 
-Transform L1NX from a single-role study tool into a **universal interview preparation engine** that can target any job role from a single input: the job posting.
+Transform DC-Tech-Forge from a single-role study tool into a **universal interview preparation engine** that can target any job role from a single input: the job posting.
 
 ## How It Would Work
 
@@ -28,8 +28,8 @@ Job Requisition URL or Text
            │
            ▼
 ┌──────────────────────┐
-│  Ready to Study      │  Full L1NX experience: SM-2 scheduling,
-│                      │  daily plans, mock interviews, progress tracking
+│  Ready to Study      │  The full study experience: SM-2 scheduling,
+│                      │  missions, drills, progress tracking
 └──────────────────────┘
 ```
 
@@ -59,14 +59,14 @@ Job Requisition URL or Text
 ### 4. Forge Population
 - Map the 8 competency areas to Forge topics
 - Assign card IDs, difficulty ratings, and tier placements
-- Seed the Convex database
+- Load it into the app's data store
 - Initialize progress tracking for the new topic set
 
 ## Example
 
 **Input:** A job posting for "Site Reliability Engineer at Acme Corp" mentioning Kubernetes, observability, incident response, Linux, networking, CI/CD, cloud infrastructure, and distributed systems.
 
-**Output:** 8 fully-populated study topics with 15–30 tiered flashcards each, behavioral interview prep tailored to SRE culture, and a daily study plan ready to go.
+**Output:** 8 fully-populated study topics with 15–30 tiered flashcards each, and behavioral interview prep tailored to SRE culture.
 
 ## Current State
 
@@ -74,4 +74,4 @@ The app currently ships with hardcoded seed data for a specific technical role. 
 
 ## Status
 
-This is planned future development. The current priority is building out the core study experience and agentic infrastructure to support this vision.
+This is a possible future direction, not current work. An earlier agent prototype was removed, and today the app is fully client-side with hand-written content for one role — data center technician — which is also what its name now says. Pursuing this vision would mean generalizing both.

@@ -1,158 +1,111 @@
-# L1NX
+# DC-Tech-Forge
 
-A spaced-repetition training app built with **Next.js**, **Convex**, and **Tailwind CSS**. L1NX prepares users for data center technician roles through tiered flashcards, interactive exercises, mock interviews, and progress tracking.
+A training app for people preparing to work as data center technicians — Linux, networking, server hardware, power and cooling, fiber, and operations. It teaches through guided missions, spaced-repetition flashcards, timed drills, and a simulated terminal where you work real-looking tickets.
 
-## Features
+**Live:** https://forge.jakebuildsfunthings.com — add `?demo=1` to open it with sample progress already filled in.
 
-- **SM-2 Spaced Repetition** — Cards are scheduled using the SuperMemo 2 algorithm, surfacing weak material at optimal intervals.
-- **Tiered Difficulty (1–4)** — Cards progress from basic recall through intermediate concepts to multi-step scenarios. Higher tiers unlock as earlier tiers are mastered.
-- **Topic-Based Organization** — Content is grouped into study topics, each with its own mastery percentage, tier progress, and weak-flag detection.
-- **Daily Training Plans** — An intelligent scheduler builds a daily session mixing due reviews, weak-area drills, and new cards.
-- **Mock Interviews** — Timed sessions with rubric scoring (technical accuracy, structure, ownership) and missed-term tracking.
-- **Readiness Radar** — A radar chart showing mastery across all topics at a glance.
-- **Streaks, Points & Badges** — Gamification to keep study habits consistent.
-- **STAR Story Bank** — A dedicated section for building and refining behavioral interview stories.
+It is a fully static, local-first web app: there is no backend and there are no accounts. Everything you do is saved in your own browser.
 
-## Tech Stack
+## What's in it
 
-| Layer       | Technology                       |
-|-------------|----------------------------------|
-| Framework   | Next.js 15 (App Router)          |
-| Backend/DB  | Convex (real-time, serverless)   |
-| Styling     | Tailwind CSS 4                   |
-| Charts      | Recharts                         |
-| Language    | TypeScript                       |
+| Area | What it is |
+|---|---|
+| **Galaxy Map** | The home screen. Each star is a skill sector; pick one to open its campaign. |
+| **Missions** | 44 missions across 8 campaigns. Each is a short lesson (with interactive blocks), hands-on practice, and a knowledge check you pass to complete it. |
+| **Arsenal** | Practice on demand: flashcard review, Quick Draw recall rounds, the Diagnosis Lab, incident drills, a boot-process explorer, a filesystem navigator, a command dissector, and a Story Bank for interview prep. |
+| **Battlestation** | A ticket simulator. Tickets arrive at six difficulty levels and you resolve them in a simulated terminal. |
+| **Profile** | Topic mastery, badges, streaks, and settings — including backup, sample progress, and reset. |
 
-## Getting Started
+### How learning is tracked
 
-### Prerequisites
+- **Spaced repetition.** 374 flashcards are scheduled with the SM-2 algorithm ([lib/sm2.ts](lib/sm2.ts)). You grade each answer 0–5; that sets the card's ease, interval, and next due date. Slow answers (over 15s) are graded down.
+- **Tiers.** Cards run from basic recall (tier 1) to multi-step scenarios (tier 4). A topic's next tier opens once 70% of the current tier is qualified.
+- **Mastery is derived, never stored by hand.** A topic's mastery, tier, and weak flag are recomputed from its cards' review state, so every screen agrees.
 
-- Node.js 18+
-- A [Convex](https://convex.dev) account (free tier works)
+### Your data
 
-### Install & Run
+- Progress lives in `localStorage` under `dctf:` keys, all declared in [lib/storage-keys.ts](lib/storage-keys.ts).
+- **Settings → Your data** exports everything to a JSON file and imports it elsewhere. Browser storage is per-origin, so this is how you move progress between devices or browsers.
+- Imported files are treated as untrusted: every record is rebuilt from a whitelist of known fields and type-checked, and a file is rejected whole if any part of it is invalid ([lib/data/backup.ts](lib/data/backup.ts)).
+- **Sample progress** fills a fresh account with a few weeks of made-up activity so you can see the app in use. It is always labelled with a banner, and "Start fresh" clears it.
+
+## Tech
+
+| | |
+|---|---|
+| Framework | Next.js 15 (App Router), exported as static files |
+| UI | React 19, Tailwind CSS 4 |
+| Language | TypeScript (strict) |
+| Tests | Vitest + jsdom |
+| Lint | ESLint 9 (`next/core-web-vitals`, `next/typescript`) |
+| Backend | None |
+
+## Getting started
+
+Requires Node.js 22 (22.13 or newer) — the same major that CI and Vercel build with.
 
 ```bash
-# Install dependencies
 npm install
-
-# Start Convex dev server (first time will prompt you to set up a project)
-npx convex dev
-
-# In a separate terminal, start the Next.js dev server
 npm run dev
 ```
 
-The app seeds the database automatically on first load.
+| Script | What it does |
+|---|---|
+| `npm run dev` | Development server with hot reload. |
+| `npm run build` | Static export to `out/`. |
+| `npm start` | Serves `out/` **with the production redirects and security headers** from `vercel.json`. Use this to test the Content-Security-Policy locally. |
+| `npm run typecheck` | Generates route types, then `tsc --noEmit`. |
+| `npm run lint` | ESLint. |
+| `npm test` | Unit tests. `npm run test:watch` to watch. |
 
-### Environment Variables
+CI runs a dependency audit, typecheck, lint, tests, and a build on every pull request ([.github/workflows/ci.yml](.github/workflows/ci.yml)).
 
-Create a `.env.local` file:
+## Project structure
 
 ```
-CONVEX_DEPLOYMENT=<your-convex-deployment>
-NEXT_PUBLIC_CONVEX_URL=<your-convex-url>
-```
-
-## Project Structure
-
-```
-app/                  # Next.js App Router pages
-  page.tsx            # Dashboard — daily plan, radar, topic grid
-  study/              # Topic drill pages
-  interview/          # Mock interview session
-  progress/           # Progress analytics
-  stories/            # STAR story bank
-components/           # React components
-  card-queue.tsx      # Flashcard review session UI
-  flashcard.tsx       # Individual card with flip + self-grading
-  readiness-radar.tsx # Radar chart visualization
-  daily-plan.tsx      # Scheduled training session display
-  ...
-convex/               # Convex backend (schema, mutations, queries)
+app/                     Routes (App Router)
+  page.tsx               Galaxy Map + onboarding
+  missions/              Campaign map; [missionId]/ is the mission player
+  arsenal/               Practice library
+  battle-station/        Ticket simulator
+  profile/               Mastery, badges, settings
+  study/ cards/ drill/ terminal/ stories/ train/ …   Individual Arsenal tools
+components/              UI, grouped by feature (galaxy-map/, system-map/, mission/, chapter/, …)
 lib/
-  types.ts            # Core TypeScript types
-  sm2.ts              # SM-2 algorithm implementation
-  forge/scheduler.ts  # Daily plan generation logic
-  seeds/              # Seed data for flashcard content
+  brand.ts               The product name — single source of truth
+  storage-keys.ts        Every browser-storage key, plus the legacy-key migration
+  sm2.ts                 Spaced-repetition scheduling
+  data/                  The client-side data layer
+    store.ts             In-memory state + subscriptions
+    persistence.ts       Debounced localStorage persistence, reset
+    operations.ts        Queries and mutations
+    seed.ts              First-run content
+    sample-data.ts       Sample progress (loaded on demand)
+    backup.ts            Export / validated import
+  seeds/                 Content: campaigns, missions, chapters, cards, drills, scenarios
+scripts/
+  preview.mjs            `npm start`
+  generate-brand-assets.mjs   Renders the social-preview image and app icon
+vercel.json              Redirects and security headers
 ```
 
-## How It Works
+## Security
 
-1. **Seed** — On first load, the app populates the Convex database with flashcard content organized by topic and tier.
-2. **Study** — The scheduler builds a daily plan. Cards are reviewed with a 0–5 quality self-grade that feeds the SM-2 algorithm.
-3. **Progress** — Each review updates the card's ease factor, interval, and next due date. Topic-level mastery is recomputed after each session.
-4. **Unlock** — When 80%+ of a tier's cards reach "qualified" status (interval >= 7 days), the next tier unlocks.
-5. **Interview** — Mock interview mode presents scenario cards under timed conditions with structured rubric feedback.
+The app has no API routes, server actions, or middleware, so it is deployed as static files — there is no server runtime to attack.
+
+- **Headers** (in [vercel.json](vercel.json)): a Content-Security-Policy limited to same-origin resources, `frame-ancestors 'none'`, `nosniff`, a strict referrer policy, and a locked-down permissions policy. `script-src` allows `'unsafe-inline'` because a static Next.js export cannot use nonces; the primary defence is that the codebase contains no HTML-injection sinks (`dangerouslySetInnerHTML`, `innerHTML`, `eval`).
+- **No third-party requests.** Fonts are self-hosted.
+- **Untrusted input** is limited to imported files, which are validated as described above.
+- `npm audit` is part of CI and must be clean.
 
 ## Deployment
 
-L1NX has **one source of truth** (`main` branch) and **two functional deployment targets**, differentiated only by build-time env vars. There is no `demo` branch — the same code feeds both. Any improvement merged to `main` reaches both targets the next time each is built.
+`main` is the only long-lived branch. Vercel builds and deploys it on every push, and builds a preview for every pull request.
 
-| Target                                                | Purpose          | Build mode    | Env vars during build                                                                | How it deploys                                                                              |
-|-------------------------------------------------------|------------------|---------------|--------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
-| **Vercel** (production)                               | Real app for use | Next.js SSR   | _(none)_                                                                             | Auto on every push to `main`                                                                |
-| **jakebuildsfunthings.com/l1nx-forge** (static demo)  | Showcase build   | Static export | `L1NX_STATIC_EXPORT=1`<br>`NEXT_PUBLIC_L1NX_DEMO_MODE=1`<br>`L1NX_BASE_PATH=/l1nx-forge` | `npm run deploy:demo` — builds, copies into the personal-site repo, commits + pushes; Cloudflare Workers Build auto-deploys |
+Because the build is a static export, redirects and response headers cannot live in `next.config.js`; they are in `vercel.json`.
 
-### How the split works
-
-Three pieces of code branch on env vars at build time, so the same source produces both targets:
-
-- **[next.config.js](next.config.js)** — When `L1NX_STATIC_EXPORT=1`, switches to `output: "export"` with `distDir: ".next-export"`, `trailingSlash: true`, unoptimized images, and `basePath: process.env.L1NX_BASE_PATH || ""`. Otherwise keeps the SSR config + redirects (Vercel default).
-- **[lib/data/provider.tsx](lib/data/provider.tsx)** — When `NEXT_PUBLIC_L1NX_DEMO_MODE=1`, also runs `seedDemoIfEmpty()` so the demo opens onto a "lived-in" account (mastery, streak, review history, sample stories) instead of a blank dashboard.
-- **[lib/data/demo-seed.ts](lib/data/demo-seed.ts)** — The demo-only seeder. Idempotent; only fills empty tables after the normal seed runs.
-
-The `[missionId]` and `[topicId]` routes are also split into thin server components (with `generateStaticParams()`) plus client components, so static export can prerender every mission/topic at build time. This is unconditional, but it's a quiet win for Vercel too — those pages now SSG instead of fully client-rendering.
-
-### How the static demo is hosted
-
-The static demo lives at the path `/l1nx-forge` on the personal site **jakebuildsfunthings.com**, which is a Cloudflare Workers static-asset deployment from a separate repo at [github.com/JakeInspiredCode/jakebuildsfunthings](https://github.com/JakeInspiredCode/jakebuildsfunthings).
-
-**Critical mental model:** Cloudflare's Workers Build is connected to that repo and **auto-deploys from `origin/main` on every push**, ~60 seconds after the push lands. That makes GitHub the source of truth for what Cloudflare serves. A local-only `wrangler deploy` is silently overwritten by the next push to that repo, because Workers Build redeploys whatever's in `origin/main`.
-
-So the real deploy mechanism is: **regenerate `l1nx-forge/`, commit it, push it.** That's what triggers (and persists) the deploy.
-
-```
-~/Projects/jakebuildsfunthings/        # personal site repo, Cloudflare Workers
-├── index.html                         # site home
-├── wrangler.jsonc                     # Workers config (assets.directory = ".")
-└── l1nx-forge/                        # ← generated by `npm run deploy:demo`
-    ├── _next/                         #   from this repo. Don't hand-edit.
-    ├── missions/, study/, …           #   Tracked in git — Workers Build
-    └── index.html                     #   deploys from origin/main, so the
-                                       #   committed state IS the deploy.
-```
-
-Because `l1nx-forge/` is served from a subdirectory, the build needs `L1NX_BASE_PATH=/l1nx-forge` so all routes and asset URLs are prefixed correctly. The deploy script handles this automatically.
-
-### One-shot deploy: `npm run deploy:demo`
-
-The script at [scripts/deploy-demo.sh](scripts/deploy-demo.sh) does the whole thing:
-
-1. Builds the static export with all three env vars set.
-2. Replaces `~/Projects/jakebuildsfunthings/l1nx-forge/` with the fresh `.next-export/`.
-3. Commits the change in the personal-site repo (message records the source L1NX commit hash for provenance).
-4. Pushes to `origin/main` → Cloudflare Workers Build auto-deploys ~60s later.
-
-```bash
-git pull                  # make sure you have the latest main
-npm install               # if package.json changed
-npm run deploy:demo
-```
-
-**One-time prereqs:**
-- The jakebuildsfunthings repo is checked out at `~/Projects/jakebuildsfunthings`. Override with `JAKE_SITE_PATH=/elsewhere npm run deploy:demo` if it lives somewhere else.
-- The personal-site repo's `origin` remote is set up to push (same auth — SSH key or HTTPS token — you use for any `git push` from that repo).
-
-That's it. No Cloudflare OAuth needed (the script doesn't call `wrangler deploy` directly), so this works fine from non-interactive shells too — useful for LLM agents.
-
-### When you ship a fix or feature
-
-1. Commit and push to `main`. Vercel auto-deploys.
-2. To update the demo too: `npm run deploy:demo`.
-
-That's it. No branch maintenance, no cherry-picking. The build output `.next-export/` is gitignored on this side and regenerated each run.
+The `[missionId]` and `[topicId]` routes are split into a server component with `generateStaticParams()` and a client component so that every mission and topic page can be prerendered. The static export depends on this.
 
 ## License
 
-MIT
+[MIT](LICENSE)

@@ -2,51 +2,45 @@
 
 This file is loaded automatically into your context. The README is the canonical user-facing doc — read it when relevant. This file only covers things that aren't obvious from reading the code.
 
-## Two deployment targets, one branch
+The product is **DC-Tech-Forge**. It used to be called L1NX, which is why the local folder, some git history, and the storage-key migration still say `l1nx`.
 
-- **`main` is the only branch that matters.** No `demo` / `staging` branches.
-- **Vercel** auto-deploys `main` for the production app. No env vars set there.
-- **jakebuildsfunthings.com/l1nx-forge** is a static export of the same `main`, built with three env vars (`L1NX_STATIC_EXPORT=1`, `NEXT_PUBLIC_L1NX_DEMO_MODE=1`, `L1NX_BASE_PATH=/l1nx-forge`). Hosted on Cloudflare Workers from a separate repo at `~/Projects/jakebuildsfunthings`.
-- **Both targets stay in sync** because env-gated branches in `next.config.js` and `lib/data/provider.tsx` produce the right output for each. See [README.md](README.md#deployment) for the full picture.
+## Deployment: one target
 
-## Deploying the static demo
+- **`main` is the only branch that matters**, and **Vercel auto-deploys it to production on every push.** Treat a push to `main` as a production deploy. Do feature work on a branch and open a PR — Vercel builds a preview for each one.
+- The build is a **static export** (`output: "export"` in [next.config.js](next.config.js)). The app has no API routes, server actions, or middleware, so there is no server runtime. Keep it that way unless a feature genuinely needs a server.
+- Because of that, **redirects and response headers live in [vercel.json](vercel.json)**, not `next.config.js` — `redirects()` and `headers()` are not supported with static export.
+- `npm start` serves `out/` with the redirects and headers from `vercel.json` applied ([scripts/preview.mjs](scripts/preview.mjs)). **Use it to test a Content-Security-Policy change** before it ships; `npm run dev` does not send those headers.
+- There used to be a second target — a static demo copied into the personal-site repo and served at `jakebuildsfunthings.com/l1nx-forge/`, built by `scripts/deploy-demo.sh` with three `L1NX_*` env vars. **That pipeline is retired. Do not recreate it.** Sample data is now a runtime choice (below), so one deployment serves everyone.
 
-Use [`scripts/deploy-demo.sh`](scripts/deploy-demo.sh), wired up as `npm run deploy:demo`. The script:
-
-1. Builds with the three env vars set.
-2. Replaces `~/Projects/jakebuildsfunthings/l1nx-forge/` with the fresh `.next-export/`.
-3. Commits + pushes the personal-site repo's `l1nx-forge/`.
-4. Cloudflare Workers Build auto-deploys from `origin/main` ~60s later.
-
-**Critical: GitHub is the source of truth, not local files.** Cloudflare Workers Build is wired to the personal-site repo and redeploys from `origin/main` on every push. So a local-only `wrangler deploy` is overwritten by the next push to that repo. The script always commits + pushes; never skip that step.
-
-**You can run this end-to-end from a non-interactive shell.** No Cloudflare OAuth needed — the script doesn't call `wrangler deploy` directly, just `git push`, which uses the same credentials any normal push would.
-
-To watch the deploy land after pushing:
+## Before you call something done
 
 ```bash
-NEW_HASH=$(grep -oE '_next/static/css/[a-z0-9]+\.css' ~/Projects/jakebuildsfunthings/l1nx-forge/index.html | head -1 | sed 's|.*/||;s|\.css$||')
-until curl -s https://jakebuildsfunthings.com/l1nx-forge/ | grep -q "$NEW_HASH"; do sleep 5; done; echo "Live."
+npm run typecheck && npm run lint && npm test && npm run build
 ```
 
-Vercel deploys are easier: just `git push origin main` from this repo and Vercel handles the rest.
+CI runs the same steps plus `npm audit` on every PR. Lint has zero errors; the remaining warnings are tracked debt — don't add to them.
 
 ## Things that look weird but are intentional
 
 - **Lesson content uses inline pixel font sizes.** `components/linux-foundations.tsx` and `components/chapter/*` set sizes in absolute px (e.g., `fontSize: 11`) instead of Tailwind utilities. This is on purpose — there's a per-lesson "Aa" size toggle ([`lib/use-lesson-scale.ts`](lib/use-lesson-scale.ts)) that scales the whole lesson via CSS transform. **Don't bump these to "fix" them** unless the user asks for lesson-content typography changes specifically.
-- **The route refactor for `[missionId]` and `[topicId]`** (server component + `generateStaticParams`, with a client component sibling) exists so the static export can prerender every page. It's load-bearing for the demo build — don't collapse it back to a single client component.
-- **`.next-export/` is gitignored on the L1NX side** but tracked in the personal-site repo (where it lives at `l1nx-forge/`). Cloudflare needs concrete files; Vercel doesn't.
+- **The `[missionId]` and `[topicId]` routes are split** into a server component with `generateStaticParams` and a client component sibling. The static export needs this to prerender every page — don't collapse them back into a single client component.
+- **Fonts come from `@fontsource`, not `next/font`.** The three families are referenced by their literal names in 100+ inline styles; `next/font` hashes family names and would silently break them. Self-hosting also keeps the CSP at `font-src 'self'`.
+- **`package.json` overrides Next's pinned `postcss`.** Next 15 pins an old PostCSS with open advisories, and npm's only offered fix was a major bump to Next 16. The override's output was verified byte-identical. Remove it when moving to Next 16.
+- **`docs/unused-assets/viewport-frame.png` is kept on purpose** (see its README). It lives outside `public/` because everything in `public/` gets deployed.
+- **`Prose` takes a prop called `html` but never renders HTML** — it tokenizes a tiny markdown subset into React text nodes. The codebase has no `dangerouslySetInnerHTML` / `innerHTML` / `eval`, and the CSP leans on that. Keep it that way.
 
-## Don't hand-edit `~/Projects/jakebuildsfunthings/l1nx-forge/`
+## Rules for the data layer
 
-It's regenerated from this repo every time `npm run deploy:demo` runs. Any changes you make there will be wiped. To change demo behavior, change the source in this repo and redeploy.
+Progress lives only in the user's browser, so mistakes here destroy real data.
 
-## When you've shipped a fix that should reach the demo too
+- **Every storage key is declared in [`lib/storage-keys.ts`](lib/storage-keys.ts).** Never write a key literal anywhere else, and **never rename a key without adding a migration** next to the existing L1NX one.
+- **Derived data is derived.** Topic mastery, tier, and weak flags are recomputed from per-card SM-2 state (`forgeProgressRecompute:recompute`). Writing a `forgeProgress` row by hand is pointless — the next recompute overwrites it.
+- **Sample data ([`lib/data/sample-data.ts`](lib/data/sample-data.ts)) takes every id from the real content** and lets the app compute what it computes. Tests fail if an id it references stops existing. It must **never include Story Bank answers or interview transcripts**: the app is linked from the author's résumé, where first-person stories read as his own claims.
+- **Anything imported from a file is hostile** ([`lib/data/backup.ts`](lib/data/backup.ts), [`lib/import-export.ts`](lib/import-export.ts)). A bad record that reaches the store is re-hydrated on every visit and can crash a page permanently. Validate, whitelist fields, and test the malformed cases.
+- The backup validator's field spec is typed from `schema.ts`, so adding a schema field is a compile error until the validator covers it. That is deliberate.
 
-```bash
-# 1. Push to main → Vercel auto-deploys
-git push origin main
+## Conventions
 
-# 2. Update the static demo (works from any shell, no OAuth)
-npm run deploy:demo
-```
+- The product name comes from [`lib/brand.ts`](lib/brand.ts). Don't hard-code it.
+- **No gray text on dark backgrounds** — use white or blue-tinted text. (Large parts of the older UI still violate this; don't add more.)
+- Full-height screens size themselves with `h-[calc(100vh-var(--chrome-h))]`, not a hard-coded nav height. `--chrome-h` grows when the sample-data banner is showing.
