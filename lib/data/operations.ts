@@ -783,7 +783,14 @@ export const mutations: Record<string, MutationFn> = {
 
   "forgeMissions:updateMissionStatus": async ({ missionId, status }) => {
     mutate("forgeMissionProgress", (prev) =>
-      prev.map((m) => (m.missionId === missionId ? { ...m, status } : m)),
+      prev.map((m) => {
+        if (m.missionId !== missionId) return m;
+        // Completion is permanent. The mission player reports "in-progress"
+        // whenever a mission is opened, and reopening a finished mission to
+        // review it must not take it off the map.
+        if (m.status === "accomplished" && status !== "accomplished") return m;
+        return { ...m, status };
+      }),
     );
   },
 
