@@ -44,12 +44,13 @@ export default function Nav() {
         <div className="flex items-center justify-between h-14">
           <Link href="/" aria-label={`${BRAND.name} home`} className="flex items-center gap-2 shrink-0">
             <span
-              className="mono font-bold text-lg md:text-base lg:text-lg tracking-wider"
+              className="mono font-bold text-lg tracking-wider"
               style={{ color: "var(--color-v2-cyan)" }}
             >
-              {/* The full wordmark only fits beside labelled tabs from md up. */}
-              <span className="md:hidden">{BRAND.shortMark}</span>
-              <span className="hidden md:inline">{BRAND.wordmark}</span>
+              {/* Measured: beside the labelled tabs, the full wordmark needs
+                  ~830px of viewport. Below lg, use the compact mark. */}
+              <span className="lg:hidden">{BRAND.shortMark}</span>
+              <span className="hidden lg:inline">{BRAND.wordmark}</span>
             </span>
           </Link>
           <div className="flex items-center gap-1 sm:gap-1.5 ml-4 flex-1 justify-center">
