@@ -15,9 +15,9 @@ const SESSION_LABELS: Record<string, string> = {
 };
 
 const RESULT_COLOR: Record<string, string> = {
-  correct: "text-forge-success",
-  partial: "text-forge-warning",
-  wrong: "text-forge-danger",
+  correct: "text-v2-success",
+  partial: "text-v2-warning",
+  wrong: "text-v2-danger",
 };
 
 function formatDate(iso: string) {
@@ -107,7 +107,7 @@ function HistorySection({
   return (
     <div>
       <h2 className="text-lg font-semibold mb-2">Session History</h2>
-      <p className="text-sm text-forge-text-dim mb-4">
+      <p className="text-sm text-v2-text-dim mb-4">
         Browse past sessions and find specific cards you've reviewed.
       </p>
 
@@ -116,7 +116,7 @@ function HistorySection({
         placeholder='Search by card question — e.g. "what is iSCSI"'
         value={historySearch}
         onChange={(e) => setHistorySearch(e.target.value)}
-        className="w-full bg-forge-surface border border-forge-border rounded-lg px-3 py-2 text-sm mono text-forge-text outline-none focus:border-forge-accent/50 mb-4 placeholder:text-forge-text-muted"
+        className="w-full bg-v2-bg-surface border border-v2-border rounded-lg px-3 py-2 text-sm mono text-v2-text outline-none focus:border-v2-cyan/50 mb-4 placeholder:text-v2-text-muted"
       />
 
       <div className="flex gap-2 mb-5">
@@ -126,8 +126,8 @@ function HistorySection({
             onClick={() => setHistoryTab(t)}
             className={`px-4 py-1.5 rounded-lg text-sm mono transition-colors border ${
               historyTab === t
-                ? "bg-forge-accent/20 text-forge-accent-text border-forge-accent/40"
-                : "text-forge-text-dim border-forge-border hover:border-forge-border-hover"
+                ? "bg-v2-cyan/20 text-v2-cyan border-v2-cyan/40"
+                : "text-v2-text-dim border-v2-border hover:border-v2-cyan/30"
             }`}
           >
             {t === "sessions" ? `Sessions (${filteredSessions.length})` : `Speed Runs (${filteredSpeedRuns.length})`}
@@ -138,7 +138,7 @@ function HistorySection({
       {historyTab === "sessions" && (
         <div className="space-y-2">
           {filteredSessions.length === 0 && (
-            <p className="text-forge-text-muted text-sm mono py-12 text-center">
+            <p className="text-v2-text-muted text-sm mono py-12 text-center">
               {q ? "No sessions match that search." : "No sessions recorded yet."}
             </p>
           )}
@@ -150,34 +150,34 @@ function HistorySection({
               : s.cardIds;
 
             return (
-              <div key={id} className="bg-forge-surface border border-forge-border rounded-xl overflow-hidden">
+              <div key={id} className="bg-v2-bg-surface border border-v2-border rounded-xl overflow-hidden">
                 <button
                   onClick={() => toggle(id)}
-                  className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-forge-surface-2 transition-colors"
+                  className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-v2-bg-elevated transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-xs bg-forge-surface-2 border border-forge-border px-2 py-0.5 rounded mono">
+                    <span className="text-xs bg-v2-bg-elevated border border-v2-border px-2 py-0.5 rounded mono">
                       {SESSION_LABELS[s.type] ?? s.type}
                     </span>
-                    <span className="text-sm text-forge-text-dim">{s.cardIds.length} cards</span>
+                    <span className="text-sm text-v2-text-dim">{s.cardIds.length} cards</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="text-xs text-forge-text-muted">{formatDate(s.startTime)}</span>
-                    <span className="text-forge-text-dim text-xs">{isOpen ? "▲" : "▼"}</span>
+                    <span className="text-xs text-v2-text-muted">{formatDate(s.startTime)}</span>
+                    <span className="text-v2-text-dim text-xs">{isOpen ? "▲" : "▼"}</span>
                   </div>
                 </button>
                 {isOpen && (
-                  <div className="border-t border-forge-border divide-y divide-forge-border max-h-80 overflow-y-auto">
+                  <div className="border-t border-v2-border divide-y divide-v2-border max-h-80 overflow-y-auto">
                     {displayCards.length === 0 && (
-                      <p className="text-xs text-forge-text-muted px-4 py-3">No cards.</p>
+                      <p className="text-xs text-v2-text-muted px-4 py-3">No cards.</p>
                     )}
                     {displayCards.map((cid) => {
                       const card = cardMap.get(cid);
                       const topic = TOPICS.find((t) => t.id === card?.topicId);
                       return (
                         <div key={cid} className="flex items-start justify-between gap-3 px-4 py-2.5">
-                          <span className="text-xs text-forge-text leading-relaxed flex-1">{card?.front ?? cid}</span>
-                          <span className="text-[10px] text-forge-text-muted mono shrink-0 pt-0.5">
+                          <span className="text-xs text-v2-text leading-relaxed flex-1">{card?.front ?? cid}</span>
+                          <span className="text-[10px] text-v2-text-muted mono shrink-0 pt-0.5">
                             {topic?.name ?? card?.topicId ?? ""}
                           </span>
                         </div>
@@ -194,7 +194,7 @@ function HistorySection({
       {historyTab === "speed-runs" && (
         <div className="space-y-2">
           {filteredSpeedRuns.length === 0 && (
-            <p className="text-forge-text-muted text-sm mono py-12 text-center">
+            <p className="text-v2-text-muted text-sm mono py-12 text-center">
               {q ? "No speed runs match that search." : "No speed runs recorded yet."}
             </p>
           )}
@@ -208,39 +208,39 @@ function HistorySection({
               : r.cardResults;
 
             return (
-              <div key={id} className="bg-forge-surface border border-forge-border rounded-xl overflow-hidden">
+              <div key={id} className="bg-v2-bg-surface border border-v2-border rounded-xl overflow-hidden">
                 <button
                   onClick={() => toggle(id)}
-                  className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-forge-surface-2 transition-colors"
+                  className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-v2-bg-elevated transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-xs bg-forge-surface-2 border border-forge-border px-2 py-0.5 rounded mono">
+                    <span className="text-xs bg-v2-bg-elevated border border-v2-border px-2 py-0.5 rounded mono">
                       {topicName}
                     </span>
-                    <span className="text-sm font-bold mono text-forge-accent-text">{r.totalPoints} pts</span>
-                    <span className="text-xs text-forge-text-dim">{accuracy}% accuracy</span>
-                    <span className="text-xs text-forge-text-muted">{r.totalCards} cards</span>
+                    <span className="text-sm font-bold mono text-v2-cyan">{r.totalPoints} pts</span>
+                    <span className="text-xs text-v2-text-dim">{accuracy}% accuracy</span>
+                    <span className="text-xs text-v2-text-muted">{r.totalCards} cards</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="text-xs text-forge-text-muted">{formatDate(r.timestamp)}</span>
-                    <span className="text-forge-text-dim text-xs">{isOpen ? "▲" : "▼"}</span>
+                    <span className="text-xs text-v2-text-muted">{formatDate(r.timestamp)}</span>
+                    <span className="text-v2-text-dim text-xs">{isOpen ? "▲" : "▼"}</span>
                   </div>
                 </button>
                 {isOpen && (
-                  <div className="border-t border-forge-border divide-y divide-forge-border max-h-80 overflow-y-auto">
+                  <div className="border-t border-v2-border divide-y divide-v2-border max-h-80 overflow-y-auto">
                     {displayResults.map(
                       (cr: { cardId: string; result: string; userInput: string; feedback: string }, j: number) => {
                         const card = cardMap.get(cr.cardId);
                         return (
                           <div key={j} className="px-4 py-2.5">
                             <div className="flex items-start justify-between gap-3 mb-0.5">
-                              <span className="text-xs text-forge-text leading-relaxed flex-1">{card?.front ?? cr.cardId}</span>
-                              <span className={`text-[10px] mono font-medium shrink-0 pt-0.5 ${RESULT_COLOR[cr.result] ?? "text-forge-text-dim"}`}>
+                              <span className="text-xs text-v2-text leading-relaxed flex-1">{card?.front ?? cr.cardId}</span>
+                              <span className={`text-[10px] mono font-medium shrink-0 pt-0.5 ${RESULT_COLOR[cr.result] ?? "text-v2-text-dim"}`}>
                                 {cr.result}
                               </span>
                             </div>
                             {cr.userInput && (
-                              <p className="text-[10px] text-forge-text-muted mono truncate">{cr.userInput}</p>
+                              <p className="text-[10px] text-v2-text-muted mono truncate">{cr.userInput}</p>
                             )}
                           </div>
                         );

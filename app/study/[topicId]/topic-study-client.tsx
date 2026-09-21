@@ -5,11 +5,12 @@ import CardQueue from "@/components/card-queue";
 import { TOPICS, ForgeCard, TopicId, mapConvexCard } from "@/lib/types";
 import { useCardsByTopic, useDueCards, useNewCards, useAllProgress } from "@/lib/convex-hooks";
 import { isUnseen } from "@/lib/study/sessions";
+import Link from "next/link";
+import ModeCard from "@/components/study/mode-card";
+import ToolPage from "@/components/ui/tool-page";
 import { sortByPriority } from "@/lib/sm2";
-import { useRouter } from "next/navigation";
 
 export default function TopicStudyClient({ topicId }: { topicId: string }) {
-  const router = useRouter();
   const [active, setActive] = useState(false);
   const [sessionCards, setSessionCards] = useState<ForgeCard[]>([]);
 
@@ -34,8 +35,7 @@ export default function TopicStudyClient({ topicId }: { topicId: string }) {
   const maxTier = tp?.currentTier ?? 1;
 
   const startDue = () => {
-    const due = sortByPriority(dueCards);
-    setSessionCards(due.length > 0 ? due : newCards.slice(0, 20));
+    setSessionCards(sortByPriority(dueCards));
     setActive(true);
   };
   const startNew = () => { setSessionCards(newCards.slice(0, 20)); setActive(true); };
@@ -46,93 +46,112 @@ export default function TopicStudyClient({ topicId }: { topicId: string }) {
   };
 
   if (!topic) {
-    return (<div className="max-w-3xl mx-auto px-4 py-8"><p className="text-forge-text-dim">Topic not found.</p></div>);
+    return (
+      <ToolPage title="Topic not found">
+        <p className="text-v2-text-dim">
+          There is no topic called “{topicId}”. <Link href="/study" className="text-v2-cyan underline underline-offset-4">Back to Flashcard Review</Link>
+        </p>
+      </ToolPage>
+    );
   }
 
   if (active && sessionCards.length > 0) {
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-          <button onClick={() => { setActive(false); setSessionCards([]); }}
-            className="text-sm text-forge-text-dim hover:text-forge-text mb-6 flex items-center gap-1">← End session</button>
-          <CardQueue cards={sessionCards} sessionType="topic-drill"
-            onComplete={() => { setActive(false); setSessionCards([]); }} />
-        </div>
+      <ToolPage title={topic.name} width="full">
+        <button
+          type="button"
+          onClick={() => { setActive(false); setSessionCards([]); }}
+          className="inline-flex items-center max-md:min-h-[44px] text-sm text-v2-text-dim hover:text-v2-text mb-6"
+        >
+          ← End session
+        </button>
+        <CardQueue cards={sessionCards} sessionType="topic-drill"
+          onComplete={() => { setActive(false); setSessionCards([]); }} />
+      </ToolPage>
     );
   }
 
+  const drillPool = cards.filter((c) => c.tier <= maxTier).length;
+
   return (
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
-        <button onClick={() => router.push("/study")}
-          className="text-sm text-forge-text-dim hover:text-forge-text mb-6 flex items-center gap-1">← Back to study</button>
-        <div className="flex items-center gap-3 mb-6">
-          <span className="mono text-forge-accent-text text-2xl">{topic.icon}</span>
-          <div>
-            <h1 className="text-2xl font-bold">{topic.name}</h1>
-            <p className="text-forge-text-dim text-sm">{topic.description}</p>
-          </div>
-        </div>
+    <ToolPage title={topic.name} subtitle={topic.description}>
+      <Link
+        href="/study"
+        className="inline-flex items-center max-md:min-h-[44px] text-sm text-v2-text-dim hover:text-v2-text mb-5"
+      >
+        ← All topics
+      </Link>
 
-        {tp && (
-          <div className="bg-forge-surface border border-forge-border rounded-xl p-6 mb-6">
-            <div className="grid grid-cols-4 gap-4 mb-4">
-              <div className="text-center">
-                <span className="text-2xl font-bold mono text-forge-accent-text">{tp.masteryPercent}%</span>
-                <span className="block text-xs text-forge-text-dim">mastery</span>
+      {tp && (
+        <section aria-label="Progress in this topic" className="glass-panel rounded-lg p-5 mb-5">
+          <dl className="grid grid-cols-4 gap-3 mb-5 text-center">
+            {[
+              { value: `${tp.masteryPercent}%`, label: "mastery", color: "var(--color-v2-cyan)" },
+              { value: `T${tp.currentTier}`, label: "tier", color: "var(--color-v2-text)" },
+              { value: String(tp.masteredCards), label: "mastered", color: "var(--color-v2-success)" },
+              { value: String(newCards.length), label: "new", color: "var(--color-v2-text-dim)" },
+            ].map((stat) => (
+              <div key={stat.label} className="flex flex-col-reverse">
+                <dt className="text-xs text-v2-text-muted uppercase tracking-wider">{stat.label}</dt>
+                <dd className="telemetry-font text-2xl font-semibold" style={{ color: stat.color }}>{stat.value}</dd>
               </div>
-              <div className="text-center">
-                <span className="text-2xl font-bold mono">T{tp.currentTier}</span>
-                <span className="block text-xs text-forge-text-dim">tier</span>
-              </div>
-              <div className="text-center">
-                <span className="text-2xl font-bold mono text-forge-success">{tp.masteredCards}</span>
-                <span className="block text-xs text-forge-text-dim">mastered</span>
-              </div>
-              <div className="text-center">
-                <span className="text-2xl font-bold mono text-forge-text-muted">{tp.newCards}</span>
-                <span className="block text-xs text-forge-text-dim">new</span>
-              </div>
-            </div>
+            ))}
+          </dl>
 
-            {[1, 2, 3, 4].map((tier) => {
-              const key = `tier${tier}` as keyof typeof tp.tierProgress;
-              const data = tp.tierProgress[key];
-              const pct = data && data.total > 0 ? Math.round((data.qualified / data.total) * 100) : 0;
-              const unlocked = tier <= tp.currentTier;
-              return (
-                <div key={tier} className="mb-2 last:mb-0">
-                  <div className="flex items-center justify-between text-xs mb-1">
-                    <span className={unlocked ? "text-forge-text" : "text-forge-text-muted"}>
-                      Tier {tier} {unlocked ? "" : "(locked)"}
-                    </span>
-                    <span className="mono text-forge-text-dim">{data?.qualified ?? 0}/{data?.total ?? 0}</span>
-                  </div>
-                  <div className="h-1 bg-forge-surface-2 rounded-full overflow-hidden">
-                    <div className={`h-full rounded-full ${unlocked ? "bg-forge-accent" : "bg-forge-text-muted/30"}`}
-                      style={{ width: `${pct}%` }} />
-                  </div>
+          {[1, 2, 3, 4].map((tier) => {
+            const key = `tier${tier}` as keyof typeof tp.tierProgress;
+            const data = tp.tierProgress[key];
+            const pct = data && data.total > 0 ? Math.round((data.qualified / data.total) * 100) : 0;
+            const unlocked = tier <= tp.currentTier;
+            return (
+              <div key={tier} className="mb-2.5 last:mb-0">
+                <div className="flex items-center justify-between text-xs mb-1">
+                  <span className={unlocked ? "text-v2-text" : "text-v2-text-muted"}>
+                    Tier {tier}{unlocked ? "" : " — not unlocked yet"}
+                  </span>
+                  <span className="telemetry-font text-v2-text-dim">{data?.qualified ?? 0}/{data?.total ?? 0}</span>
                 </div>
-              );
-            })}
-          </div>
-        )}
+                <div aria-hidden="true" className="h-1.5 bg-v2-bg-overlay rounded-full overflow-hidden">
+                  <div className={`h-full rounded-full ${unlocked ? "bg-v2-cyan" : "bg-v2-text-muted/40"}`} style={{ width: `${pct}%` }} />
+                </div>
+              </div>
+            );
+          })}
+        </section>
+      )}
 
-        <div className="space-y-3">
-          <button onClick={startDue}
-            className="w-full bg-forge-accent/10 border border-forge-accent/30 rounded-xl p-4 text-left hover:bg-forge-accent/15 transition-colors">
-            <span className="font-semibold text-forge-accent-text">Review Due</span>
-            <span className="text-sm text-forge-text-dim ml-2">({dueCards.length} cards)</span>
-          </button>
-          <button onClick={startNew}
-            className="w-full bg-forge-surface border border-forge-border rounded-xl p-4 text-left hover:border-forge-border-hover transition-colors">
-            <span className="font-semibold">Learn New Cards</span>
-            <span className="text-sm text-forge-text-dim ml-2">({newCards.length} available up to T{maxTier})</span>
-          </button>
-          <button onClick={startAll}
-            className="w-full bg-forge-surface border border-forge-border rounded-xl p-4 text-left hover:border-forge-border-hover transition-colors">
-            <span className="font-semibold">Full Topic Drill</span>
-            <span className="text-sm text-forge-text-dim ml-2">(up to 40 cards, all unlocked tiers)</span>
-          </button>
-        </div>
+      <div className="space-y-3">
+        <ModeCard
+          glyph="▶"
+          title="Review due cards"
+          description="Cards from this topic that are scheduled for today."
+          count={dueCards.length}
+          countLabel="due"
+          color="var(--color-v2-cyan)"
+          unavailable={dueCards.length === 0 ? "Nothing in this topic is due right now." : undefined}
+          onStart={startDue}
+        />
+        <ModeCard
+          glyph="◆"
+          title="Learn new cards"
+          description={`Up to 20 at a time, from ${maxTier === 1 ? "Tier 1" : `tiers 1–${maxTier}`}.`}
+          count={newCards.length}
+          countLabel="new"
+          color="var(--color-v2-green)"
+          unavailable={newCards.length === 0 ? "You have started every card in the tiers you have unlocked here." : undefined}
+          onStart={startNew}
+        />
+        <ModeCard
+          glyph="◎"
+          title="Full topic drill"
+          description="Up to 40 cards from every tier you have unlocked, new and old together, most urgent first."
+          count={drillPool}
+          countLabel="cards"
+          color="var(--color-v2-amber)"
+          unavailable={drillPool === 0 ? "This topic has no cards in your unlocked tiers." : undefined}
+          onStart={startAll}
+        />
       </div>
+    </ToolPage>
   );
 }

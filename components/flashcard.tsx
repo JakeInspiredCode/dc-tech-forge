@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { ForgeCard, Quality } from "@/lib/types";
+import { topicName, ForgeCard, Quality } from "@/lib/types";
 
 interface FlashcardProps {
   card: ForgeCard;
@@ -13,10 +13,10 @@ interface FlashcardProps {
 }
 
 const RATING_BUTTONS: { label: string; quality: Quality; color: string; key: string }[] = [
-  { label: "Again", quality: 1 as Quality, color: "bg-forge-danger/20 text-forge-danger border-forge-danger/30 hover:bg-forge-danger/30", key: "1" },
-  { label: "Hard", quality: 3 as Quality, color: "bg-forge-warning/20 text-forge-warning border-forge-warning/30 hover:bg-forge-warning/30", key: "2" },
-  { label: "Good", quality: 4 as Quality, color: "bg-forge-accent/20 text-forge-accent-text border-forge-accent/30 hover:bg-forge-accent/30", key: "3" },
-  { label: "Easy", quality: 5 as Quality, color: "bg-forge-success/20 text-forge-success border-forge-success/30 hover:bg-forge-success/30", key: "4" },
+  { label: "Again", quality: 1 as Quality, color: "bg-v2-danger/20 text-v2-danger border-v2-danger/30 hover:bg-v2-danger/30", key: "1" },
+  { label: "Hard", quality: 3 as Quality, color: "bg-v2-warning/20 text-v2-warning border-v2-warning/30 hover:bg-v2-warning/30", key: "2" },
+  { label: "Good", quality: 4 as Quality, color: "bg-v2-cyan/20 text-v2-cyan border-v2-cyan/30 hover:bg-v2-cyan/30", key: "3" },
+  { label: "Easy", quality: 5 as Quality, color: "bg-v2-success/20 text-v2-success border-v2-success/30 hover:bg-v2-success/30", key: "4" },
 ];
 
 export default function Flashcard({ card, onRate, index, total }: FlashcardProps) {
@@ -57,19 +57,19 @@ export default function Flashcard({ card, onRate, index, total }: FlashcardProps
   }, [hasRevealed, handleFlip, handleRate]);
 
   const tierLabel = ["", "T1 Foundation", "T2 Application", "T3 Scenario", "T4 Branching"][card.tier];
-  const tierColor = ["", "text-forge-text-dim", "text-forge-accent-text", "text-forge-warning", "text-forge-danger"][card.tier];
+  const tierColor = ["", "text-v2-text-dim", "text-v2-cyan", "text-v2-warning", "text-v2-danger"][card.tier];
 
   return (
     <div className="w-full max-w-2xl mx-auto">
       {/* Progress bar */}
       <div className="mb-3 flex items-center gap-3">
-        <div className="flex-1 h-1 bg-forge-surface-2 rounded-full overflow-hidden">
+        <div className="flex-1 h-1 bg-v2-bg-elevated rounded-full overflow-hidden">
           <div
-            className="h-full bg-forge-accent rounded-full transition-all duration-300"
+            className="h-full bg-v2-cyan rounded-full transition-all duration-300"
             style={{ width: `${((index + 1) / total) * 100}%` }}
           />
         </div>
-        <span className="text-xs text-forge-text-dim mono">{index + 1}/{total}</span>
+        <span className="text-xs text-v2-text-dim mono">{index + 1}/{total}</span>
       </div>
 
       {/* Rating buttons — above card, visible once revealed */}
@@ -90,10 +90,10 @@ export default function Flashcard({ card, onRate, index, total }: FlashcardProps
         <div className={`card-flip-inner ${flipped ? "flipped" : ""}`} style={{ height: "100%" }}>
           {/* Front */}
           <div className="card-front" style={{ height: "100%" }} aria-hidden={flipped}>
-            <div className="bg-forge-surface border border-forge-border rounded-xl p-6 h-full flex flex-col hover:border-forge-border-hover transition-colors">
+            <div className="bg-v2-bg-surface border border-v2-border rounded-xl p-6 h-full flex flex-col hover:border-v2-cyan/30 transition-colors">
               <div className="flex items-center justify-between mb-3">
                 <span className={`text-xs mono ${tierColor}`}>{tierLabel}</span>
-                <span className="text-xs text-forge-text-muted mono">{card.topicId}</span>
+                <span className="text-xs text-v2-text-muted">{topicName(card.topicId)}</span>
               </div>
               <div className="flex-1 flex items-center justify-center overflow-y-auto">
                 <div className="markdown-content text-center text-base leading-relaxed">
@@ -101,17 +101,17 @@ export default function Flashcard({ card, onRate, index, total }: FlashcardProps
                 </div>
               </div>
               <div className="text-center mt-2">
-                <span className="text-[11px] text-forge-text-muted">Space or tap to reveal</span>
+                <span className="text-[11px] text-v2-text-muted">Space or tap to reveal</span>
               </div>
             </div>
           </div>
 
           {/* Back */}
           <div className="card-back" style={{ height: "100%" }} aria-hidden={!flipped}>
-            <div className="bg-forge-surface border border-forge-accent/30 rounded-xl p-6 h-full flex flex-col forge-glow">
+            <div className="bg-v2-bg-surface border border-v2-cyan/30 rounded-xl p-6 h-full flex flex-col forge-glow">
               <div className="flex items-center justify-between mb-2">
                 <span className={`text-xs mono ${tierColor}`}>{tierLabel}</span>
-                <span className="text-xs text-forge-accent-text mono">ANSWER</span>
+                <span className="text-xs text-v2-cyan mono">ANSWER</span>
               </div>
               <div className="flex-1 overflow-y-auto">
                 <div className="markdown-content text-sm leading-relaxed">

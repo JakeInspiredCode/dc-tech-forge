@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ForgeCard, Quality } from "@/lib/types";
+import { topicName, ForgeCard, Quality } from "@/lib/types";
 import { useProfile } from "@/lib/convex-hooks";
 
 interface ReviewResult {
@@ -32,8 +32,8 @@ function ReviewCards({ cards }: { cards: ForgeCard[] }) {
 
   return (
     <div className="mb-6">
-      <h3 className="text-sm font-semibold mb-3 text-forge-danger">
-        Needs Review ({cards.length}) <span className="font-normal text-forge-text-muted">— click to flip</span>
+      <h3 className="text-sm font-semibold mb-3 text-v2-danger">
+        Needs Review ({cards.length}) <span className="font-normal text-v2-text-muted">— click to flip</span>
       </h3>
       <div className="space-y-2">
         {cards.map((card) => {
@@ -44,28 +44,28 @@ function ReviewCards({ cards }: { cards: ForgeCard[] }) {
               onClick={() => toggle(card.id)}
               className={`w-full text-left rounded-lg p-3 text-sm transition-all duration-150 cursor-pointer ${
                 isFlipped
-                  ? "bg-forge-accent/5 border border-forge-accent/20"
-                  : "bg-forge-danger/5 border border-forge-danger/20 hover:border-forge-danger/40"
+                  ? "bg-v2-cyan/5 border border-v2-cyan/20"
+                  : "bg-v2-danger/5 border border-v2-danger/20 hover:border-v2-danger/40"
               }`}
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 min-w-0">
                   {!isFlipped && (
-                    <p className="text-forge-text">{card.front}</p>
+                    <p className="text-v2-text">{card.front}</p>
                   )}
                   {isFlipped && (
                     <>
-                      <p className="text-forge-text-muted text-xs mb-1.5">{card.front}</p>
-                      <p className="text-forge-text whitespace-pre-wrap">{card.back}</p>
+                      <p className="text-v2-text-muted text-xs mb-1.5">{card.front}</p>
+                      <p className="text-v2-text whitespace-pre-wrap">{card.back}</p>
                       {card.steps && card.steps.length > 0 && (
-                        <ol className="list-decimal list-inside text-forge-text-muted text-xs mt-2 space-y-0.5">
+                        <ol className="list-decimal list-inside text-v2-text-muted text-xs mt-2 space-y-0.5">
                           {card.steps.map((s, i) => <li key={i}>{s}</li>)}
                         </ol>
                       )}
                     </>
                   )}
                 </div>
-                <span className="text-[10px] mono text-forge-text-muted shrink-0 mt-0.5">
+                <span className="text-[10px] mono text-v2-text-muted shrink-0 mt-0.5">
                   {isFlipped ? "▲ front" : "▼ answer"}
                 </span>
               </div>
@@ -99,43 +99,43 @@ export default function SessionSummary({ results, cards, duration, onClose }: Se
 
   return (
     <div className="w-full max-w-2xl mx-auto">
-      <div className="bg-forge-surface border border-forge-border rounded-xl p-8">
+      <div className="bg-v2-bg-surface border border-v2-border rounded-xl p-8">
         <div className="text-center mb-8">
           <span className="text-3xl mb-2 block">
             {accuracy >= 90 ? "◆" : accuracy >= 70 ? "▲" : "●"}
           </span>
           <h2 className="text-xl font-bold mb-1">Session Complete</h2>
-          <p className="text-forge-text-dim text-sm">
+          <p className="text-v2-text-dim text-sm">
             {minutes}m {seconds}s — {results.length} cards reviewed
           </p>
         </div>
 
         <div className="grid grid-cols-3 gap-4 mb-8">
-          <div className="bg-forge-surface-2 rounded-lg p-4 text-center">
+          <div className="bg-v2-bg-elevated rounded-lg p-4 text-center">
             <span className={`text-2xl font-bold mono ${
-              accuracy >= 85 ? "text-forge-success" : accuracy >= 60 ? "text-forge-warning" : "text-forge-danger"
+              accuracy >= 85 ? "text-v2-success" : accuracy >= 60 ? "text-v2-warning" : "text-v2-danger"
             }`}>{accuracy}%</span>
-            <span className="block text-xs text-forge-text-dim mt-1">Accuracy</span>
+            <span className="block text-xs text-v2-text-dim mt-1">Accuracy</span>
           </div>
-          <div className="bg-forge-surface-2 rounded-lg p-4 text-center">
-            <span className="text-2xl font-bold mono text-forge-accent-text">{profile?.totalPoints ?? 0}</span>
-            <span className="block text-xs text-forge-text-dim mt-1">Total Points</span>
+          <div className="bg-v2-bg-elevated rounded-lg p-4 text-center">
+            <span className="text-2xl font-bold mono text-v2-cyan">{profile?.totalPoints ?? 0}</span>
+            <span className="block text-xs text-v2-text-dim mt-1">Total Points</span>
           </div>
-          <div className="bg-forge-surface-2 rounded-lg p-4 text-center">
-            <span className="text-2xl font-bold mono text-forge-warning">{profile?.streak ?? 0}</span>
-            <span className="block text-xs text-forge-text-dim mt-1">Day Streak</span>
+          <div className="bg-v2-bg-elevated rounded-lg p-4 text-center">
+            <span className="text-2xl font-bold mono text-v2-warning">{profile?.streak ?? 0}</span>
+            <span className="block text-xs text-v2-text-dim mt-1">Day Streak</span>
           </div>
         </div>
 
         <div className="mb-6">
-          <h3 className="text-sm font-semibold mb-3 text-forge-text-dim">By Topic</h3>
+          <h3 className="text-sm font-semibold mb-3 text-v2-text-dim">By Topic</h3>
           <div className="space-y-2">
             {Object.entries(topicBreakdown).map(([topicId, data]) => (
               <div key={topicId} className="flex items-center justify-between text-sm">
-                <span className="mono text-forge-text-dim">{topicId}</span>
+                <span className="text-v2-text-dim">{topicName(topicId)}</span>
                 <span className={`mono ${
-                  data.correct / data.total >= 0.85 ? "text-forge-success" :
-                  data.correct / data.total >= 0.6 ? "text-forge-warning" : "text-forge-danger"
+                  data.correct / data.total >= 0.85 ? "text-v2-success" :
+                  data.correct / data.total >= 0.6 ? "text-v2-warning" : "text-v2-danger"
                 }`}>
                   {data.correct}/{data.total}
                 </span>
@@ -150,7 +150,7 @@ export default function SessionSummary({ results, cards, duration, onClose }: Se
 
         <button
           onClick={onClose}
-          className="w-full py-3 bg-forge-accent/20 text-forge-accent-text border border-forge-accent/30 rounded-lg font-medium hover:bg-forge-accent/30 transition-colors"
+          className="w-full py-3 bg-v2-cyan/20 text-v2-cyan border border-v2-cyan/30 rounded-lg font-medium hover:bg-v2-cyan/30 transition-colors"
         >
           Continue
         </button>

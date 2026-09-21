@@ -6,6 +6,7 @@ import { useCards, useSeedCards } from "@/lib/convex-hooks";
 import CardEditor from "@/components/card-editor";
 import { exportCardsToJSON, downloadJSON, parseImportedCards } from "@/lib/import-export";
 import { BRAND } from "@/lib/brand";
+import ToolPage from "@/components/ui/tool-page";
 
 type SortKey = "topic" | "type" | "difficulty" | "due" | "mastery";
 type StatusFilter = "all" | "new" | "learning" | "mastered" | "overdue";
@@ -86,9 +87,9 @@ export default function CardsPage() {
   };
 
   const statusColor: Record<string, string> = {
-    new: "text-forge-text-muted",
-    learning: "text-forge-warning",
-    mastered: "text-forge-success",
+    new: "text-v2-text-muted",
+    learning: "text-v2-warning",
+    mastered: "text-v2-success",
     overdue: "text-red-400",
   };
 
@@ -100,16 +101,12 @@ export default function CardsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-v2-bg-deep">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
-        <div className="flex items-end justify-between mb-6">
-          <div>
-            <h1 className="text-xl font-bold mono mb-1">📇 Card Browser</h1>
-            <p className="text-sm text-forge-text-dim">
-              {filtered.length} of {cards.length} cards
-            </p>
-          </div>
-          <div className="flex gap-2">
+    <ToolPage
+      title="Card Browser"
+      subtitle={`${filtered.length} of ${cards.length} cards`}
+      width="wide"
+      actions={
+        <>
             <button onClick={() => {
               const exportData = rawCards.map((c) => ({
                 cardId: c.cardId, topicId: c.topicId, type: c.type,
@@ -118,7 +115,7 @@ export default function CardsPage() {
               }));
               downloadJSON(exportCardsToJSON(exportData), `${BRAND.slug}-cards-${new Date().toISOString().split("T")[0]}.json`);
             }}
-              className="px-3 py-1.5 text-xs mono border border-forge-border rounded-lg hover:bg-forge-surface-2 transition-colors">
+              className="px-3 py-1.5 text-xs mono border border-v2-border rounded-lg hover:bg-v2-bg-elevated transition-colors">
               Export
             </button>
             <input aria-label="Import a card deck (JSON file)" ref={fileInputRef} type="file" accept=".json" className="hidden" onChange={async (e) => {
@@ -142,20 +139,21 @@ export default function CardsPage() {
               if (fileInputRef.current) fileInputRef.current.value = "";
             }} />
             <button onClick={() => fileInputRef.current?.click()}
-              className="px-3 py-1.5 text-xs mono border border-forge-border rounded-lg hover:bg-forge-surface-2 transition-colors">
+              className="px-3 py-1.5 text-xs mono border border-v2-border rounded-lg hover:bg-v2-bg-elevated transition-colors">
               Import
             </button>
             <button onClick={() => setShowEditor(true)}
-              className="px-3 py-1.5 text-xs mono bg-forge-accent text-white rounded-lg hover:bg-forge-accent/90 transition-colors">
+              className="px-3 py-1.5 text-xs mono bg-v2-cyan text-v2-bg-deep rounded-lg hover:bg-v2-cyan-bright transition-colors">
               + New Card
             </button>
-          </div>
-        </div>
+        </>
+      }
+    >
 
         {importMsg && (
-          <div className="mb-4 p-3 bg-forge-surface border border-forge-border rounded-lg text-sm flex items-center justify-between">
+          <div className="mb-4 p-3 bg-v2-bg-surface border border-v2-border rounded-lg text-sm flex items-center justify-between">
             <span>{importMsg}</span>
-            <button onClick={() => setImportMsg(null)} className="text-forge-text-muted hover:text-forge-text">&times;</button>
+            <button onClick={() => setImportMsg(null)} className="text-v2-text-muted hover:text-v2-text">&times;</button>
           </div>
         )}
 
@@ -167,19 +165,19 @@ export default function CardsPage() {
           placeholder="Search cards..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full bg-forge-surface border border-forge-border rounded-lg px-3 py-2 text-sm text-forge-text outline-none focus:border-forge-accent/50 mb-4"
+          className="w-full bg-v2-bg-surface border border-v2-border rounded-lg px-3 py-2 text-sm text-v2-text outline-none focus:border-v2-cyan/50 mb-4"
         />
 
         {/* Filters */}
         <div className="flex flex-wrap gap-2 mb-6">
           <select aria-label="Filter by topic" value={topicFilter} onChange={(e) => setTopicFilter(e.target.value)}
-            className="bg-forge-surface border border-forge-border rounded-lg px-2 py-1.5 text-xs text-forge-text mono outline-none focus:border-forge-accent/50">
+            className="bg-v2-bg-surface border border-v2-border rounded-lg px-2 py-1.5 text-xs text-v2-text mono outline-none focus:border-v2-cyan/50">
             <option value="all">All Topics</option>
             {TOPICS.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
           </select>
 
           <select aria-label="Filter by card type" value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}
-            className="bg-forge-surface border border-forge-border rounded-lg px-2 py-1.5 text-xs text-forge-text mono outline-none focus:border-forge-accent/50">
+            className="bg-v2-bg-surface border border-v2-border rounded-lg px-2 py-1.5 text-xs text-v2-text mono outline-none focus:border-v2-cyan/50">
             <option value="all">All Types</option>
             <option value="easy">Easy</option>
             <option value="intermediate">Intermediate</option>
@@ -187,7 +185,7 @@ export default function CardsPage() {
           </select>
 
           <select aria-label="Filter by difficulty" value={difficultyFilter} onChange={(e) => setDifficultyFilter(e.target.value)}
-            className="bg-forge-surface border border-forge-border rounded-lg px-2 py-1.5 text-xs text-forge-text mono outline-none focus:border-forge-accent/50">
+            className="bg-v2-bg-surface border border-v2-border rounded-lg px-2 py-1.5 text-xs text-v2-text mono outline-none focus:border-v2-cyan/50">
             <option value="all">All Difficulty</option>
             <option value="1">★</option>
             <option value="2">★★</option>
@@ -195,7 +193,7 @@ export default function CardsPage() {
           </select>
 
           <select aria-label="Filter by tier" value={tierFilter} onChange={(e) => setTierFilter(e.target.value)}
-            className="bg-forge-surface border border-forge-border rounded-lg px-2 py-1.5 text-xs text-forge-text mono outline-none focus:border-forge-accent/50">
+            className="bg-v2-bg-surface border border-v2-border rounded-lg px-2 py-1.5 text-xs text-v2-text mono outline-none focus:border-v2-cyan/50">
             <option value="all">All Tiers</option>
             <option value="1">Tier 1</option>
             <option value="2">Tier 2</option>
@@ -204,7 +202,7 @@ export default function CardsPage() {
           </select>
 
           <select aria-label="Filter by review status" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
-            className="bg-forge-surface border border-forge-border rounded-lg px-2 py-1.5 text-xs text-forge-text mono outline-none focus:border-forge-accent/50">
+            className="bg-v2-bg-surface border border-v2-border rounded-lg px-2 py-1.5 text-xs text-v2-text mono outline-none focus:border-v2-cyan/50">
             <option value="all">All Status</option>
             <option value="new">New</option>
             <option value="learning">Learning</option>
@@ -213,7 +211,7 @@ export default function CardsPage() {
           </select>
 
           <select aria-label="Sort cards by" value={sortBy} onChange={(e) => setSortBy(e.target.value as SortKey)}
-            className="bg-forge-surface border border-forge-border rounded-lg px-2 py-1.5 text-xs text-forge-text mono outline-none focus:border-forge-accent/50">
+            className="bg-v2-bg-surface border border-v2-border rounded-lg px-2 py-1.5 text-xs text-v2-text mono outline-none focus:border-v2-cyan/50">
             <option value="topic">Sort: Topic</option>
             <option value="type">Sort: Type</option>
             <option value="difficulty">Sort: Difficulty</option>
@@ -225,7 +223,7 @@ export default function CardsPage() {
         {/* Card list */}
         <div className="space-y-2">
           {filtered.length === 0 && (
-            <div className="text-center text-forge-text-dim py-12 text-sm">
+            <div className="text-center text-v2-text-dim py-12 text-sm">
               No cards match your filters.
             </div>
           )}
@@ -234,39 +232,39 @@ export default function CardsPage() {
             const status = getStatus(card);
             const topic = TOPICS.find((t) => t.id === card.topicId);
             return (
-              <div key={card._key} className="bg-forge-surface border border-forge-border rounded-lg overflow-hidden">
+              <div key={card._key} className="bg-v2-bg-surface border border-v2-border rounded-lg overflow-hidden">
                 <button
                   onClick={() => toggleExpand(card.id)}
-                  className="w-full text-left px-4 py-3 flex items-center gap-3 hover:bg-forge-surface-2 transition-colors"
+                  className="w-full text-left px-4 py-3 flex items-center gap-3 hover:bg-v2-bg-elevated transition-colors"
                 >
-                  <span className="mono text-forge-accent-text text-sm shrink-0">{topic?.icon ?? "?"}</span>
+                  <span className="mono text-v2-cyan text-sm shrink-0">{topic?.icon ?? "?"}</span>
                   <span className="text-sm flex-1 truncate">{card.front}</span>
                   <span className={`text-[10px] mono shrink-0 ${statusColor[status]}`}>
                     {statusLabel[status]}
                   </span>
-                  <span className="text-[10px] mono text-forge-text-muted shrink-0 capitalize">{card.type}</span>
-                  <span className="text-forge-text-muted text-xs shrink-0">{isOpen ? "▲" : "▼"}</span>
+                  <span className="text-[10px] mono text-v2-text-muted shrink-0 capitalize">{card.type}</span>
+                  <span className="text-v2-text-muted text-xs shrink-0">{isOpen ? "▲" : "▼"}</span>
                 </button>
 
                 {isOpen && (
-                  <div className="border-t border-forge-border px-4 py-4 space-y-3 bg-forge-bg/50">
+                  <div className="border-t border-v2-border px-4 py-4 space-y-3 bg-v2-bg-deep/50">
                     <div>
-                      <span className="text-[10px] uppercase tracking-wider text-forge-text-muted block mb-1">Front</span>
-                      <p className="text-sm text-forge-text">{card.front}</p>
+                      <span className="text-[10px] uppercase tracking-wider text-v2-text-muted block mb-1">Front</span>
+                      <p className="text-sm text-v2-text">{card.front}</p>
                     </div>
                     <div>
-                      <span className="text-[10px] uppercase tracking-wider text-forge-text-muted block mb-1">Back</span>
-                      <p className="text-sm text-forge-text whitespace-pre-wrap">{card.back}</p>
+                      <span className="text-[10px] uppercase tracking-wider text-v2-text-muted block mb-1">Back</span>
+                      <p className="text-sm text-v2-text whitespace-pre-wrap">{card.back}</p>
                     </div>
                     {card.steps && card.steps.length > 0 && (
                       <div>
-                        <span className="text-[10px] uppercase tracking-wider text-forge-text-muted block mb-1">Steps</span>
-                        <ol className="list-decimal list-inside text-sm text-forge-text space-y-0.5">
+                        <span className="text-[10px] uppercase tracking-wider text-v2-text-muted block mb-1">Steps</span>
+                        <ol className="list-decimal list-inside text-sm text-v2-text space-y-0.5">
                           {card.steps.map((s, i) => <li key={i}>{s}</li>)}
                         </ol>
                       </div>
                     )}
-                    <div className="flex flex-wrap gap-3 text-[10px] mono text-forge-text-muted pt-1 border-t border-forge-border/50">
+                    <div className="flex flex-wrap gap-3 text-[10px] mono text-v2-text-muted pt-1 border-t border-v2-border/50">
                       <span>Topic: {topic?.name ?? card.topicId}</span>
                       <span>Tier {card.tier}</span>
                       <span>Difficulty {"★".repeat(card.difficulty)}</span>
@@ -282,7 +280,6 @@ export default function CardsPage() {
             );
           })}
         </div>
-      </div>
-    </div>
+    </ToolPage>
   );
 }

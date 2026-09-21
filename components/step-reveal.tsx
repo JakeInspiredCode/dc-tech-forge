@@ -13,10 +13,10 @@ interface StepRevealProps {
 }
 
 const RATING_BUTTONS: { label: string; quality: Quality; color: string }[] = [
-  { label: "Again", quality: 1 as Quality, color: "bg-forge-danger/20 text-forge-danger border-forge-danger/30" },
-  { label: "Hard", quality: 3 as Quality, color: "bg-forge-warning/20 text-forge-warning border-forge-warning/30" },
-  { label: "Good", quality: 4 as Quality, color: "bg-forge-accent/20 text-forge-accent-text border-forge-accent/30" },
-  { label: "Easy", quality: 5 as Quality, color: "bg-forge-success/20 text-forge-success border-forge-success/30" },
+  { label: "Again", quality: 1 as Quality, color: "bg-v2-danger/20 text-v2-danger border-v2-danger/30" },
+  { label: "Hard", quality: 3 as Quality, color: "bg-v2-warning/20 text-v2-warning border-v2-warning/30" },
+  { label: "Good", quality: 4 as Quality, color: "bg-v2-cyan/20 text-v2-cyan border-v2-cyan/30" },
+  { label: "Easy", quality: 5 as Quality, color: "bg-v2-success/20 text-v2-success border-v2-success/30" },
 ];
 
 export default function StepReveal({ card, onRate, index, total }: StepRevealProps) {
@@ -43,19 +43,19 @@ export default function StepReveal({ card, onRate, index, total }: StepRevealPro
     <div className="w-full max-w-3xl mx-auto">
       {/* Progress */}
       <div className="mb-4 flex items-center gap-3">
-        <div className="flex-1 h-1.5 bg-forge-surface-2 rounded-full overflow-hidden">
+        <div className="flex-1 h-1.5 bg-v2-bg-elevated rounded-full overflow-hidden">
           <div
-            className="h-full bg-forge-danger rounded-full transition-all duration-300"
+            className="h-full bg-v2-danger rounded-full transition-all duration-300"
             style={{ width: `${((index + 1) / total) * 100}%` }}
           />
         </div>
-        <span className="text-xs text-forge-text-dim mono">{index + 1}/{total}</span>
+        <span className="text-xs text-v2-text-dim mono">{index + 1}/{total}</span>
       </div>
 
       {/* Incident header */}
-      <div className="bg-forge-surface border border-forge-danger/30 rounded-xl p-6 mb-4 forge-glow-danger">
+      <div className="bg-v2-bg-surface border border-v2-danger/30 rounded-xl p-6 mb-4 forge-glow-danger">
         <div className="flex items-center gap-2 mb-3">
-          <span className="text-xs mono text-forge-danger bg-forge-danger/10 px-2 py-0.5 rounded">INCIDENT — T4 BRANCHING</span>
+          <span className="text-xs mono text-v2-danger bg-v2-danger/10 px-2 py-0.5 rounded">INCIDENT — T4 BRANCHING</span>
         </div>
         <div className="markdown-content">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{card.front}</ReactMarkdown>
@@ -64,9 +64,9 @@ export default function StepReveal({ card, onRate, index, total }: StepRevealPro
 
       {/* Steps */}
       {steps.slice(0, revealedSteps).map((step, i) => (
-        <div key={i} className="bg-forge-surface border border-forge-border rounded-xl p-5 mb-3">
+        <div key={i} className="bg-v2-bg-surface border border-v2-border rounded-xl p-5 mb-3">
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-xs mono text-forge-accent-text bg-forge-accent/10 px-2 py-0.5 rounded">
+            <span className="text-xs mono text-v2-cyan bg-v2-cyan/10 px-2 py-0.5 rounded">
               STEP {i + 1}/{steps.length}
             </span>
           </div>
@@ -78,9 +78,9 @@ export default function StepReveal({ card, onRate, index, total }: StepRevealPro
 
       {/* Final answer / resolution */}
       {showFinal && (
-        <div className="bg-forge-surface border border-forge-success/30 rounded-xl p-5 mb-4 forge-glow-success">
+        <div className="bg-v2-bg-surface border border-v2-success/30 rounded-xl p-5 mb-4 forge-glow-success">
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-xs mono text-forge-success bg-forge-success/10 px-2 py-0.5 rounded">RESOLUTION</span>
+            <span className="text-xs mono text-v2-success bg-v2-success/10 px-2 py-0.5 rounded">RESOLUTION</span>
           </div>
           <div className="markdown-content text-sm">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{card.back}</ReactMarkdown>
@@ -93,7 +93,7 @@ export default function StepReveal({ card, onRate, index, total }: StepRevealPro
         {!showFinal ? (
           <button
             onClick={handleNextStep}
-            className="px-6 py-2.5 bg-forge-accent/20 text-forge-accent-text border border-forge-accent/30 rounded-lg text-sm font-medium hover:bg-forge-accent/30 transition-colors"
+            className="px-6 py-2.5 bg-v2-cyan/20 text-v2-cyan border border-v2-cyan/30 rounded-lg text-sm font-medium hover:bg-v2-cyan/30 transition-colors"
           >
             {revealedSteps < steps.length ? `Next Step (${revealedSteps}/${steps.length})` : "Show Resolution"}
           </button>
