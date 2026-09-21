@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
+import ToolPage from "@/components/ui/tool-page";
 import TerminalSim from "@/components/terminal-sim";
 
 // ── Command reference data ──
@@ -110,16 +111,16 @@ const SIZE_PRESETS = [
 
 function CmdDetail({ info, onClose }: { info: CmdInfo; onClose: () => void }) {
   return (
-    <div className="bg-forge-surface-2 border border-forge-accent/30 rounded-lg p-3 mb-2 animate-in fade-in duration-150">
+    <div className="bg-v2-bg-elevated border border-v2-cyan/30 rounded-lg p-3 mb-2 animate-in fade-in duration-150">
       <div className="flex items-start justify-between gap-2 mb-2">
         <code className="mono text-xs text-green-400 font-bold">$ {info.cmd}</code>
-        <button onClick={onClose} className="text-forge-text-muted hover:text-forge-text text-xs shrink-0">&times;</button>
+        <button onClick={onClose} className="text-v2-text-muted hover:text-v2-text text-xs shrink-0">&times;</button>
       </div>
-      <div className="text-[11px] text-forge-text-dim leading-relaxed mb-2">
+      <div className="text-[11px] text-v2-text-dim leading-relaxed mb-2">
         {info.purpose}
       </div>
-      <div className="text-[10px] text-forge-text-muted">
-        <span className="text-forge-accent-text/70 font-bold">FLAGS: </span>
+      <div className="text-[10px] text-v2-text-muted">
+        <span className="text-v2-cyan/70 font-bold">FLAGS: </span>
         {info.flags}
       </div>
     </div>
@@ -148,19 +149,19 @@ function CommandGroupSection({
   const hitCount = group.cmds.filter((c) => hitCmds.has(c.cmd)).length;
 
   return (
-    <div className="bg-forge-surface rounded-lg border border-forge-border overflow-hidden">
+    <div className="bg-v2-bg-surface rounded-lg border border-v2-border overflow-hidden">
       {/* Header — always visible */}
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="w-full flex items-center gap-2 px-2.5 py-2 text-left hover:bg-forge-surface-2 transition-colors"
+        className="w-full flex items-center gap-2 px-2.5 py-2 text-left hover:bg-v2-bg-elevated transition-colors"
       >
-        <span className="text-forge-text-muted text-[10px] shrink-0">
+        <span className="text-v2-text-muted text-[10px] shrink-0">
           {collapsed ? "+" : "\u2212"}
         </span>
-        <span className="mono text-[9px] text-forge-text-muted font-bold tracking-wider flex-1">
+        <span className="mono text-[9px] text-v2-text-muted font-bold tracking-wider flex-1">
           {group.title.toUpperCase()}
         </span>
-        <span className="mono text-[9px] text-forge-text-muted">
+        <span className="mono text-[9px] text-v2-text-muted">
           {practiceMode ? `${hitCount}/` : ""}{total}
         </span>
       </button>
@@ -185,12 +186,12 @@ function CommandGroupSection({
                 onClick={() => onSelectCmd(isSelected ? null : info.cmd)}
                 className={`w-full text-left mono text-[10px] max-md:text-xs mb-0.5 px-1.5 py-0.5 max-md:min-h-[36px] rounded transition-colors flex items-center gap-1.5 ${
                   isSelected
-                    ? "bg-forge-accent/10 text-green-400"
-                    : "text-green-400/70 hover:bg-forge-surface-2 hover:text-green-400"
+                    ? "bg-v2-cyan/10 text-green-400"
+                    : "text-green-400/70 hover:bg-v2-bg-elevated hover:text-green-400"
                 }`}
               >
                 {practiceMode && (
-                  <span className={`shrink-0 text-[9px] ${isHit ? "text-green-400" : "text-forge-text-muted"}`}>
+                  <span className={`shrink-0 text-[9px] ${isHit ? "text-green-400" : "text-v2-text-muted"}`}>
                     {isHit ? "\u2713" : "\u25CB"}
                   </span>
                 )}
@@ -210,7 +211,7 @@ function CommandGroupSection({
             className={`mt-1.5 w-full mono text-[9px] px-2 py-1 rounded border transition-colors ${
               practiceMode
                 ? "border-green-400/40 text-green-400 bg-green-400/10 hover:bg-green-400/20"
-                : "border-forge-border text-forge-text-muted hover:border-forge-accent hover:text-forge-accent-text"
+                : "border-v2-border text-v2-text-muted hover:border-v2-cyan hover:text-v2-cyan"
             }`}
           >
             {practiceMode
@@ -297,43 +298,41 @@ export default function TerminalPage() {
   }, [termHeight]);
 
   return (
-    <>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-        {/* Header */}
-        <div className="flex items-end justify-between mb-4">
-          <div>
-            <h1 className="mono text-xl font-bold text-green-400 mb-1">
-              Terminal Simulator
-            </h1>
-            <p className="text-xs text-forge-text-dim">
-              Simulated GPU node — type{" "}
-              <code className="mono text-green-400 bg-forge-surface px-1 py-0.5 rounded text-[10px]">
-                help
-              </code>{" "}
-              or click any command for details. Arrow keys for history.
-            </p>
-          </div>
-
+    <ToolPage
+      title="Terminal Simulator"
+      subtitle={
+        <>
+          A simulated GPU node. Type <code className="mono text-v2-green-bright bg-v2-bg-surface px-1 py-0.5 rounded text-xs">help</code>, or
+          click any command for details. Arrow keys recall history.
+        </>
+      }
+      width="full"
+      actions={
+        <>
           {/* Size presets */}
           <div className="flex items-center gap-1">
-            <span className="mono text-[10px] text-forge-text-muted mr-1">SIZE</span>
+            <span className="mono text-[10px] text-v2-text-muted mr-1">SIZE</span>
             {SIZE_PRESETS.map((p) => (
               <button
                 key={p.label}
+                type="button"
+                aria-pressed={termHeight === p.height}
+                aria-label={`Terminal height: ${p.label}`}
                 onClick={() => setTermHeight(p.height)}
                 className="mono text-[10px] px-2 py-1 rounded transition-all"
                 style={{
                   background: termHeight === p.height ? "rgba(34,197,94,0.15)" : "transparent",
                   color: termHeight === p.height ? "#22c55e" : "var(--color-v2-text-muted)",
-                  border: `1px solid ${termHeight === p.height ? "rgba(34,197,94,0.3)" : "#222"}`,
+                  border: `1px solid ${termHeight === p.height ? "rgba(34,197,94,0.3)" : "var(--color-v2-border)"}`,
                 }}
               >
                 {p.label}
               </button>
             ))}
           </div>
-        </div>
-
+        </>
+      }
+    >
         {/* Side-by-side layout */}
         <div className="flex gap-4 items-start">
           {/* Terminal */}
@@ -355,7 +354,7 @@ export default function TerminalPage() {
           {/* Command reference sidebar */}
           <div className="w-64 shrink-0 hidden md:block">
             <div className="sticky top-4 space-y-2 max-h-[calc(100vh-8rem)] overflow-y-auto pr-1">
-              <div className="mono text-[9px] text-forge-text-muted font-bold tracking-widest mb-1">
+              <div className="mono text-[9px] text-v2-text-muted font-bold tracking-widest mb-1">
                 COMMAND REFERENCE
               </div>
               {COMMAND_GROUPS.map((group, idx) => (
@@ -375,7 +374,7 @@ export default function TerminalPage() {
 
         {/* Mobile: command reference below */}
         <div className="mt-6 space-y-2 md:hidden">
-          <div className="mono text-[9px] text-forge-text-muted font-bold tracking-widest mb-1">
+          <div className="mono text-[9px] text-v2-text-muted font-bold tracking-widest mb-1">
             COMMAND REFERENCE
           </div>
           {COMMAND_GROUPS.map((group, idx) => (
@@ -390,7 +389,6 @@ export default function TerminalPage() {
             />
           ))}
         </div>
-      </div>
-    </>
+    </ToolPage>
   );
 }

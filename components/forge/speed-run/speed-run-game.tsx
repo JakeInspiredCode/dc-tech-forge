@@ -237,9 +237,9 @@ export default function SpeedRunGame({
       />
 
       {/* Progress bar */}
-      <div className="h-1 bg-forge-surface-2 rounded-full overflow-hidden">
+      <div className="h-1 bg-v2-bg-elevated rounded-full overflow-hidden">
         <div
-          className="h-full bg-forge-accent rounded-full transition-all duration-300"
+          className="h-full bg-v2-cyan rounded-full transition-all duration-300"
           style={{ width: `${(cardIndex / cards.length) * 100}%` }}
         />
       </div>
@@ -263,8 +263,8 @@ export default function SpeedRunGame({
           />
           {/* Keep card visible during feedback */}
           {currentCard && (
-            <div className="bg-forge-surface border border-forge-border rounded-xl p-6 min-h-[80px] flex items-center justify-center opacity-70">
-              <div className="text-sm text-forge-text-dim text-center mono">
+            <div className="bg-v2-bg-surface border border-v2-border rounded-xl p-6 min-h-[80px] flex items-center justify-center opacity-70">
+              <div className="text-sm text-v2-text-dim text-center mono">
                 {currentCard.front.slice(0, 100)}
               </div>
             </div>
@@ -280,7 +280,7 @@ export default function SpeedRunGame({
 
       <button
         onClick={onExit}
-        className="text-xs text-forge-text-muted hover:text-forge-text-dim transition-colors mono"
+        className="text-xs text-v2-text-muted hover:text-v2-text-dim transition-colors mono"
       >
         ← exit speed run
       </button>

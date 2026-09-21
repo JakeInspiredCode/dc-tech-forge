@@ -77,30 +77,30 @@ export default function DiagnosisGame({ scenario, onComplete, onQuit }: Props) {
     <div className="max-w-2xl mx-auto">
       {/* Header */}
       <div className="flex items-center justify-between mb-2">
-        <span className="text-xs mono text-forge-text-dim">
+        <span className="text-xs mono text-v2-text-dim">
           Step {stepIndex + 1}/{scenario.steps.length}
         </span>
-        <button onClick={onQuit} className="text-xs text-forge-text-muted hover:text-forge-danger transition-colors">
+        <button onClick={onQuit} className="text-xs text-v2-text-muted hover:text-v2-danger transition-colors">
           Quit
         </button>
       </div>
 
       {/* Progress */}
-      <div className="h-1.5 bg-forge-surface-2 rounded-full overflow-hidden mb-6">
+      <div className="h-1.5 bg-v2-bg-elevated rounded-full overflow-hidden mb-6">
         <div
-          className="h-full bg-forge-accent rounded-full transition-all duration-300"
+          className="h-full bg-v2-cyan rounded-full transition-all duration-300"
           style={{ width: `${((stepIndex) / scenario.steps.length) * 100}%` }}
         />
       </div>
 
       {/* Scenario context (always visible) */}
-      <div className="bg-forge-surface-2 border border-forge-border rounded-lg px-4 py-3 mb-4">
-        <p className="text-xs text-forge-text-muted mb-1">Scenario</p>
+      <div className="bg-v2-bg-elevated border border-v2-border rounded-lg px-4 py-3 mb-4">
+        <p className="text-xs text-v2-text-muted mb-1">Scenario</p>
         <p className="text-sm">{scenario.description}</p>
       </div>
 
       {/* Step prompt */}
-      <div className="bg-forge-surface border border-forge-border rounded-xl p-6 mb-4">
+      <div className="bg-v2-bg-surface border border-v2-border rounded-xl p-6 mb-4">
         <p className="text-lg font-medium mb-4">{step.prompt}</p>
 
         {/* Choices — choose phase */}
@@ -110,7 +110,7 @@ export default function DiagnosisGame({ scenario, onComplete, onQuit }: Props) {
               <button
                 key={i}
                 onClick={() => handleChoice(c.label)}
-                className="p-3 bg-forge-surface-2 border border-forge-border rounded-lg text-sm mono text-left hover:border-forge-accent/40 hover:bg-forge-accent/5 transition-colors"
+                className="p-3 bg-v2-bg-elevated border border-v2-border rounded-lg text-sm mono text-left hover:border-v2-cyan/40 hover:bg-v2-cyan/5 transition-colors"
               >
                 {c.label}
               </button>
@@ -121,15 +121,15 @@ export default function DiagnosisGame({ scenario, onComplete, onQuit }: Props) {
         {/* Teaching note — wrong answer */}
         {phase === "teaching" && (
           <div className="space-y-3">
-            <div className="bg-forge-danger/10 border border-forge-danger/30 rounded-lg p-4">
-              <p className="text-sm text-forge-danger font-medium mb-1">
+            <div className="bg-v2-danger/10 border border-v2-danger/30 rounded-lg p-4">
+              <p className="text-sm text-v2-danger font-medium mb-1">
                 Not quite — <span className="mono">{selectedChoice}</span>
               </p>
-              <p className="text-xs text-forge-text-dim">{step.teachingNote}</p>
+              <p className="text-xs text-v2-text-dim">{step.teachingNote}</p>
             </div>
             <button
               onClick={handleContinueFromTeaching}
-              className="w-full py-2.5 bg-forge-surface-2 border border-forge-border rounded-lg text-sm font-medium hover:border-forge-accent/40 transition-colors"
+              className="w-full py-2.5 bg-v2-bg-elevated border border-v2-border rounded-lg text-sm font-medium hover:border-v2-cyan/40 transition-colors"
             >
               Try Again
             </button>
@@ -139,15 +139,15 @@ export default function DiagnosisGame({ scenario, onComplete, onQuit }: Props) {
         {/* Command output — correct answer */}
         {phase === "output" && (
           <div className="space-y-3">
-            <div className="bg-forge-success/10 border border-forge-success/30 rounded-lg p-3">
-              <p className="text-sm text-forge-success font-medium">
+            <div className="bg-v2-success/10 border border-v2-success/30 rounded-lg p-3">
+              <p className="text-sm text-v2-success font-medium">
                 Correct{attempts === 1 ? " — first try!" : ""}
               </p>
             </div>
 
             {/* Command shown */}
             <div>
-              <p className="text-[10px] uppercase text-forge-text-muted font-semibold tracking-wider mb-1">Command</p>
+              <p className="text-[10px] uppercase text-v2-text-muted font-semibold tracking-wider mb-1">Command</p>
               <code className="block bg-[#0d1117] rounded-lg px-4 py-2 text-sm mono text-emerald-400 overflow-x-auto">
                 $ {step.command}
               </code>
@@ -155,15 +155,15 @@ export default function DiagnosisGame({ scenario, onComplete, onQuit }: Props) {
 
             {/* Output */}
             <div>
-              <p className="text-[10px] uppercase text-forge-text-muted font-semibold tracking-wider mb-1">Output</p>
-              <pre className="bg-[#0d1117] rounded-lg px-4 py-3 text-xs mono text-forge-text overflow-x-auto whitespace-pre-wrap">
+              <p className="text-[10px] uppercase text-v2-text-muted font-semibold tracking-wider mb-1">Output</p>
+              <pre className="bg-[#0d1117] rounded-lg px-4 py-3 text-xs mono text-v2-text overflow-x-auto whitespace-pre-wrap">
                 {step.output}
               </pre>
             </div>
 
             {/* Interpretation */}
-            <div className="bg-forge-surface-2 rounded-lg px-4 py-3">
-              <p className="text-[10px] uppercase text-forge-text-muted font-semibold tracking-wider mb-1">Interpretation</p>
+            <div className="bg-v2-bg-elevated rounded-lg px-4 py-3">
+              <p className="text-[10px] uppercase text-v2-text-muted font-semibold tracking-wider mb-1">Interpretation</p>
               <p className="text-sm">{step.interpretation}</p>
             </div>
 
@@ -175,13 +175,13 @@ export default function DiagnosisGame({ scenario, onComplete, onQuit }: Props) {
                   setWasCorrect(false);
                   setAttempts(0);
                 }}
-                className="flex-1 py-3 bg-forge-surface-2 border border-forge-border rounded-xl text-sm font-medium hover:border-forge-accent/40 transition-colors"
+                className="flex-1 py-3 bg-v2-bg-elevated border border-v2-border rounded-xl text-sm font-medium hover:border-v2-cyan/40 transition-colors"
               >
                 Practice Again
               </button>
               <button
                 onClick={handleNextStep}
-                className="flex-1 py-3 bg-forge-accent text-white rounded-xl font-medium hover:bg-forge-accent/90 transition-colors"
+                className="flex-1 py-3 bg-v2-cyan text-v2-bg-deep rounded-xl font-medium hover:bg-v2-cyan-bright transition-colors"
               >
                 {isLastStep ? "See Results" : "Next Step →"}
               </button>

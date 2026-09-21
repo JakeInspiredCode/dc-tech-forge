@@ -131,7 +131,7 @@ export default function DrillWalkthrough({
         }}>
           {overallHitRate}%
         </div>
-        <div className="text-forge-text-dim text-sm mb-6">
+        <div className="text-v2-text-dim text-sm mb-6">
           Overall key-term coverage
         </div>
 
@@ -142,20 +142,20 @@ export default function DrillWalkthrough({
             return (
               <div
                 key={i}
-                className="bg-forge-surface rounded-lg p-4 border-l-[3px]"
+                className="bg-v2-bg-surface rounded-lg p-4 border-l-[3px]"
                 style={{
                   borderLeftColor: pct >= 80 ? "#22c55e" : pct >= 50 ? "#f59e0b" : "#ef4444",
                 }}
               >
                 <div className="flex justify-between items-center mb-1">
-                  <span className="mono text-xs text-forge-text-muted">
+                  <span className="mono text-xs text-v2-text-muted">
                     STEP {i + 1}
                   </span>
                   <span className="mono text-xs font-bold" style={{
                     color: pct >= 80 ? "#22c55e" : pct >= 50 ? "#f59e0b" : "#ef4444",
                   }}>
                     {r.matchedTerms.length}/{r.totalTerms} terms
-                    {r.usedHints && <span className="text-forge-warning ml-2">(hints used)</span>}
+                    {r.usedHints && <span className="text-v2-warning ml-2">(hints used)</span>}
                   </span>
                 </div>
                 <div className="flex gap-1.5 flex-wrap">
@@ -178,12 +178,12 @@ export default function DrillWalkthrough({
           })}
         </div>
 
-        <div className="bg-forge-surface rounded-lg p-4 mb-6 text-left">
-          <div className="mono text-xs text-forge-text-muted font-bold mb-2">INCIDENT SUMMARY</div>
-          <div className="text-sm text-forge-text-dim leading-relaxed mb-3">
+        <div className="bg-v2-bg-surface rounded-lg p-4 mb-6 text-left">
+          <div className="mono text-xs text-v2-text-muted font-bold mb-2">INCIDENT SUMMARY</div>
+          <div className="text-sm text-v2-text-dim leading-relaxed mb-3">
             {scenario.summary}
           </div>
-          <div className="text-sm text-forge-warning leading-relaxed italic">
+          <div className="text-sm text-v2-warning leading-relaxed italic">
             {scenario.keyPrinciple}
           </div>
         </div>
@@ -191,14 +191,14 @@ export default function DrillWalkthrough({
         <div className="flex gap-3 justify-center">
           <button
             onClick={reset}
-            className="px-6 py-2.5 bg-forge-danger text-white rounded-lg font-bold mono text-sm hover:brightness-110 transition-all"
+            className="px-6 py-2.5 bg-v2-danger text-v2-bg-deep rounded-lg font-bold mono text-sm hover:brightness-110 transition-all"
           >
             RUN AGAIN
           </button>
           {onComplete && (
             <button
               onClick={onComplete}
-              className="px-6 py-2.5 bg-forge-surface-2 text-forge-text-dim rounded-lg font-bold mono text-sm border border-forge-border hover:border-forge-border-hover transition-all"
+              className="px-6 py-2.5 bg-v2-bg-elevated text-v2-text-dim rounded-lg font-bold mono text-sm border border-v2-border hover:border-v2-cyan/30 transition-all"
             >
               BACK TO DRILLS
             </button>
@@ -213,10 +213,10 @@ export default function DrillWalkthrough({
     <div className="max-w-2xl mx-auto p-5">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
-        <span className="mono text-xs text-forge-danger font-bold">
+        <span className="mono text-xs text-v2-danger font-bold">
           STEP {step + 1}/{scenario.steps.length}
         </span>
-        <span className="mono text-xs text-forge-text-muted">
+        <span className="mono text-xs text-v2-text-muted">
           {scenario.title}
         </span>
       </div>
@@ -240,8 +240,8 @@ export default function DrillWalkthrough({
       </div>
 
       {/* Prompt */}
-      <div className="bg-forge-surface border border-[rgba(239,68,68,0.15)] rounded-lg p-4 mb-4">
-        <div className="text-sm text-forge-text leading-relaxed">
+      <div className="bg-v2-bg-surface border border-[rgba(239,68,68,0.15)] rounded-lg p-4 mb-4">
+        <div className="text-sm text-v2-text leading-relaxed">
           {s.prompt}
         </div>
       </div>
@@ -254,7 +254,7 @@ export default function DrillWalkthrough({
             onChange={(e) => setUserInput(e.target.value)}
             placeholder="Describe your approach..."
             rows={4}
-            className="w-full bg-forge-bg border border-forge-border rounded-lg p-3 text-forge-text-dim text-sm leading-relaxed resize-y outline-none focus:border-forge-border-hover placeholder:text-forge-text-muted"
+            className="w-full bg-v2-bg-deep border border-v2-border rounded-lg p-3 text-v2-text-dim text-sm leading-relaxed resize-y outline-none focus:border-v2-cyan/30 placeholder:text-v2-text-muted"
           />
           <div className="flex gap-2 mt-3">
             <button
@@ -274,7 +274,7 @@ export default function DrillWalkthrough({
                 setShowHints(!showHints);
                 if (!showHints) setHintsUsed(true);
               }}
-              className="px-5 py-2 bg-forge-surface-2 text-forge-warning border border-[rgba(245,158,11,0.2)] rounded-lg mono text-xs cursor-pointer hover:border-[rgba(245,158,11,0.4)] transition-all"
+              className="px-5 py-2 bg-v2-bg-elevated text-v2-warning border border-[rgba(245,158,11,0.2)] rounded-lg mono text-xs cursor-pointer hover:border-[rgba(245,158,11,0.4)] transition-all"
             >
               {showHints ? "HIDE HINTS" : "SHOW HINTS"}
             </button>
@@ -282,7 +282,7 @@ export default function DrillWalkthrough({
           {showHints && (
             <div className="mt-3 p-3 bg-[rgba(245,158,11,0.03)] border border-[rgba(245,158,11,0.1)] rounded-lg">
               {s.hints.map((h, i) => (
-                <div key={i} className="text-sm text-forge-warning mb-1 last:mb-0">
+                <div key={i} className="text-sm text-v2-warning mb-1 last:mb-0">
                   &rarr; {h}
                 </div>
               ))}
@@ -325,14 +325,14 @@ export default function DrillWalkthrough({
             <div className="mono text-[11px] text-green-400 font-bold mb-2">
               EXPECTED RESPONSE
             </div>
-            <div className="text-sm text-forge-text-dim leading-relaxed">
+            <div className="text-sm text-v2-text-dim leading-relaxed">
               {s.answer}
             </div>
           </div>
 
           <button
             onClick={nextStep}
-            className="mt-4 px-6 py-2.5 bg-forge-danger text-white rounded-lg font-bold mono text-sm hover:brightness-110 transition-all"
+            className="mt-4 px-6 py-2.5 bg-v2-danger text-v2-bg-deep rounded-lg font-bold mono text-sm hover:brightness-110 transition-all"
           >
             {step + 1 >= scenario.steps.length ? "COMPLETE INCIDENT" : "NEXT STEP →"}
           </button>

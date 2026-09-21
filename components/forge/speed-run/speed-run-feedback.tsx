@@ -37,25 +37,25 @@ export default function SpeedRunFeedback({
 
   const config = {
     correct: {
-      bg: "bg-forge-success/10 border-forge-success/30",
-      text: "text-forge-success",
+      bg: "bg-v2-success/10 border-v2-success/30",
+      text: "text-v2-success",
       glow: "forge-glow-success",
       label: "✓ Correct",
-      timeColor: "text-forge-success",
+      timeColor: "text-v2-success",
     },
     partial: {
-      bg: "bg-forge-warning/10 border-forge-warning/30",
-      text: "text-forge-warning",
+      bg: "bg-v2-warning/10 border-v2-warning/30",
+      text: "text-v2-warning",
       glow: "",
       label: "~ Partial",
-      timeColor: "text-forge-warning",
+      timeColor: "text-v2-warning",
     },
     wrong: {
-      bg: "bg-forge-danger/10 border-forge-danger/30",
-      text: "text-forge-danger",
+      bg: "bg-v2-danger/10 border-v2-danger/30",
+      text: "text-v2-danger",
       glow: "forge-glow-danger",
       label: "✗ Wrong",
-      timeColor: "text-forge-danger",
+      timeColor: "text-v2-danger",
     },
   }[score];
 
@@ -71,7 +71,7 @@ export default function SpeedRunFeedback({
         <span className={`mono font-bold text-sm ${config.text}`}>{config.label}</span>
         <div className="flex items-center gap-3 mono text-sm">
           {points > 0 && (
-            <span className="text-forge-accent-text font-bold">+{points} pts</span>
+            <span className="text-v2-cyan font-bold">+{points} pts</span>
           )}
           <span className={`font-bold ${config.timeColor}`}>
             {timeAdjustment > 0 ? `+${timeAdjustment}s` : `${timeAdjustment}s`}
@@ -80,13 +80,13 @@ export default function SpeedRunFeedback({
       </div>
 
       {feedback && (
-        <p className="text-xs text-forge-text-dim mono">{feedback}</p>
+        <p className="text-xs text-v2-text-dim mono">{feedback}</p>
       )}
 
       {score === "wrong" && expectedAnswer && (
-        <div className="mt-2 pt-2 border-t border-forge-border/50">
-          <p className="text-xs text-forge-text-dim mb-1">Expected:</p>
-          <p className="text-xs mono text-forge-text bg-forge-surface-2 px-2 py-1 rounded truncate">
+        <div className="mt-2 pt-2 border-t border-v2-border/50">
+          <p className="text-xs text-v2-text-dim mb-1">Expected:</p>
+          <p className="text-xs mono text-v2-text bg-v2-bg-elevated px-2 py-1 rounded truncate">
             {expectedAnswer.split("\n")[0].replace(/`/g, "").slice(0, 120)}
           </p>
         </div>
@@ -100,8 +100,8 @@ export default function SpeedRunFeedback({
             onOverride("correct");
           }}
           className="mt-2 w-full py-1.5 rounded-lg border text-xs font-medium mono transition-colors
-            bg-forge-success/10 text-forge-success/80 border-forge-success/20
-            hover:bg-forge-success/20 hover:text-forge-success"
+            bg-v2-success/10 text-v2-success/80 border-v2-success/20
+            hover:bg-v2-success/20 hover:text-v2-success"
         >
           Actually correct
         </button>
