@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
+import ToolCrumb from "@/components/ui/tool-crumb";
 
 // The page is a client component, which cannot export metadata.
 export const metadata: Metadata = { title: "Boot Process — Learn" };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return children;
+  return (
+    <>
+      <ToolCrumb title="Boot Process — Learn" />
+      {children}
+    </>
+  );
 }

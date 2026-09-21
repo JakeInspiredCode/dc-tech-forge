@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { BRAND } from "@/lib/brand";
+import ToolCrumb from "@/components/ui/tool-crumb";
 
 // The page is a client component, which cannot export metadata. The template
 // is restated because a nested title resets it for this segment's children
@@ -9,5 +10,10 @@ export const metadata: Metadata = {
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return children;
+  return (
+    <>
+      <ToolCrumb title="Flashcard Review" />
+      {children}
+    </>
+  );
 }
