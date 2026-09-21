@@ -19,7 +19,7 @@ const NAV_ITEMS = [
 // Sub-routes that should highlight each hub
 const HUB_ROUTES: Record<string, string[]> = {
   "/missions": ["/missions"],
-  "/arsenal": ["/arsenal", "/study", "/train", "/forge", "/foundations", "/terminal", "/cards", "/drill", "/filesystem-navigator", "/command-dissector", "/filesystem-types", "/boot-learn", "/boot-triage", "/train/quick-draw", "/train/diagnosis", "/stories"],
+  "/arsenal": ["/arsenal", "/lessons", "/study", "/train", "/forge", "/foundations", "/terminal", "/cards", "/drill", "/filesystem-navigator", "/command-dissector", "/filesystem-types", "/boot-learn", "/boot-triage", "/train/quick-draw", "/train/diagnosis", "/stories"],
   "/profile": ["/profile"],
 };
 

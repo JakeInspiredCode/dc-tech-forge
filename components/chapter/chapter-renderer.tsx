@@ -209,7 +209,7 @@ export default function ChapterRenderer({
         {!missionMode && (
           <>
             <Link
-              href="/"
+              href="/lessons"
               style={{
                 color: "#50C8FF",
                 fontSize: 11,
@@ -219,7 +219,7 @@ export default function ChapterRenderer({
                 opacity: 0.8,
               }}
             >
-              ← Galaxy Map
+              ← Lesson Library
             </Link>
             <span aria-hidden="true" style={{ color: "rgba(255,255,255,0.25)", fontSize: 13 }}>|</span>
           </>

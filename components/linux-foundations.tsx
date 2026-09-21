@@ -2541,12 +2541,12 @@ export default function LinuxFoundations({ initialSection, missionMode, onMissio
             link here that silently abandons the mission only confuses. */}
         {!missionMode && (
           <>
-            <Link href="/" style={{
+            <Link href="/lessons" style={{
               color: "#50C8FF", fontSize: 11, cursor: "pointer", textDecoration: "none",
               padding: "4px 8px", display: "flex", alignItems: "center", fontWeight: 600,
               opacity: 0.8, transition: "opacity 0.15s",
             }} onMouseEnter={e => e.currentTarget.style.opacity = 1} onMouseLeave={e => e.currentTarget.style.opacity = 0.8}
-            >← Galaxy Map</Link>
+            >← Lesson Library</Link>
             <span aria-hidden="true" style={{ color: "rgba(255,255,255,0.25)", fontSize: 13 }}>|</span>
           </>
         )}
