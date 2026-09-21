@@ -84,19 +84,19 @@ export default function BadgeBanner() {
         key={current.id}
         className="badge-banner pointer-events-auto max-w-md w-full"
       >
-        <div className="badge-shimmer bg-forge-surface border-2 border-forge-accent/50 rounded-xl px-6 py-4 shadow-2xl shadow-forge-accent/20">
+        <div className="badge-shimmer bg-v2-bg-surface border-2 border-v2-cyan/50 rounded-xl px-6 py-4 shadow-2xl shadow-v2-cyan/20">
           <div className="flex items-center gap-4">
             <div className="badge-icon-pop text-3xl shrink-0" aria-hidden="true">
               {icon}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[11px] uppercase tracking-widest text-forge-accent-text mono mb-0.5">
+              <p className="text-[11px] uppercase tracking-widest text-v2-cyan mono mb-0.5">
                 Badge Earned
               </p>
-              <p className="text-base font-bold text-forge-text truncate">
+              <p className="text-base font-bold text-v2-text truncate">
                 {current.name}
               </p>
-              <p className="text-xs text-forge-text-dim truncate">
+              <p className="text-xs text-v2-text-dim truncate">
                 {current.condition}
               </p>
             </div>

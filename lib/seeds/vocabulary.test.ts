@@ -47,3 +47,12 @@ describe("one name per domain", () => {
     expect(new Set(titles).size).toBe(titles.length);
   });
 });
+
+describe("topicName", () => {
+  it("turns an id into the name a person sees, and leaves an unknown id alone", async () => {
+    const { topicName } = await import("@/lib/types");
+    expect(topicName("ops-processes")).toBe("Operations");
+    expect(topicName("linux")).toBe("Linux Operations");
+    expect(topicName("not-a-topic")).toBe("not-a-topic");
+  });
+});

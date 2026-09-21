@@ -191,7 +191,7 @@ export default function CardQueue({ cards, sessionType, onComplete }: CardQueueP
       <div className="text-center py-20 max-w-md mx-auto">
         <span className="text-4xl mb-4 block">&#x21bb;</span>
         <h2 className="text-xl font-semibold mb-2">Resume Session?</h2>
-        <p className="text-forge-text-dim text-sm mb-6">
+        <p className="text-v2-text-dim text-sm mb-6">
           You completed {showResume.completedCount} of {deck.length} cards before leaving.
           Those cards were already saved — pick up where you left off?
         </p>
@@ -201,7 +201,7 @@ export default function CardQueue({ cards, sessionType, onComplete }: CardQueueP
               setCurrentIndex(showResume.completedCount);
               setShowResume(null);
             }}
-            className="px-6 py-3 bg-forge-accent text-white rounded-xl font-medium hover:bg-forge-accent/90 transition-colors"
+            className="px-6 py-3 bg-v2-cyan text-v2-bg-deep rounded-xl font-medium hover:bg-v2-cyan-bright transition-colors"
           >
             Resume ({deck.length - showResume.completedCount} remaining)
           </button>
@@ -210,7 +210,7 @@ export default function CardQueue({ cards, sessionType, onComplete }: CardQueueP
               clearCheckpoint();
               setShowResume(null);
             }}
-            className="px-6 py-3 bg-forge-surface border border-forge-border rounded-xl font-medium hover:border-forge-border-hover transition-colors"
+            className="px-6 py-3 bg-v2-bg-surface border border-v2-border rounded-xl font-medium hover:border-v2-cyan/30 transition-colors"
           >
             Start Fresh
           </button>
@@ -224,7 +224,7 @@ export default function CardQueue({ cards, sessionType, onComplete }: CardQueueP
       <div className="text-center py-20">
         <span className="text-4xl mb-4 block">◇</span>
         <h2 className="text-xl font-semibold mb-2">No cards due</h2>
-        <p className="text-forge-text-dim">All caught up. Come back later or study new cards.</p>
+        <p className="text-v2-text-dim">All caught up. Come back later or study new cards.</p>
       </div>
     );
   }

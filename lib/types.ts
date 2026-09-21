@@ -100,6 +100,11 @@ export const TOPICS: TopicMeta[] = [
   { id: "behavioral", name: "Behavioral", description: "STAR stories, leadership, teamwork, conflict", priority: 8, icon: "@" },
 ];
 
+/** The display name for a topic id — never show the raw id ("ops-processes") to a person. */
+export function topicName(topicId: string): string {
+  return TOPICS.find((t) => t.id === topicId)?.name ?? topicId;
+}
+
 // Utility: map a Convex forgeCards doc to a ForgeCard
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function mapConvexCard(c: any): ForgeCard {

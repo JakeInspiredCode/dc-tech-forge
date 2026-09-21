@@ -5,6 +5,7 @@ import { useQuery, useMutation } from "@/lib/convex-shim";
 import { api } from "../../convex/_generated/api";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import ToolPage from "@/components/ui/tool-page";
 
 type Chunk = { label: string; summary: string; content: string };
 type Story = {
@@ -215,53 +216,53 @@ function ChunkBlock({
   };
 
   return (
-    <div className="border border-forge-border/50 rounded-lg overflow-hidden">
+    <div className="border border-v2-border/50 rounded-lg overflow-hidden">
       <button
         onClick={() => !forceHidden && setOpen(!open)}
         className={`w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors ${
           forceHidden
             ? "opacity-70 cursor-default"
-            : "hover:bg-forge-surface-2 cursor-pointer"
+            : "hover:bg-v2-bg-elevated cursor-pointer"
         }`}
       >
-        <span className="text-forge-accent-text mono text-xs font-bold shrink-0 w-5">
+        <span className="text-v2-cyan mono text-xs font-bold shrink-0 w-5">
           {chunk.label}
         </span>
-        <span className="text-forge-text-dim">{chunk.summary}</span>
+        <span className="text-v2-text-dim">{chunk.summary}</span>
         {!forceHidden && (
-          <span className="ml-auto text-forge-text-muted text-xs shrink-0">
+          <span className="ml-auto text-v2-text-muted text-xs shrink-0">
             {isOpen ? "▾" : "▸"}
           </span>
         )}
       </button>
       {isOpen && (
-        <div className="px-4 pb-3 pt-1 border-t border-forge-border/30">
+        <div className="px-4 pb-3 pt-1 border-t border-v2-border/30">
           {editing ? (
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <label className="text-xs text-forge-text-dim shrink-0">Summary:</label>
+                <label className="text-xs text-v2-text-dim shrink-0">Summary:</label>
                 <input aria-label="Summary"
                   value={editSummary}
                   onChange={(e) => setEditSummary(e.target.value)}
-                  className="flex-1 bg-forge-surface-2 border border-forge-border rounded px-2 py-1 text-sm focus:border-forge-accent focus:outline-none"
+                  className="flex-1 bg-v2-bg-elevated border border-v2-border rounded px-2 py-1 text-sm focus:border-v2-cyan focus:outline-none"
                 />
               </div>
               <textarea aria-label="Story text"
                 value={editContent}
                 onChange={(e) => setEditContent(e.target.value)}
                 rows={5}
-                className="w-full bg-forge-surface-2 border border-forge-border rounded-lg p-3 text-sm resize-y focus:border-forge-accent focus:outline-none"
+                className="w-full bg-v2-bg-elevated border border-v2-border rounded-lg p-3 text-sm resize-y focus:border-v2-cyan focus:outline-none"
               />
               <div className="flex gap-2 justify-end">
                 <button
                   onClick={handleCancel}
-                  className="text-xs px-3 py-1 rounded border border-forge-border text-forge-text-dim hover:text-forge-accent-text transition-colors"
+                  className="text-xs px-3 py-1 rounded border border-v2-border text-v2-text-dim hover:text-v2-cyan transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleSave}
-                  className="text-xs px-3 py-1 rounded border border-forge-accent text-forge-accent-text hover:bg-forge-accent/10 transition-colors"
+                  className="text-xs px-3 py-1 rounded border border-v2-cyan text-v2-cyan hover:bg-v2-cyan/10 transition-colors"
                 >
                   Save
                 </button>
@@ -280,7 +281,7 @@ function ChunkBlock({
                     e.stopPropagation();
                     setEditing(true);
                   }}
-                  className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded border border-forge-border text-forge-text-dim hover:text-forge-accent-text hover:border-forge-accent transition-colors"
+                  className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded border border-v2-border text-v2-text-dim hover:text-v2-cyan hover:border-v2-cyan transition-colors"
                 >
                   <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M11.5 2.5l2 2L5 13l-3 1 1-3z" />
@@ -296,7 +297,7 @@ function ChunkBlock({
                 e.stopPropagation();
                 setEditing(true);
               }}
-              className="w-full flex items-center justify-center gap-2 text-xs py-2.5 rounded border border-dashed border-forge-border text-forge-text-dim hover:text-forge-accent-text hover:border-forge-accent transition-colors"
+              className="w-full flex items-center justify-center gap-2 text-xs py-2.5 rounded border border-dashed border-v2-border text-v2-text-dim hover:text-v2-cyan hover:border-v2-cyan transition-colors"
             >
               <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="8" y1="3" x2="8" y2="13" />
@@ -373,23 +374,21 @@ export default function StoriesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-v2-bg-deep">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
-        <div className="flex items-start justify-between mb-6">
-          <div>
-            <h1 className="text-2xl font-bold mb-1 mono">Story Bank</h1>
-            <p className="text-forge-text-dim text-sm">
-              15 behavioral answers with collapsible chunks. Hide chunks to
-              practice recall.
-            </p>
-          </div>
-          <button
-            onClick={toggleAll}
-            className="text-xs px-3 py-1.5 rounded border border-forge-border hover:border-forge-accent text-forge-text-dim hover:text-forge-accent-text transition-colors shrink-0 mt-1"
-          >
-            {allHidden ? "Reveal All" : "Hide All"}
-          </button>
-        </div>
+    <ToolPage
+      title="Story Bank"
+      // They are prompts, not answers: every story starts empty, and what you
+      // write stays in this browser.
+      subtitle={`${stories.length} common behavioral questions, each with a framework. Write your answer in chunks, then hide the chunks to practice recalling them. What you write stays in this browser.`}
+      actions={
+        <button
+          type="button"
+          onClick={toggleAll}
+          className="text-xs px-3 py-1.5 max-md:min-h-[44px] rounded border border-v2-border hover:border-v2-cyan text-v2-text-dim hover:text-v2-cyan transition-colors"
+        >
+          {allHidden ? "Reveal all" : "Hide all"}
+        </button>
+      }
+    >
 
         <div className="space-y-5">
           {stories.map((story, idx) => {
@@ -399,11 +398,11 @@ export default function StoriesPage() {
             return (
               <div
                 key={story.storyId}
-                className="bg-forge-surface border border-forge-border rounded-xl p-5"
+                className="bg-v2-bg-surface border border-v2-border rounded-xl p-5"
               >
                 <div className="flex items-start justify-between mb-1">
                   <div className="flex items-baseline gap-2">
-                    <span className="text-forge-text-muted mono text-xs font-bold">
+                    <span className="text-v2-text-muted mono text-xs font-bold">
                       {idx + 1}.
                     </span>
                     <h2 className="font-semibold text-base leading-snug">
@@ -412,12 +411,12 @@ export default function StoriesPage() {
                   </div>
                   <button
                     onClick={() => toggleHide(story.storyId)}
-                    className="text-xs px-2.5 py-1 rounded border border-forge-border hover:border-forge-accent text-forge-text-dim hover:text-forge-accent-text transition-colors shrink-0 ml-3"
+                    className="text-xs px-2.5 py-1 rounded border border-v2-border hover:border-v2-cyan text-v2-text-dim hover:text-v2-cyan transition-colors shrink-0 ml-3"
                   >
                     {isHidden ? "Show" : "Hide"}
                   </button>
                 </div>
-                <span className="text-xs text-forge-accent-text/70 mono ml-5 block mb-3">
+                <span className="text-xs text-v2-cyan/70 mono ml-5 block mb-3">
                   {story.framework}
                 </span>
 
@@ -446,24 +445,24 @@ export default function StoriesPage() {
           })}
         </div>
 
-        <div className="mt-10 bg-forge-surface border border-forge-border rounded-xl p-5">
+        <div className="mt-10 bg-v2-bg-surface border border-v2-border rounded-xl p-5">
           <h2 className="font-semibold text-base mb-3 mono">Practice Notes</h2>
-          <div className="text-sm text-forge-text-dim space-y-3">
+          <div className="text-sm text-v2-text-dim space-y-3">
             <div>
-              <span className="text-forge-accent-text font-semibold">Drill daily:</span>{" "}
+              <span className="text-v2-cyan font-semibold">Drill daily:</span>{" "}
               Q1, Q2, Q4, Q15 — opener, "why this role," pressure story, closer.
             </div>
             <div>
-              <span className="text-forge-accent-text font-semibold">Drill 2x/week:</span>{" "}
+              <span className="text-v2-cyan font-semibold">Drill 2x/week:</span>{" "}
               Q3, Q5, Q6, Q13 — strongest differentiators (biggest impact,
               process wins, initiative, environment fit).
             </div>
             <div>
-              <span className="text-forge-accent-text font-semibold">Drill 1x/week:</span>{" "}
+              <span className="text-v2-cyan font-semibold">Drill 1x/week:</span>{" "}
               Q7–Q12, Q14 — more formulaic, get the structure then let them
               flow.
             </div>
-            <div className="pt-2 border-t border-forge-border/50 text-xs">
+            <div className="pt-2 border-t border-v2-border/50 text-xs">
               <strong>Chunk practice:</strong> Deliver chunk [A] out loud until
               it flows. Chain A+B, then A+B+C. If any chunk takes &gt;20s of
               hesitation to start, isolate and drill it. If any answer runs past
@@ -471,7 +470,6 @@ export default function StoriesPage() {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+    </ToolPage>
   );
 }
