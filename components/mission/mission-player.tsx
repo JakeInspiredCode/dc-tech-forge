@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation, useQuery } from "@/lib/convex-shim";
 import { api } from "@/convex/_generated/api";
 import type { Doc, MissionProgressFields } from "@/lib/data/schema";
-import type { Mission, MissionStep } from "@/lib/types/campaign";
+import type { MCQuestion, Mission, MissionStep } from "@/lib/types/campaign";
 import { XP, XP_MULTIPLIERS } from "@/lib/types/campaign";
 import { STEP_TYPE_LABELS } from "@/lib/constants/mission";
 import { campaignHref, isOpenEnded, nextMissionId, resumePoint } from "@/lib/mission/flow";
@@ -19,7 +19,7 @@ import KnowledgeCheckScreen from "./knowledge-check";
 import MCKnowledgeCheck from "./mc-knowledge-check";
 import MissionDebrief from "./mission-debrief";
 import StepRenderer from "./step-renderer";
-import { getMCQuestions } from "@/lib/seeds/knowledge-checks";
+import { loadMCQuestions } from "@/lib/seeds/knowledge-checks/load";
 import TelemetryBar from "@/components/ui/telemetry-bar";
 import ActionButton from "@/components/ui/action-button";
 
@@ -103,6 +103,24 @@ export default function MissionPlayer({ mission }: MissionPlayerProps) {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [stepsCompleted, setStepsCompleted] = useState<string[]>([]);
   const [showLoadoutEditor, setShowLoadoutEditor] = useState(false);
+
+  // This mission's quiz, fetched on its own — importing the whole question bank
+  // made every mission download all 44 quizzes. Requested as soon as the
+  // mission opens, so it is normally here long before the last step ends.
+  // undefined = still loading; null = this mission has no multiple-choice quiz.
+  const [mcQuestions, setMcQuestions] = useState<MCQuestion[] | null | undefined>(undefined);
+  useEffect(() => {
+    let current = true;
+    setMcQuestions(undefined);
+    loadMCQuestions(mission.id)
+      .then((questions) => current && setMcQuestions(questions))
+      // Offline or a failed chunk: fall back to the self-assessment check
+      // rather than stranding someone at the end of a mission.
+      .catch(() => current && setMcQuestions(null));
+    return () => {
+      current = false;
+    };
+  }, [mission.id]);
   const [debriefData, setDebriefData] = useState<{
     passed: boolean;
     score: number;
@@ -339,8 +357,7 @@ export default function MissionPlayer({ mission }: MissionPlayerProps) {
   }
 
   if (phase === "knowledge-check") {
-    // Use multiple-choice questions if available for this mission, otherwise fall back to flashcard self-assessment
-    const mcQuestions = getMCQuestions(mission.id);
+    // Multiple-choice questions if this mission has them, otherwise flashcard self-assessment.
     return (
       <div className="max-w-2xl mx-auto space-y-4">
         <MissionHeader
@@ -349,7 +366,11 @@ export default function MissionPlayer({ mission }: MissionPlayerProps) {
           campaignTitle={campaign?.title}
           position="Knowledge check"
         />
-        {mcQuestions ? (
+        {mcQuestions === undefined ? (
+          <p role="status" className="telemetry-font text-sm text-v2-cyan animate-pulse tracking-wider py-10 text-center">
+            Loading knowledge check…
+          </p>
+        ) : mcQuestions ? (
           <MCKnowledgeCheck
             questions={mcQuestions}
             passThreshold={mission.knowledgeCheck.passThreshold}
