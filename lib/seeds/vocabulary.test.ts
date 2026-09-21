@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { TOPICS } from "@/lib/types";
 import { ALL_CAMPAIGNS } from "./campaigns";
 import { ALL_SECTORS } from "./sectors";
 
@@ -23,6 +24,22 @@ describe("one name per domain", () => {
       expect(campaign.title, campaign.id).not.toMatch(/^Operation\b/);
       if (campaign.codename) expect(campaign.codename, campaign.id).not.toBe(campaign.title);
     }
+  });
+
+  // Flashcard topics are the same domains again (Profile mastery, Study,
+  // the readiness radar). A topic is named after its sector; where a topic
+  // spans two sectors (linux), it takes the first — the primary — one's name.
+  it("names each flashcard topic after its sector", () => {
+    for (const topic of TOPICS) {
+      const sectors = ALL_SECTORS.filter((s) => s.topicId === topic.id);
+      if (sectors.length === 0) continue; // e.g. behavioral: interview prep, no sector
+      expect(topic.name, topic.id).toBe(sectors[0].title);
+    }
+  });
+
+  it("leaves only topics that genuinely have no sector un-matched", () => {
+    const orphans = TOPICS.filter((t) => !ALL_SECTORS.some((s) => s.topicId === t.id)).map((t) => t.id);
+    expect(orphans).toEqual(["behavioral"]);
   });
 
   it("has no two sectors or campaigns sharing a name", () => {

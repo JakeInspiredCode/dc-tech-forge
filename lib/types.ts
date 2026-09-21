@@ -86,13 +86,16 @@ export interface TopicMeta {
   icon: string;
 }
 
+// A topic's name is its sector's name (lib/seeds/sectors.ts) — one name per
+// domain, enforced by lib/seeds/vocabulary.test.ts. `linux` spans two sectors
+// and takes the primary one's. `behavioral` has no sector.
 export const TOPICS: TopicMeta[] = [
-  { id: "linux", name: "Linux Administration", description: "CLI, systemd, logs, filesystems, permissions", priority: 1, icon: ">" },
-  { id: "hardware", name: "Server Hardware", description: "GPUs, CPUs, memory, storage, BIOS/UEFI", priority: 2, icon: "#" },
+  { id: "linux", name: "Linux Operations", description: "CLI, systemd, logs, filesystems, permissions", priority: 1, icon: ">" },
+  { id: "hardware", name: "Hardware Systems", description: "GPUs, CPUs, memory, storage, BIOS/UEFI", priority: 2, icon: "#" },
   { id: "networking", name: "Networking", description: "TCP/IP, DNS, switching, routing, load balancing", priority: 3, icon: "~" },
-  { id: "fiber", name: "Fiber & Cabling", description: "Fiber optics, transceivers, cable management", priority: 4, icon: "|" },
+  { id: "fiber", name: "Fiber Optics", description: "Fiber optics, transceivers, cable management", priority: 4, icon: "|" },
   { id: "power-cooling", name: "Power & Cooling", description: "PDUs, UPS, HVAC, thermal management", priority: 5, icon: "^" },
-  { id: "ops-processes", name: "Ops & Processes", description: "Incident response, change management, monitoring", priority: 6, icon: "!" },
+  { id: "ops-processes", name: "Operations", description: "Incident response, change management, monitoring", priority: 6, icon: "!" },
   { id: "scale", name: "Scale & Architecture", description: "Hyperscale vs colo, rack density, cluster hierarchy, monitoring", priority: 7, icon: "*" },
   { id: "behavioral", name: "Behavioral", description: "STAR stories, leadership, teamwork, conflict", priority: 8, icon: "@" },
 ];
