@@ -118,7 +118,7 @@ function BountyActivity({ bountyId }: { bountyId: string }) {
 
   if (!bounty) {
     return (
-      <div className="h-[calc(100vh-var(--chrome-h))] w-full flex items-center justify-center">
+      <div className="h-below-chrome w-full flex items-center justify-center">
         <HexPanel>
           <div className="py-8 text-center">
             <p className="text-[#8eafc8] text-sm mb-4">Bounty not found: {bountyId}</p>
@@ -142,7 +142,7 @@ function BountyActivity({ bountyId }: { bountyId: string }) {
   };
 
   return (
-    <div className="h-[calc(100vh-var(--chrome-h))] w-full relative overflow-hidden">
+    <div className="h-below-chrome w-full relative overflow-hidden">
       <ScanOverlay />
       <div className="relative z-10 h-full flex flex-col">
         <div className="flex items-center gap-3 px-4 py-2 border-b border-v2-border shrink-0">
@@ -193,7 +193,7 @@ export default function Arsenal() {
   const catLabel = CATEGORIES.find((c) => c.key === activeCategory)?.label ?? "";
 
   return (
-    <div className="h-[calc(100vh-var(--chrome-h))] w-full relative overflow-hidden">
+    <div className="h-below-chrome w-full relative overflow-hidden">
       <StarfieldCanvas />
       <ScanOverlay />
       <div className="viewport-vignette fixed inset-0 z-[8] pointer-events-none" aria-hidden="true" />
@@ -258,7 +258,7 @@ export default function Arsenal() {
               placeholder="Filter..."
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              className="bg-transparent border border-v2-border rounded px-2 py-0.5 text-[10px] text-v2-text placeholder:text-v2-text-muted focus:border-[#22c55e50] focus:outline-none w-28 sm:w-36"
+              className="bg-transparent border border-v2-border rounded px-2 py-0.5 max-md:min-h-[40px] text-[10px] max-md:text-base text-v2-text placeholder:text-v2-text-muted focus:border-[#22c55e50] focus:outline-none w-28 sm:w-36"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             />
           </div>

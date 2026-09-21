@@ -435,7 +435,7 @@ export default function StatsSidebar({
           ) : (
             <div className={`grid grid-cols-2 justify-items-center mb-2 ${panelSize === "mid" ? "gap-1" : "gap-1.5"}`}>
               <GlowGauge value={campaignXp} label="Campaign XP" color={campaignColor} delay={100} size={panelSize} />
-              <GlowGauge value={streak} label="Streak" suffix="DAYS" color="#f59e0b" max={30} delay={250} size={panelSize} />
+              <GlowGauge value={streak} label="Day streak" color="#f59e0b" max={30} delay={250} size={panelSize} />
               <GlowGauge value={completedCount} label="Missions" max={totalMissions} color="#22c55e" delay={400} size={panelSize} />
               <GlowGauge value={campaignPct} label="Progress" suffix="%" max={100} color="#a855f7" delay={550} size={panelSize} />
             </div>
@@ -538,7 +538,7 @@ export default function StatsSidebar({
           </div>
           <button
             onClick={() => router.push("/arsenal")}
-            className="text-[11px] hover:text-v2-text transition-colors tracking-wider"
+            className="text-[11px] hover:text-v2-text transition-colors tracking-wider max-lg:min-h-[44px] max-lg:px-2 max-lg:-mr-2"
             style={{ fontFamily: "'Space Grotesk', sans-serif", color: `${campaignColor}cc` }}
           >
             All activities &rarr;

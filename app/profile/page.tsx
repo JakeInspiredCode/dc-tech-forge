@@ -129,7 +129,7 @@ export default function ProfilePage() {
   ];
 
   return (
-    <div className="h-[calc(100vh-var(--chrome-h))] w-full relative overflow-hidden">
+    <div className="h-below-chrome w-full relative overflow-hidden">
       <StarfieldCanvas />
       <ScanOverlay />
       <div className="viewport-vignette fixed inset-0 z-[8] pointer-events-none" aria-hidden="true" />
@@ -205,7 +205,7 @@ export default function ProfilePage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className="flex items-center gap-1.5 px-3 sm:px-4 py-0 transition-all duration-200"
+                className="flex items-center gap-1.5 px-3 sm:px-4 py-0 max-md:min-h-[44px] transition-all duration-200"
                 style={{
                   color: activeTab === tab.id ? accentColor : V2.text.muted,
                   borderBottom: activeTab === tab.id ? `1px solid ${accentColor}60` : "1px solid transparent",

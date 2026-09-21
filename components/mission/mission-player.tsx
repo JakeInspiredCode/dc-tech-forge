@@ -49,7 +49,7 @@ function MissionHeader({
         <span className="telemetry-font text-xs text-v2-text">{position}</span>
         <Link
           href={campaignId ? campaignHref(campaignId) : "/"}
-          className="text-xs text-v2-cyan hover:text-v2-cyan-bright underline underline-offset-4 decoration-dotted hover:decoration-solid"
+          className="inline-flex items-center max-md:min-h-[44px] text-xs text-v2-cyan hover:text-v2-cyan-bright underline underline-offset-4 decoration-dotted hover:decoration-solid"
         >
           Exit to campaign
         </Link>

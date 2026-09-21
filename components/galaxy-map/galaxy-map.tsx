@@ -11,6 +11,8 @@ import { useSvgMotionRef, useReducedMotion } from "@/lib/use-reduced-motion";
 import ScanOverlay from "@/components/ui/scan-overlay";
 import GalaxyHeader from "./galaxy-header";
 import SectorNode from "./sector-node";
+import SectorList from "./sector-list";
+import NextUpCta from "@/components/ui/next-up-cta";
 
 import SectorPreviewPanel from "./sector-preview-panel";
 import StatsPanel from "./stats-panel";
@@ -246,7 +248,7 @@ export default function GalaxyMap({ tourSectorId = null }: GalaxyMapProps) {
   }, []);
 
   return (
-    <div className="h-[calc(100vh-var(--chrome-h))] w-full relative overflow-hidden">
+    <div className="h-below-chrome w-full relative overflow-hidden">
       {/* Starfield background */}
       <StarfieldCanvas />
       <ScanOverlay />
@@ -259,10 +261,21 @@ export default function GalaxyMap({ tourSectorId = null }: GalaxyMapProps) {
         <GalaxyHeader />
       </div>
 
-      {/* Main layout: map (65%) + stats (35%) */}
-      <div className="absolute inset-0 z-[5] flex flex-col md:flex-row pt-14 pb-3 px-3 gap-3">
-        {/* Galaxy map — glass panel */}
-        <div className="flex-1 relative flex flex-col min-w-0 min-h-0">
+      {/* Main layout. From lg: map (65%) + stats (35%), filling the screen.
+          Below lg: one scrolling column — next step, sector list, stats.
+          The switch is at lg, not md, because the map needs ~700px of its own
+          to draw a sector title at 11px; at 768 it would be 7px. */}
+      <div className="absolute inset-0 z-[5] flex flex-col lg:flex-row pt-14 pb-3 px-3 gap-3 overflow-y-auto lg:overflow-visible">
+        {/* Phone: the one obvious next step, then the sectors as a list */}
+        <div className="lg:hidden flex flex-col gap-3 shrink-0 pt-2">
+          <div data-tour="next-up">
+            <NextUpCta next={next} scope="galaxy" />
+          </div>
+          {!isLoading && <SectorList sectors={ALL_SECTORS} progress={sectorProgressMap} />}
+        </div>
+
+        {/* Galaxy map — glass panel (lg and up) */}
+        <div className="hidden lg:flex flex-1 relative flex-col min-w-0 min-h-0">
           <div className="glass-panel-header">
             <span>Sector Map</span>
           </div>
@@ -318,7 +331,7 @@ export default function GalaxyMap({ tourSectorId = null }: GalaxyMapProps) {
         {/* Right sidebar — Navigation Board (default) or Sector Preview (on hover) */}
         <div
           data-tour="sector-panel"
-          className="md:w-[280px] lg:w-[320px] xl:w-[340px] shrink-0 flex flex-col min-h-0 max-h-[40vh] md:max-h-none"
+          className="lg:w-[320px] xl:w-[340px] shrink-0 flex flex-col lg:min-h-0"
           onMouseEnter={handlePanelEnter}
           onMouseLeave={handlePanelLeave}
         >

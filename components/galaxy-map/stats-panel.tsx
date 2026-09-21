@@ -193,19 +193,20 @@ export default function StatsPanel({
       ) : (
         <div className={`grid grid-cols-2 justify-items-center mb-2 ${panelSize === "mid" ? "gap-1" : "gap-1.5"}`}>
           <GlowGauge value={totalXp} label="Total XP" color="#06d6d6" delay={100} size={panelSize} />
-          <GlowGauge value={streak} label="Streak" suffix="DAYS" color="#f59e0b" max={30} delay={250} size={panelSize} />
+          <GlowGauge value={streak} label="Day streak" color="#f59e0b" max={30} delay={250} size={panelSize} />
           <GlowGauge value={missionsAccomplished} label="Missions" max={totalMissions} color="#22c55e" delay={400} size={panelSize} />
           <GlowGauge value={sectorsExplored} label="Sectors" max={totalSectors} color="#a855f7" delay={550} size={panelSize} />
         </div>
       )}
 
-      {/* The one thing to do next */}
-      <div className="mb-2">
+      {/* The one thing to do next. Below lg the map shows it above the
+          sector list instead, so it isn't repeated down here. */}
+      <div className="mb-2 max-lg:hidden">
         <NextUpCta next={next} scope="galaxy" />
       </div>
 
       {/* Divider + Readiness radar — hidden on mobile, takes remaining space on desktop */}
-      <div className="max-md:hidden flex flex-1 min-h-0 flex-col">
+      <div className="max-lg:hidden flex flex-1 min-h-0 flex-col">
         <div className="h-px mb-2 shrink-0" style={{ background: "linear-gradient(90deg, transparent, rgba(6, 214, 214, 0.2), transparent)" }} />
         <div className="flex-1 min-h-0">
           <ReadinessRadar progress={topicProgress} />

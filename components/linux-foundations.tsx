@@ -2568,6 +2568,7 @@ export default function LinuxFoundations({ initialSection, missionMode, onMissio
           <span style={{ color: "var(--color-v2-text-muted)", fontSize: 10, fontWeight: 600, minWidth: 36 }}>{progress}%</span>
           <button
             onClick={cycleLessonScale}
+            className="max-md:min-h-[44px] max-md:min-w-[44px] max-md:justify-center"
             title={`Text size: ${scaleLabel(lessonScale)} (click to cycle XS → S → M → L)`}
             aria-label={`Change text size (currently ${scaleLabel(lessonScale)})`}
             style={{
