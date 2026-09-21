@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useMutation } from "@/lib/convex-shim";
 import { api } from "@/convex/_generated/api";
 import QuickDrawGame, { QuickDrawSummary } from "@/components/forge/quick-draw/quick-draw-game";
@@ -21,6 +22,16 @@ export default function QuickDrawPage() {
   const checkBadges = useMutation(api.forgeProfile.checkAndAwardBadges);
 
   const modules = getAllModules();
+
+  // Arsenal links to one module (`?module=ports`). Read from the URL on mount
+  // rather than useSearchParams, which would force a Suspense boundary on a
+  // statically exported page. The module is offered, not auto-started: the
+  // person still picks Type Answer or Multiple Choice.
+  const [linkedModule, setLinkedModule] = useState<QuickDrawModule | null>(null);
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("module");
+    setLinkedModule(id ? getAllModules().find((m) => m.id === id) ?? null : null);
+  }, []);
 
   const startGame = (mod: QuickDrawModule) => {
     setSelectedModule(mod);
@@ -86,9 +97,11 @@ export default function QuickDrawPage() {
   return (
     <div className="min-h-screen bg-v2-bg-deep">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
-        <h1 className="text-2xl font-bold mono mb-1">Quick Draw</h1>
+        <h1 className="text-2xl font-bold mono mb-1">
+          Quick Draw{linkedModule ? `: ${linkedModule.title}` : ""}
+        </h1>
         <p className="text-sm text-forge-text-dim mb-6">
-          Fast recall drills — pick a module and go
+          {linkedModule ? linkedModule.description : "Fast recall drills — pick a module and go"}
         </p>
 
         {/* Mode toggle */}
@@ -115,9 +128,24 @@ export default function QuickDrawPage() {
           </button>
         </div>
 
+        {linkedModule && (
+          <div className="flex flex-wrap items-center gap-3 mb-8">
+            <button
+              onClick={() => startGame(linkedModule)}
+              className="px-6 py-3 bg-forge-accent text-white rounded-xl font-medium hover:bg-forge-accent/90 transition-colors"
+            >
+              Start — {linkedModule.items.length} items
+            </button>
+            <Link href="/arsenal" className="text-sm text-forge-accent-text hover:underline underline-offset-4">
+              ← Arsenal
+            </Link>
+          </div>
+        )}
+
         {/* Module grid */}
+        {linkedModule && <h2 className="text-sm font-semibold text-forge-text-dim mb-3">Other modules</h2>}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {modules.map((mod) => (
+          {modules.filter((mod) => mod.id !== linkedModule?.id).map((mod) => (
             <button
               key={mod.id}
               onClick={() => startGame(mod)}
