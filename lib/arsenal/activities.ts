@@ -53,7 +53,7 @@ const QUICK_DRAW: Activity[] = getAllModules().map((mod) => ({
 }));
 
 const LEARN: Activity[] = [
-  { id: "linux-foundations", title: "Linux Foundations", description: "The full ten-section Linux lesson, with its interactive exercises, outside of a mission", category: "learn", topics: ["linux"], estimatedMinutes: 60, route: "/foundations" },
+  { id: "lesson-library", title: "Lesson Library", description: "Every lesson from all eight sectors — look one up or re-read it without replaying the mission", category: "learn", topics: ["linux", "hardware", "networking", "fiber", "power-cooling", "ops-processes", "scale"], estimatedMinutes: 10, route: "/lessons" },
   { id: "boot-learn", title: "Boot Process — Learn", description: "Interactive 3-layer boot sequence walkthrough", category: "learn", topics: ["linux"], estimatedMinutes: 15, route: "/boot-learn" },
   { id: "filesystem-explorer", title: "Filesystem Navigator", description: "Interactive Linux directory tree with descriptions", category: "learn", topics: ["linux"], estimatedMinutes: 10, route: "/filesystem-navigator" },
   { id: "command-dissector", title: "Command Dissector", description: "Break down commands into parts — command, flags, arguments", category: "learn", topics: ["linux"], estimatedMinutes: 10, route: "/command-dissector" },
