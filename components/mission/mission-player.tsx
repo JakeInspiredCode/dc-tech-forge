@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
+import Hint from "@/components/ui/hint";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation, useQuery } from "@/lib/convex-shim";
@@ -288,6 +289,9 @@ export default function MissionPlayer({ mission }: MissionPlayerProps) {
   if (phase === "playing") {
     const openEnded = currentStep ? isOpenEnded(currentStep.contentRef.kind) : false;
     return (
+      <>
+      {/* Outside the space-y column: as a child it would shift the header 16px. */}
+      <Hint id="mission" />
       <div className="max-w-2xl mx-auto space-y-4">
         <MissionHeader
           mission={mission}
@@ -330,6 +334,7 @@ export default function MissionPlayer({ mission }: MissionPlayerProps) {
           </div>
         )}
       </div>
+      </>
     );
   }
 

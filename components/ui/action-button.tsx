@@ -12,6 +12,8 @@ interface ActionButtonProps {
   type?: "button" | "submit";
   /** For callers that manage focus, e.g. a dialog focusing its primary action. */
   ref?: Ref<HTMLButtonElement>;
+  /** Marks the control a modal should focus first (see lib/use-modal-dialog.ts). */
+  "data-autofocus"?: boolean;
 }
 
 const variantStyles = {
@@ -38,10 +40,12 @@ export default function ActionButton({
   className = "",
   type = "button",
   ref,
+  "data-autofocus": autofocus,
 }: ActionButtonProps) {
   return (
     <button
       ref={ref}
+      data-autofocus={autofocus || undefined}
       type={type}
       onClick={onClick}
       disabled={disabled}
