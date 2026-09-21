@@ -3,10 +3,13 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
-    { "source": "/train", "destination": "/missions", "permanent": false },
+    { "source": "/train", "destination": "/arsenal", "permanent": false },
     { "source": "/explore", "destination": "/arsenal", "permanent": false },
+    { "source": "/explore/boot-process", "destination": "/boot-learn", "permanent": false },
+    { "source": "/explore/visual-explorer", "destination": "/filesystem-navigator", "permanent": false },
     { "source": "/progress", "destination": "/profile", "permanent": false },
-    { "source": "/forge/speed-run", "destination": "/train/quick-draw", "permanent": false }
+    { "source": "/history", "destination": "/profile", "permanent": false },
+    { "source": "/star-map", "destination": "/", "permanent": false }
   ],
   "headers": [
     {

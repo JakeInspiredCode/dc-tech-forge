@@ -271,7 +271,7 @@ export default function SpeedRunPage() {
             highScores={highScores}
             onReviewMisses={handleReviewMisses}
             onPlayAgain={() => { handleStart(); }}
-            onDashboard={() => router.push("/")}
+            onDashboard={() => router.push("/arsenal")}
           />
         </div>
       </div>

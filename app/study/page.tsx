@@ -109,7 +109,9 @@ export default function StudyPage() {
           <CardQueue
             cards={sessionCards}
             sessionType="daily-training"
-            onComplete={() => { setMode(null); setSessionCards([]); router.push("/"); }}
+            // Back to the study hub (this page), not the home map: the next thing
+            // someone wants after a session is usually another one.
+            onComplete={() => { setMode(null); setSessionCards([]); }}
           />
         </div>
       </div>

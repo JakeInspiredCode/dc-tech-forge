@@ -11,11 +11,13 @@ import { resetPersistedData } from "@/lib/data/persistence";
 import DataSettings from "@/components/profile/data-settings";
 import { BRAND } from "@/lib/brand";
 import { V2 } from "@/lib/design/forge-v2-tokens";
+import { BADGE_DEFS } from "@/lib/types";
+import SessionHistory from "@/components/profile/session-history";
 
 const RESET_PHRASE = "RESET";
 const dangerColor = "#ef4444";
 
-type Tab = "stats" | "badges" | "settings";
+type Tab = "stats" | "badges" | "history" | "settings";
 
 const accentColor = "#e0e4ec";
 const accentGlow = "rgba(224, 228, 236, 0.2)";
@@ -29,6 +31,8 @@ function TabIcon({ tab, active }: { tab: string; active: boolean }) {
       return <svg {...common}><polyline points="2 12 5 6 9 9 14 2" /><line x1="2" y1="14" x2="14" y2="14" /></svg>;
     case "badges":
       return <svg {...common}><polygon points="8 1 10 5 14 5.5 11 8.5 12 13 8 10.5 4 13 5 8.5 2 5.5 6 5" /></svg>;
+    case "history":
+      return <svg {...common}><circle cx="8" cy="8" r="6" /><polyline points="8 4.5 8 8 10.5 9.5" /></svg>;
     case "settings":
       return <svg {...common}><circle cx="8" cy="8" r="2.5" /><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3 3l1.5 1.5M11.5 11.5L13 13M3 13l1.5-1.5M11.5 4.5L13 3" /></svg>;
     default:
@@ -108,6 +112,7 @@ export default function ProfilePage() {
     totalCards: number; masteredCards: number; learningCards: number;
     newCards: number; weakFlag: boolean;
   }> | undefined;
+  const earnedBadges = new Set(profile?.badges ?? []);
   const [activeTab, setActiveTab] = useState<Tab>("stats");
   const [resetArming, setResetArming] = useState(false);
   const [resetPhrase, setResetPhrase] = useState("");
@@ -125,6 +130,7 @@ export default function ProfilePage() {
   const tabs: { id: Tab; label: string }[] = [
     { id: "stats", label: "Stats" },
     { id: "badges", label: "Badges" },
+    { id: "history", label: "History" },
     { id: "settings", label: "Settings" },
   ];
 
@@ -191,9 +197,9 @@ export default function ProfilePage() {
             {/* Stats gauges */}
             <div className="grid grid-cols-2 gap-2 w-full justify-items-center">
               <ProfileGauge value={profile?.totalPoints ?? 0} label="Total XP" color={accentColor} />
-              <ProfileGauge value={profile?.streak ?? 0} label="Streak" suffix="DAYS" color="#f59e0b" max={30} />
-              <ProfileGauge value={profile?.badges?.length ?? 0} label="Badges" color="#a855f7" max={20} />
-              <ProfileGauge value={`${Math.round(profile?.totalSessionMinutes ?? 0)}`} label="Minutes" suffix="STUDY" color="#06d6d6" />
+              <ProfileGauge value={profile?.streak ?? 0} label="Day streak" color="#f59e0b" max={30} />
+              <ProfileGauge value={earnedBadges.size} label="Badges" color="#a855f7" max={BADGE_DEFS.length} />
+              <ProfileGauge value={`${Math.round(profile?.totalSessionMinutes ?? 0)}`} label="Study min" color="#06d6d6" />
             </div>
           </div>
         </div>
@@ -257,43 +263,46 @@ export default function ProfilePage() {
                 <div className="flex items-center justify-between mb-3">
                   <h2
                     className="text-[11px] tracking-widest uppercase"
-                    style={{ color: accentColor, fontFamily: "'Chakra Petch', sans-serif", opacity: 0.7 }}
+                    style={{ color: accentColor, fontFamily: "'Chakra Petch', sans-serif" }}
                   >
-                    Earned Badges
+                    Badges
                   </h2>
                   <span className="text-[11px] telemetry-font text-v2-text-muted">
-                    {profile?.badges?.length ?? 0} earned
+                    {earnedBadges.size} of {BADGE_DEFS.length} earned
                   </span>
                 </div>
-                {profile?.badges && profile.badges.length > 0 ? (
-                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                    {profile.badges.map((badge) => (
-                      <div
-                        key={badge}
-                        className="flex flex-col items-center gap-1.5 py-3 px-2 rounded-lg"
+                {/* Every badge, earned or not, with how to earn it — a list of
+                    only the earned ones gives a new learner an empty page and
+                    nothing to aim at. */}
+                <ul className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {BADGE_DEFS.map((badge) => {
+                    const earned = earnedBadges.has(badge.id);
+                    return (
+                      <li
+                        key={badge.id}
+                        className="flex flex-col items-center gap-1 py-3 px-2 rounded-lg text-center"
                         style={{
-                          background: `${accentColor}04`,
-                          border: `1px solid ${accentColor}12`,
+                          background: earned ? `${accentColor}0a` : "transparent",
+                          border: `1px solid ${earned ? `${accentColor}40` : "var(--color-v2-border)"}`,
                         }}
                       >
-                        <BadgeIcon earned />
-                        <span className="text-[11px] text-[#8eafc8] text-center display-font tracking-wider uppercase">
-                          {badge.replace(/-/g, " ")}
+                        <BadgeIcon earned={earned} />
+                        <span className="text-[11px] display-font tracking-wider uppercase" style={{ color: earned ? accentColor : "var(--color-v2-text-dim)" }}>
+                          {badge.name}
                         </span>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div
-                    className="py-8 text-center rounded-lg"
-                    style={{ background: `${accentColor}03`, border: `1px solid ${accentColor}08` }}
-                  >
-                    <BadgeIcon earned={false} />
-                    <p className="text-[11px] text-[#8eafc8] mt-2">
-                      Complete activities to earn badges.
-                    </p>
-                  </div>
-                )}
+                        <span className="text-[11px] leading-snug text-v2-text-muted">{badge.condition}</span>
+                        <span className="sr-only">{earned ? "Earned" : "Not earned yet"}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
+
+            {/* ── History Tab ── */}
+            {activeTab === "history" && (
+              <div className="max-w-2xl">
+                <SessionHistory />
               </div>
             )}
 
@@ -305,7 +314,7 @@ export default function ProfilePage() {
                 <div>
                   <h2
                     className="text-[11px] tracking-widest uppercase mb-3"
-                    style={{ color: dangerColor, fontFamily: "'Chakra Petch', sans-serif", opacity: 0.85 }}
+                    style={{ color: dangerColor, fontFamily: "'Chakra Petch', sans-serif" }}
                   >
                     Danger Zone
                   </h2>

@@ -29,6 +29,7 @@ interface Activity {
 
 const ACTIVITIES: Activity[] = [
   // LEARN
+  { id: "linux-foundations", title: "Linux Foundations", description: "The full ten-section Linux lesson, with its interactive exercises, outside of a mission", category: "learn", topics: ["linux"], estimatedMinutes: 60, route: "/foundations" },
   { id: "boot-learn", title: "Boot Process — Learn", description: "Interactive 3-layer boot sequence walkthrough", category: "learn", topics: ["linux"], estimatedMinutes: 15, route: "/boot-learn" },
   { id: "filesystem-explorer", title: "Filesystem Navigator", description: "Interactive Linux directory tree with descriptions", category: "learn", topics: ["linux"], estimatedMinutes: 10, route: "/filesystem-navigator" },
   { id: "command-dissector", title: "Command Dissector", description: "Break down commands into parts — command, flags, arguments", category: "learn", topics: ["linux"], estimatedMinutes: 10, route: "/command-dissector" },
@@ -44,6 +45,7 @@ const ACTIVITIES: Activity[] = [
   { id: "qd-command-recall", title: "Quick Draw: Command Recall", description: "75 commands — given a description, name the command", category: "practice", difficulty: "Hard", topics: ["linux"], estimatedMinutes: 8, route: "/train/quick-draw" },
   { id: "qd-flag-sniper", title: "Quick Draw: Flag Sniper", description: "100+ flags — given a flag, name what it does", category: "practice", difficulty: "Hard", topics: ["linux"], estimatedMinutes: 8, route: "/train/quick-draw" },
   { id: "fs-label-quiz", title: "Filesystem Label Quiz", description: "Given a description, type the correct Linux path", category: "practice", difficulty: "Medium", topics: ["linux"], estimatedMinutes: 8, route: "/filesystem-navigator?mode=label" },
+  { id: "speed-run", title: "Speed Run", description: "Timed free-recall: answer as many cards as you can against the clock", category: "practice", difficulty: "Hard", topics: ["linux", "hardware", "networking"], estimatedMinutes: 5, route: "/forge/speed-run" },
   { id: "terminal", title: "Terminal Simulator", description: "Practice Linux commands in a simulated environment", category: "practice", topics: ["linux"], estimatedMinutes: 15, route: "/terminal" },
   { id: "downtime-smash", title: "Battlestation", description: "Live ticket simulator — solve data center tickets at 6 difficulty levels", category: "practice", difficulty: "Mixed", topics: ["linux", "hardware", "networking"], estimatedMinutes: 15, route: "/battle-station" },
   // TEST
