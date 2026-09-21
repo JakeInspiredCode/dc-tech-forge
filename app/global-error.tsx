@@ -10,12 +10,12 @@ export default function GlobalError({
   return (
     <html lang="en" className="dark">
       <body className="bg-[#0a0a0f] text-[#e0e0e8] min-h-screen flex items-center justify-center px-4">
-        <div className="max-w-md text-center">
+        <main className="max-w-md text-center">
           <div className="text-4xl mb-4">!!</div>
           <h2 className="text-xl font-semibold mb-2" style={{ fontFamily: "monospace" }}>
             Critical Error
           </h2>
-          <p className="text-gray-400 text-sm mb-6">
+          <p className="text-[#b4c2d8] text-sm mb-6">
             {error.message || "The application encountered a fatal error."}
           </p>
           <button
@@ -24,7 +24,7 @@ export default function GlobalError({
           >
             Reload
           </button>
-        </div>
+        </main>
       </body>
     </html>
   );

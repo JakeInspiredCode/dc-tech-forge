@@ -142,7 +142,7 @@ export default function TicketPanel({
                       <span className={done ? "text-v2-cyan" : "text-v2-text-muted"}>
                         {done ? "✓" : "○"}
                       </span>
-                      <code className={`text-[10px] ${done ? "text-v2-cyan/60 line-through" : "text-v2-cyan"}`}>
+                      <code className={`text-[10px] ${done ? "text-v2-cyan/80 line-through" : "text-v2-cyan"}`}>
                         {cmd}
                       </code>
                     </div>
@@ -293,7 +293,7 @@ export default function TicketPanel({
             <ActionButton variant="primary" onClick={onNextTicket} className="w-full">
               <span className="flex items-center justify-center gap-2">
                 {isLastInQueue ? "Finish" : "Next"}
-                <span className="text-[8px] opacity-40 font-normal">Shift+Enter</span>
+                <span className="text-[8px] opacity-80 font-normal">Shift+Enter</span>
               </span>
             </ActionButton>
           </div>

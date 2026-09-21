@@ -7,13 +7,17 @@
   --color-forge-border: #222222;
   --color-forge-border-hover: #333333;
   --color-forge-accent: #2563eb;
+  /* The accent is a button colour: as TEXT on dark it is only 3.4:1. Text uses this. */
+  --color-forge-accent-text: #60a5fa;
   --color-forge-accent-dim: #1e3a5f;
   --color-forge-success: #22c55e;
   --color-forge-warning: #f59e0b;
   --color-forge-danger: #ef4444;
   --color-forge-text: #e5e5e5;
-  --color-forge-text-dim: #a0b4c8;
-  --color-forge-text-muted: #7088a0;
+  /* Same values as the v2 text scale below — one scale, two sets of names
+     until the legacy forge-* pages are ported. */
+  --color-forge-text-dim: #b4c2d8;
+  --color-forge-text-muted: #93a5c1;
 
   /* ── Phase 4: Starship Design System ── */
   --color-v2-bg-deep: #050508;
@@ -60,9 +64,13 @@
   --color-v2-territory-hostile: #ef4444;
   --color-v2-territory-locked: #333344;
 
+  /* Text scale. No gray on dark: every step is blue-tinted and clears
+     WCAG AA (4.5:1) on every surface above, including bg-overlay —
+     text 13:1, dim 9:1, muted 6.6:1. `muted` is the floor: nothing that
+     carries meaning is ever dimmer. lib/design/contrast.test.ts enforces it. */
   --color-v2-text: #e0e4ec;
-  --color-v2-text-dim: #9aa4b8;
-  --color-v2-text-muted: #6b7a90;
+  --color-v2-text-dim: #b4c2d8;
+  --color-v2-text-muted: #93a5c1;
   --color-v2-text-glow: #ffffff;
 
   --color-v2-border: #1e2233;
@@ -86,6 +94,8 @@
    as calc(100vh - var(--chrome-h)) rather than hard-coding the nav. */
 :root {
   --chrome-h: 56px;
+  /* Native controls, scrollbars and autofill render dark to match. */
+  color-scheme: dark;
 }
 
 html.has-sample-banner {
@@ -103,6 +113,39 @@ html.has-sample-banner {
   .tour-card {
     transition: none;
   }
+}
+
+/* ── Keyboard focus ─────────────────────────────────────────────────────────
+   One ring for everything. Unlayered on purpose: it outranks Tailwind's
+   `outline-none` utility (layered), so a control can't lose its focus
+   indicator by accident. Only :focus-visible, so mouse clicks on buttons
+   stay clean. */
+:focus-visible {
+  outline: 2px solid var(--color-v2-cyan-bright);
+  outline-offset: 2px;
+}
+/* The skip link lands focus on <main>; don't ring the whole page. */
+main:focus {
+  outline: none;
+}
+
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 100;
+  padding: 10px 16px;
+  border-radius: 6px;
+  background: var(--color-v2-cyan);
+  color: #050508;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+.skip-link:focus {
+  transform: translateY(0);
 }
 
 body {
@@ -792,7 +835,7 @@ code, pre, .mono {
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(6, 214, 214, 0.55);
+  color: rgba(6, 214, 214, 0.85);
   padding-left: 4px;
 }
 .header-accent-line {
@@ -892,4 +935,39 @@ code, pre, .mono {
   text-transform: uppercase;
   color: #06d6d6;
   text-shadow: 0 0 8px rgba(6, 214, 214, 0.3);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Reduced motion
+   The OS setting switches off everything decorative: pulses, shimmers, orbits,
+   glides. Anything that conveys state still ends in its final state — the
+   animations are cut to a single frame, not removed — so nothing that fades
+   *in* is left invisible. Canvas and SVG motion is handled in code
+   (lib/use-reduced-motion.ts).
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+
+  .sector-node:hover,
+  .deploy-btn:hover {
+    transform: none;
+  }
+
+  /* These two slide in, hold, then slide OUT — their last keyframe is hidden,
+     so cutting them to one frame would mean they never appear. Show them
+     plainly instead; a timer in the component removes them. */
+  .tier-unlock-toast,
+  .badge-banner {
+    animation: none !important;
+  }
 }

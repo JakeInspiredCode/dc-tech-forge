@@ -145,7 +145,7 @@ function InlineStat({
       >
         {value}
       </span>
-      <span className="text-[10px] display-font tracking-[0.1em] text-[#6a7288] uppercase shrink-0">
+      <span className="text-[10px] display-font tracking-[0.1em] text-v2-text-muted uppercase shrink-0">
         {label}
       </span>
     </div>

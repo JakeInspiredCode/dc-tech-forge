@@ -80,7 +80,7 @@ function TreeNode({ node, depth, hideDescriptions, onSelectNode, selectedPath, f
           hasChildren ? "cursor-pointer" : onSelectNode ? "cursor-pointer" : "cursor-default"
         } ${flashBg}`}
       >
-        <span className={`text-[9px] w-3 text-center leading-none ${hasChildren ? "text-v2-cyan/50" : "text-v2-text-muted"}`}>
+        <span className={`text-[9px] w-3 text-center leading-none ${hasChildren ? "text-v2-cyan/80" : "text-v2-text-muted"}`}>
           {hasChildren ? (expanded ? "▾" : "▸") : "·"}
         </span>
         <span className={`mono text-[11px] leading-tight ${nameColor}`}>
@@ -189,7 +189,7 @@ function LabelGame({ onBack }: { onBack: () => void }) {
           <button
             type="submit"
             disabled={!input.trim()}
-            className="mt-3 w-full py-3 bg-v2-cyan text-v2-bg-deep rounded-xl font-medium disabled:opacity-30"
+            className="mt-3 w-full py-3 bg-v2-cyan text-v2-bg-deep rounded-xl font-medium disabled:opacity-50"
           >
             Submit
           </button>
@@ -485,7 +485,7 @@ export default function FilesystemGame({ mode, onBack, onComplete, maxQuestions,
             className="px-4 py-1.5 text-[11px] font-semibold rounded tracking-wider uppercase
               bg-v2-cyan/10 text-v2-cyan border border-v2-cyan/30
               hover:bg-v2-cyan/20 hover:border-v2-cyan/50 transition-all
-              disabled:opacity-30 disabled:cursor-not-allowed"
+              disabled:opacity-50 disabled:cursor-not-allowed"
             style={{ fontFamily: "'Chakra Petch', sans-serif" }}
           >
             Start
@@ -505,12 +505,12 @@ export default function FilesystemGame({ mode, onBack, onComplete, maxQuestions,
                   style={{
                     background: isSelected ? `${opt.color}15` : "transparent",
                     border: `1px solid ${isSelected ? opt.color + "60" : "rgba(30, 34, 51, 0.5)"}`,
-                    color: isSelected ? opt.color : "#7a8298",
+                    color: isSelected ? opt.color : "var(--color-v2-text-muted)",
                     fontFamily: "'Chakra Petch', sans-serif",
                   }}
                 >
                   {opt.label}
-                  <span className="block text-[10px] opacity-60 mt-0.5">{count} questions</span>
+                  <span className="block text-[10px] opacity-80 mt-0.5">{count} questions</span>
                 </button>
               );
             })}

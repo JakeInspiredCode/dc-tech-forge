@@ -220,16 +220,16 @@ function ChunkBlock({
         onClick={() => !forceHidden && setOpen(!open)}
         className={`w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors ${
           forceHidden
-            ? "opacity-40 cursor-default"
+            ? "opacity-70 cursor-default"
             : "hover:bg-forge-surface-2 cursor-pointer"
         }`}
       >
-        <span className="text-forge-accent mono text-xs font-bold shrink-0 w-5">
+        <span className="text-forge-accent-text mono text-xs font-bold shrink-0 w-5">
           {chunk.label}
         </span>
         <span className="text-forge-text-dim">{chunk.summary}</span>
         {!forceHidden && (
-          <span className="ml-auto text-forge-text-dim/50 text-xs shrink-0">
+          <span className="ml-auto text-forge-text-muted text-xs shrink-0">
             {isOpen ? "▾" : "▸"}
           </span>
         )}
@@ -255,13 +255,13 @@ function ChunkBlock({
               <div className="flex gap-2 justify-end">
                 <button
                   onClick={handleCancel}
-                  className="text-xs px-3 py-1 rounded border border-forge-border text-forge-text-dim hover:text-forge-accent transition-colors"
+                  className="text-xs px-3 py-1 rounded border border-forge-border text-forge-text-dim hover:text-forge-accent-text transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleSave}
-                  className="text-xs px-3 py-1 rounded border border-forge-accent text-forge-accent hover:bg-forge-accent/10 transition-colors"
+                  className="text-xs px-3 py-1 rounded border border-forge-accent text-forge-accent-text hover:bg-forge-accent/10 transition-colors"
                 >
                   Save
                 </button>
@@ -280,7 +280,7 @@ function ChunkBlock({
                     e.stopPropagation();
                     setEditing(true);
                   }}
-                  className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded border border-forge-border text-forge-text-dim hover:text-forge-accent hover:border-forge-accent transition-colors"
+                  className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded border border-forge-border text-forge-text-dim hover:text-forge-accent-text hover:border-forge-accent transition-colors"
                 >
                   <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M11.5 2.5l2 2L5 13l-3 1 1-3z" />
@@ -296,7 +296,7 @@ function ChunkBlock({
                 e.stopPropagation();
                 setEditing(true);
               }}
-              className="w-full flex items-center justify-center gap-2 text-xs py-2.5 rounded border border-dashed border-forge-border text-forge-text-dim hover:text-forge-accent hover:border-forge-accent transition-colors"
+              className="w-full flex items-center justify-center gap-2 text-xs py-2.5 rounded border border-dashed border-forge-border text-forge-text-dim hover:text-forge-accent-text hover:border-forge-accent transition-colors"
             >
               <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="8" y1="3" x2="8" y2="13" />
@@ -374,7 +374,7 @@ export default function StoriesPage() {
 
   return (
     <div className="min-h-screen bg-v2-bg-deep">
-      <main className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
         <div className="flex items-start justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold mb-1 mono">Story Bank</h1>
@@ -385,7 +385,7 @@ export default function StoriesPage() {
           </div>
           <button
             onClick={toggleAll}
-            className="text-xs px-3 py-1.5 rounded border border-forge-border hover:border-forge-accent text-forge-text-dim hover:text-forge-accent transition-colors shrink-0 mt-1"
+            className="text-xs px-3 py-1.5 rounded border border-forge-border hover:border-forge-accent text-forge-text-dim hover:text-forge-accent-text transition-colors shrink-0 mt-1"
           >
             {allHidden ? "Reveal All" : "Hide All"}
           </button>
@@ -403,7 +403,7 @@ export default function StoriesPage() {
               >
                 <div className="flex items-start justify-between mb-1">
                   <div className="flex items-baseline gap-2">
-                    <span className="text-forge-text-dim/40 mono text-xs font-bold">
+                    <span className="text-forge-text-muted mono text-xs font-bold">
                       {idx + 1}.
                     </span>
                     <h2 className="font-semibold text-base leading-snug">
@@ -412,12 +412,12 @@ export default function StoriesPage() {
                   </div>
                   <button
                     onClick={() => toggleHide(story.storyId)}
-                    className="text-xs px-2.5 py-1 rounded border border-forge-border hover:border-forge-accent text-forge-text-dim hover:text-forge-accent transition-colors shrink-0 ml-3"
+                    className="text-xs px-2.5 py-1 rounded border border-forge-border hover:border-forge-accent text-forge-text-dim hover:text-forge-accent-text transition-colors shrink-0 ml-3"
                   >
                     {isHidden ? "Show" : "Hide"}
                   </button>
                 </div>
-                <span className="text-xs text-forge-accent/70 mono ml-5 block mb-3">
+                <span className="text-xs text-forge-accent-text/70 mono ml-5 block mb-3">
                   {story.framework}
                 </span>
 
@@ -450,16 +450,16 @@ export default function StoriesPage() {
           <h2 className="font-semibold text-base mb-3 mono">Practice Notes</h2>
           <div className="text-sm text-forge-text-dim space-y-3">
             <div>
-              <span className="text-forge-accent font-semibold">Drill daily:</span>{" "}
+              <span className="text-forge-accent-text font-semibold">Drill daily:</span>{" "}
               Q1, Q2, Q4, Q15 — opener, "why this role," pressure story, closer.
             </div>
             <div>
-              <span className="text-forge-accent font-semibold">Drill 2x/week:</span>{" "}
+              <span className="text-forge-accent-text font-semibold">Drill 2x/week:</span>{" "}
               Q3, Q5, Q6, Q13 — strongest differentiators (biggest impact,
               process wins, initiative, environment fit).
             </div>
             <div>
-              <span className="text-forge-accent font-semibold">Drill 1x/week:</span>{" "}
+              <span className="text-forge-accent-text font-semibold">Drill 1x/week:</span>{" "}
               Q7–Q12, Q14 — more formulaic, get the structure then let them
               flow.
             </div>
@@ -471,7 +471,7 @@ export default function StoriesPage() {
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

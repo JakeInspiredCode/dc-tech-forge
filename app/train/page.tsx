@@ -58,7 +58,7 @@ export default function TrainHub() {
 
   return (
     <div className="min-h-screen bg-v2-bg-deep">
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
         <h1 className="text-2xl font-bold mono mb-1">Train</h1>
         <p className="text-sm text-forge-text-dim mb-6">
           {dueCards.length} cards due{weakCount > 0 ? ` — ${weakCount} weak topic${weakCount !== 1 ? "s" : ""}` : ""}
@@ -79,7 +79,7 @@ export default function TrainHub() {
             </Link>
           ))}
         </div>
-      </main>
+      </div>
     </div>
   );
 }

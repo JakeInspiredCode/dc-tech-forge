@@ -58,10 +58,12 @@ export const V2 = {
     hostile: "#ef4444",
     locked: "#333344",
   },
+  // No gray on dark: `muted` is the dimmest text the app uses, and it still
+  // clears 6.6:1 on every surface. Kept equal to globals.css by contrast.test.ts.
   text: {
     base: "#e0e4ec",
-    dim: "#7a8298",
-    muted: "#444b5c",
+    dim: "#b4c2d8",
+    muted: "#93a5c1",
     glow: "#ffffff",
   },
   border: {

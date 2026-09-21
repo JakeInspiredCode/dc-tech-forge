@@ -114,13 +114,13 @@ function KnowledgeCheck({ question, correctAnswer, onComplete }) {
             }}
           />
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 10, flexWrap: "wrap" }}>
-            <span style={{ color: "#7090A8", fontSize: 10, marginRight: 4 }}>Confidence:</span>
+            <span style={{ color: "var(--color-v2-text-muted)", fontSize: 10, marginRight: 4 }}>Confidence:</span>
             {["Sure", "Unsure", "Guessing"].map((c) => (
               <button key={c} onClick={() => setConfidence(c)} style={{
                 padding: "5px 14px", borderRadius: 20,
                 background: confidence === c ? (c === "Sure" ? "#2A8A4A" : c === "Unsure" ? "#AA7A20" : "#AA3030") : "rgba(255,255,255,0.05)",
                 border: confidence === c ? "none" : "1px solid rgba(255,255,255,0.15)",
-                color: confidence === c ? "#FFF" : "#8899AA", fontSize: 10, fontWeight: 600, cursor: "pointer",
+                color: confidence === c ? "#FFF" : "var(--color-v2-text-muted)", fontSize: 10, fontWeight: 600, cursor: "pointer",
                 transition: "all 0.2s",
               }}>{c}</button>
             ))}
@@ -181,7 +181,7 @@ function Code({ children }) {
 function CodeBlock({ children, label }) {
   return (
     <div style={{ margin: "12px 0" }}>
-      {label && <div style={{ color: "#607080", fontSize: 10, fontWeight: 600, marginBottom: 4, letterSpacing: "0.5px" }}>{label}</div>}
+      {label && <div style={{ color: "var(--color-v2-text-muted)", fontSize: 10, fontWeight: 600, marginBottom: 4, letterSpacing: "0.5px" }}>{label}</div>}
       <pre style={{
         background: "rgba(0,0,0,0.4)", border: "1px solid rgba(80,200,255,0.12)", borderRadius: 8,
         padding: "14px 16px", overflowX: "auto", margin: 0,
@@ -250,8 +250,8 @@ function OsFunctionCards() {
         }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <strong style={{ color: item.color }}>{item.title}</strong>
-            <span style={{ color: "#556", fontSize: 10, flexShrink: 0, marginLeft: 12, transition: "transform 0.2s", transform: expanded.has(i) ? "rotate(90deg)" : "none" }}>▸</span>
-            {!expanded.has(i) && <span style={{ color: "#445", fontSize: 10, marginLeft: 6, fontStyle: "italic" }}>click to expand</span>}
+            <span style={{ color: "var(--color-v2-text-muted)", fontSize: 10, flexShrink: 0, marginLeft: 12, transition: "transform 0.2s", transform: expanded.has(i) ? "rotate(90deg)" : "none" }}>▸</span>
+            {!expanded.has(i) && <span style={{ color: "var(--color-v2-text-muted)", fontSize: 10, marginLeft: 6, fontStyle: "italic" }}>click to expand</span>}
           </div>
           {expanded.has(i) && (
             <p style={{ color: "#B8BCC0", fontSize: 11, lineHeight: 1.6, margin: "10px 0 0 0" }}>{item.body}</p>
@@ -286,8 +286,8 @@ function CliTermsCards() {
         }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <strong style={{ color: item.color }}>{item.term}</strong>
-            <span style={{ color: "#556", fontSize: 10, flexShrink: 0, marginLeft: 12, transition: "transform 0.2s", transform: expanded.has(i) ? "rotate(90deg)" : "none" }}>▸</span>
-            {!expanded.has(i) && <span style={{ color: "#445", fontSize: 10, marginLeft: 6, fontStyle: "italic" }}>click to expand</span>}
+            <span style={{ color: "var(--color-v2-text-muted)", fontSize: 10, flexShrink: 0, marginLeft: 12, transition: "transform 0.2s", transform: expanded.has(i) ? "rotate(90deg)" : "none" }}>▸</span>
+            {!expanded.has(i) && <span style={{ color: "var(--color-v2-text-muted)", fontSize: 10, marginLeft: 6, fontStyle: "italic" }}>click to expand</span>}
           </div>
           {expanded.has(i) && (
             <p style={{ color: "#B8BCC0", fontSize: 11, lineHeight: 1.6, margin: "10px 0 0 0" }}>{item.desc}</p>
@@ -343,7 +343,7 @@ function LayerSorter({ onComplete }) {
         </div>
         <button onClick={() => { setItems([...correctOrder].sort(() => Math.random() - 0.5)); setChecked(false); setIsCorrect(false); }} style={{
           padding: "3px 10px", borderRadius: 5, fontSize: 10, fontWeight: 600, cursor: "pointer",
-          background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#778",
+          background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "var(--color-v2-text-muted)",
         }}>↻ Reset</button>
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
@@ -364,14 +364,14 @@ function LayerSorter({ onComplete }) {
               transition: "all 0.2s",
             }}
           >
-            <span style={{ color: "#556", fontSize: 10, fontWeight: 600, minWidth: 20 }}>{items.length - i}</span>
+            <span style={{ color: "var(--color-v2-text-muted)", fontSize: 10, fontWeight: 600, minWidth: 20 }}>{items.length - i}</span>
             <span style={{
               color: layerColors[item], fontWeight: 700, fontSize: 11, minWidth: 120,
             }}>{item}</span>
-            <span style={{ color: "#778899", fontSize: 10 }}>
+            <span style={{ color: "var(--color-v2-text-muted)", fontSize: 10 }}>
               {checked && isCorrect ? layerDescs[item] : ""}
             </span>
-            <span style={{ marginLeft: "auto", color: "#445", fontSize: 13 }}>⠿</span>
+            <span style={{ marginLeft: "auto", color: "var(--color-v2-text-muted)", fontSize: 13 }}>⠿</span>
           </div>
         ))}
       </div>
@@ -447,7 +447,7 @@ function CommandDissector() {
             padding: "5px 14px", borderRadius: 6, fontSize: 10, fontWeight: 600, cursor: "pointer",
             background: cmdIdx === i ? "rgba(80,200,255,0.15)" : "rgba(255,255,255,0.04)",
             border: cmdIdx === i ? "1px solid rgba(80,200,255,0.4)" : "1px solid rgba(255,255,255,0.08)",
-            color: cmdIdx === i ? "#50C8FF" : "#778899",
+            color: cmdIdx === i ? "#50C8FF" : "var(--color-v2-text-muted)",
             fontFamily: "'JetBrains Mono', monospace",
           }}>{c.text.split(" ")[0]}</button>
         ))}
@@ -490,7 +490,7 @@ function CommandDissector() {
         {Object.entries(typeColors).map(([type, color]) => (
           <span key={type} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 10 }}>
             <span style={{ width: 10, height: 10, borderRadius: 3, background: color, display: "inline-block" }} />
-            <span style={{ color: "#889" }}>{type}</span>
+            <span style={{ color: "var(--color-v2-text-muted)" }}>{type}</span>
           </span>
         ))}
       </div>
@@ -794,10 +794,10 @@ Swap:         8.0Gi       0B     8.0Gi`,
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           {total > 0 && <span style={{ color: "#7AE87A", fontSize: 10, fontWeight: 600 }}>{score}/{total}</span>}
-          <span style={{ color: "#556", fontSize: 10 }}>{investigated.size}/4 checked</span>
+          <span style={{ color: "var(--color-v2-text-muted)", fontSize: 10 }}>{investigated.size}/4 checked</span>
           <button onClick={() => { jumpTo(0); setScore(0); setTotal(0); setScenarioResults({}); }} style={{
             padding: "3px 10px", borderRadius: 5, fontSize: 10, fontWeight: 600, cursor: "pointer",
-            background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#778",
+            background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "var(--color-v2-text-muted)",
           }}>↻ Reset</button>
         </div>
       </div>
@@ -823,7 +823,7 @@ Swap:         8.0Gi       0B     8.0Gi`,
             }}>Got it</button>
           </div>
           <button onClick={() => setGuideDismissed(true)} style={{
-            background: "none", border: "none", color: "#556", cursor: "pointer", fontSize: 11, padding: 2, flexShrink: 0,
+            background: "none", border: "none", color: "var(--color-v2-text-muted)", cursor: "pointer", fontSize: 11, padding: 2, flexShrink: 0,
           }}>✕</button>
         </div>
       )}
@@ -841,7 +841,7 @@ Swap:         8.0Gi       0B     8.0Gi`,
             : isActive ? "rgba(80,200,255,0.5)" : "rgba(255,255,255,0.1)";
           const textColor = result === "correct" ? "#7AE87A"
             : result === "wrong" ? "#FF6B6B"
-            : isActive ? "#50C8FF" : "#667";
+            : isActive ? "#50C8FF" : "var(--color-v2-text-muted)";
           const icon = result === "correct" ? "✓" : result === "wrong" ? "✗" : String(i + 1);
           return (
             <button key={i} onClick={() => jumpTo(i)} style={{
@@ -914,7 +914,7 @@ Swap:         8.0Gi       0B     8.0Gi`,
                 {/* Command badge — always visible, dims after investigation */}
                 <span style={{
                   fontFamily: "'JetBrains Mono', 'Fira Code', monospace", fontSize: 10,
-                  color: isInvestigated ? "#445" : "#50C8FF",
+                  color: isInvestigated ? "var(--color-v2-text-muted)" : "#50C8FF",
                   background: isInvestigated ? "rgba(255,255,255,0.02)" : "rgba(80,200,255,0.08)",
                   padding: "3px 10px", borderRadius: 4,
                   border: `1px solid ${isInvestigated ? "rgba(255,255,255,0.05)" : "rgba(80,200,255,0.2)"}`,
@@ -934,7 +934,7 @@ Swap:         8.0Gi       0B     8.0Gi`,
 
                 {/* Right side — CTA or toggle arrow */}
                 <span style={{
-                  color: isInvestigated ? "#556" : "#50C8FF", fontSize: 10, fontWeight: 600, marginLeft: "auto",
+                  color: isInvestigated ? "var(--color-v2-text-muted)" : "#50C8FF", fontSize: 10, fontWeight: 600, marginLeft: "auto",
                   transition: "transform 0.2s, color 0.3s",
                   transform: isExpanded ? "rotate(90deg)" : "none",
                 }}>{isInvestigated ? "▸" : "Click to run ▸"}</span>
@@ -955,7 +955,7 @@ Swap:         8.0Gi       0B     8.0Gi`,
                       <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#FF5F57" }} />
                       <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#FEBC2E" }} />
                       <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#28C840" }} />
-                      <span style={{ fontFamily: "monospace", fontSize: 10, color: "#556", marginLeft: 8 }}>ops@srv-{String(scenarioIdx + 1).padStart(2, "0")}:~$</span>
+                      <span style={{ fontFamily: "monospace", fontSize: 10, color: "var(--color-v2-text-muted)", marginLeft: 8 }}>ops@srv-{String(scenarioIdx + 1).padStart(2, "0")}:~$</span>
                       <span style={{ fontFamily: "monospace", fontSize: 10, color: "#50C8FF" }}> {r.cmd}</span>
                     </div>
                     {/* Output */}
@@ -1020,7 +1020,7 @@ Swap:         8.0Gi       0B     8.0Gi`,
       {!checked && (
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
           {!allInvestigated && (
-            <span style={{ color: "#556", fontSize: 10, fontStyle: "italic" }}>Investigate all 4 resources before diagnosing...</span>
+            <span style={{ color: "var(--color-v2-text-muted)", fontSize: 10, fontStyle: "italic" }}>Investigate all 4 resources before diagnosing...</span>
           )}
           {allInvestigated && (
             <>
@@ -1041,7 +1041,7 @@ Swap:         8.0Gi       0B     8.0Gi`,
               </select>
               <button onClick={check} disabled={!diagnosis} style={{
                 padding: "8px 22px", background: diagnosis ? "#50C8FF" : "rgba(80,200,255,0.15)",
-                border: "none", borderRadius: 6, color: diagnosis ? "#1A1A2E" : "#556",
+                border: "none", borderRadius: 6, color: diagnosis ? "#1A1A2E" : "var(--color-v2-text-muted)",
                 fontWeight: 700, fontSize: 11, cursor: diagnosis ? "pointer" : "not-allowed",
               }}>Diagnose</button>
             </>
@@ -1124,7 +1124,7 @@ function PathResolver({ onComplete }) {
         </div>
         <button onClick={() => { setChIdx(0); setUserAnswer(""); setRevealed(false); }} style={{
           padding: "3px 10px", borderRadius: 5, fontSize: 10, fontWeight: 600, cursor: "pointer",
-          background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#778",
+          background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "var(--color-v2-text-muted)",
         }}>↻ Reset</button>
       </div>
       <p style={{ color: "#C8CCD0", margin: "0 0 6px 0", fontSize: 11 }}>
@@ -1147,7 +1147,7 @@ function PathResolver({ onComplete }) {
         {!revealed && (
           <button onClick={handleCheck} disabled={!userAnswer.trim()} style={{
             padding: "10px 20px", background: userAnswer.trim() ? "#50C8FF" : "rgba(80,200,255,0.15)",
-            border: "none", borderRadius: 6, color: userAnswer.trim() ? "#1A1A2E" : "#556",
+            border: "none", borderRadius: 6, color: userAnswer.trim() ? "#1A1A2E" : "var(--color-v2-text-muted)",
             fontWeight: 700, fontSize: 11, cursor: userAnswer.trim() ? "pointer" : "not-allowed",
           }}>Resolve</button>
         )}
@@ -1160,11 +1160,11 @@ function PathResolver({ onComplete }) {
             {isCorrect ? "✓ Correct!" : `✗ The answer is ${finalPath}`}
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 4, fontSize: 11 }}>
-            <span style={{ color: "#889" }}>Step by step:</span>
+            <span style={{ color: "var(--color-v2-text-muted)" }}>Step by step:</span>
             <Code>{ch.cwd}</Code>
             {ch.steps.map((step, i) => (
               <span key={i} style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                <span style={{ color: "#556" }}>→</span>
+                <span style={{ color: "var(--color-v2-text-muted)" }}>→</span>
                 <Code>{step}</Code>
               </span>
             ))}
@@ -1223,7 +1223,7 @@ function OctalFlipCards() {
                 </div>
               ) : (
                 <div style={{
-                  color: "#50C8FF", fontSize: 11, opacity: 0.5,
+                  color: "#50C8FF", fontSize: 11, opacity: 0.85,
                   fontFamily: "'Chakra Petch', sans-serif", letterSpacing: "0.5px",
                 }}>
                   tap to reveal
@@ -1353,12 +1353,12 @@ function PermissionBuilder({ onComplete }) {
               padding: "4px 14px", borderRadius: 6, fontSize: 10, fontWeight: 600, cursor: "pointer",
               background: mode === m ? "rgba(80,200,255,0.15)" : "rgba(255,255,255,0.04)",
               border: mode === m ? "1px solid rgba(80,200,255,0.4)" : "1px solid rgba(255,255,255,0.08)",
-              color: mode === m ? "#50C8FF" : "#778899",
+              color: mode === m ? "#50C8FF" : "var(--color-v2-text-muted)",
             }}>{modeLabels[m]}</button>
           ))}
           <button onClick={() => { setBits([true, true, true, true, false, true, true, false, false]); setUserInput(""); setChecked(false); }} style={{
             padding: "3px 10px", borderRadius: 5, fontSize: 10, fontWeight: 600, cursor: "pointer",
-            background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#778", marginLeft: 4,
+            background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "var(--color-v2-text-muted)", marginLeft: 4,
           }}>↻ Reset</button>
         </div>
       </div>
@@ -1366,7 +1366,7 @@ function PermissionBuilder({ onComplete }) {
       {/* ── DECODE MODE: toggle bits, see English + live octal ── */}
       {mode === "decode" && (
         <>
-          <p style={{ color: "#889", fontSize: 11, margin: "0 0 12px 0" }}>Toggle permission bits and see the meaning and octal value update in real time.</p>
+          <p style={{ color: "var(--color-v2-text-muted)", fontSize: 11, margin: "0 0 12px 0" }}>Toggle permission bits and see the meaning and octal value update in real time.</p>
           <div style={{
             background: "rgba(0,0,0,0.4)", borderRadius: 8, padding: 16,
             fontFamily: "'JetBrains Mono', monospace", fontSize: 15, textAlign: "center",
@@ -1379,7 +1379,7 @@ function PermissionBuilder({ onComplete }) {
                   key={i}
                   onClick={() => { const n = [...bits]; n[i] = !n[i]; setBits(n); }}
                   style={{
-                    color: b ? groupColors[Math.floor(i / 3)] : "#334",
+                    color: b ? groupColors[Math.floor(i / 3)] : "var(--color-v2-text-muted)",
                     cursor: "pointer", padding: "2px 1px",
                     borderBottom: `2px solid ${b ? groupColors[Math.floor(i / 3)] : "transparent"}`,
                     transition: "all 0.15s",
@@ -1388,8 +1388,8 @@ function PermissionBuilder({ onComplete }) {
               ))}
             </div>
             {/* Live octal readout */}
-            <div style={{ marginTop: 8, fontSize: 11, color: "#889" }}>
-              <span style={{ color: "#556", marginRight: 6 }}>chmod</span>
+            <div style={{ marginTop: 8, fontSize: 11, color: "var(--color-v2-text-muted)" }}>
+              <span style={{ color: "var(--color-v2-text-muted)", marginRight: 6 }}>chmod</span>
               {[0, 1, 2].map((gi) => (
                 <span key={gi} style={{
                   color: groupColors[gi], fontWeight: 700, fontSize: 13,
@@ -1408,12 +1408,12 @@ function PermissionBuilder({ onComplete }) {
               }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
                   <span style={{ color: groupColors[li], fontWeight: 700, fontSize: 10 }}>{label}</span>
-                  <span style={{ color: groupColors[li], fontFamily: "'JetBrains Mono', monospace", fontSize: 12, fontWeight: 700, opacity: 0.7 }}>{octalDigit(li * 3)}</span>
+                  <span style={{ color: groupColors[li], fontFamily: "'JetBrains Mono', monospace", fontSize: 12, fontWeight: 700, opacity: 0.9 }}>{octalDigit(li * 3)}</span>
                 </div>
                 <div style={{ color: "#C8CCD0", fontSize: 10 }}>
                   {bits[li * 3] ? "4" : "0"} + {bits[li * 3 + 1] ? "2" : "0"} + {bits[li * 3 + 2] ? "1" : "0"} = {octalDigit(li * 3)}
                 </div>
-                <div style={{ color: "#889", fontSize: 10, marginTop: 2 }}>Can {describe(li * 3)}</div>
+                <div style={{ color: "var(--color-v2-text-muted)", fontSize: 10, marginTop: 2 }}>Can {describe(li * 3)}</div>
               </div>
             ))}
           </div>
@@ -1423,7 +1423,7 @@ function PermissionBuilder({ onComplete }) {
       {/* ── ENCODE MODE: English → rwx string ── */}
       {mode === "encode" && challenge && (
         <>
-          <p style={{ color: "#889", fontSize: 11, margin: "0 0 6px 0" }}>Write the 9-character permission string for this description:</p>
+          <p style={{ color: "var(--color-v2-text-muted)", fontSize: 11, margin: "0 0 6px 0" }}>Write the 9-character permission string for this description:</p>
           <p style={{ color: "#E8ECF0", fontSize: 11, margin: "0 0 14px 0", lineHeight: 1.6 }}>{challenge.desc}</p>
           <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
             <input
@@ -1443,7 +1443,7 @@ function PermissionBuilder({ onComplete }) {
             {!checked && (
               <button onClick={checkAnswer} disabled={userInput.length !== inputLength} style={{
                 padding: "10px 20px", background: userInput.length === inputLength ? "#50C8FF" : "rgba(80,200,255,0.15)",
-                border: "none", borderRadius: 6, color: userInput.length === inputLength ? "#1A1A2E" : "#556",
+                border: "none", borderRadius: 6, color: userInput.length === inputLength ? "#1A1A2E" : "var(--color-v2-text-muted)",
                 fontWeight: 700, fontSize: 11, cursor: userInput.length === inputLength ? "pointer" : "not-allowed",
               }}>Check</button>
             )}
@@ -1459,7 +1459,7 @@ function PermissionBuilder({ onComplete }) {
       {/* ── OCTAL MODE: rwx string → 3-digit octal ── */}
       {mode === "octal" && challenge && (
         <>
-          <p style={{ color: "#889", fontSize: 11, margin: "0 0 6px 0" }}>Convert this permission string to its 3-digit octal number:</p>
+          <p style={{ color: "var(--color-v2-text-muted)", fontSize: 11, margin: "0 0 6px 0" }}>Convert this permission string to its 3-digit octal number:</p>
           <div style={{
             background: "rgba(0,0,0,0.4)", borderRadius: 8, padding: "12px 20px", marginBottom: 14,
             fontFamily: "'JetBrains Mono', monospace", fontSize: 16, textAlign: "center",
@@ -1467,14 +1467,14 @@ function PermissionBuilder({ onComplete }) {
           }}>
             {challenge.desc.split("").map((ch, i) => (
               <span key={i} style={{
-                color: ch === "-" ? "#334" : groupColors[Math.floor(i / 3)],
+                color: ch === "-" ? "var(--color-v2-text-muted)" : groupColors[Math.floor(i / 3)],
                 padding: "0 1px",
               }}>{ch}</span>
             ))}
           </div>
           <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-              <span style={{ color: "#556", fontFamily: "'JetBrains Mono', monospace", fontSize: 12 }}>chmod</span>
+              <span style={{ color: "var(--color-v2-text-muted)", fontFamily: "'JetBrains Mono', monospace", fontSize: 12 }}>chmod</span>
               <input
                 value={userInput}
                 onChange={(e) => setUserInput(e.target.value.replace(/[^0-7]/g, ""))}
@@ -1493,7 +1493,7 @@ function PermissionBuilder({ onComplete }) {
             {!checked && (
               <button onClick={checkAnswer} disabled={userInput.length !== 3} style={{
                 padding: "10px 20px", background: userInput.length === 3 ? "#50C8FF" : "rgba(80,200,255,0.15)",
-                border: "none", borderRadius: 6, color: userInput.length === 3 ? "#1A1A2E" : "#556",
+                border: "none", borderRadius: 6, color: userInput.length === 3 ? "#1A1A2E" : "var(--color-v2-text-muted)",
                 fontWeight: 700, fontSize: 11, cursor: userInput.length === 3 ? "pointer" : "not-allowed",
               }}>Check</button>
             )}
@@ -1572,7 +1572,7 @@ function SignalSimulator({ onComplete }) {
         </div>
         {signal && <button onClick={() => { setSignal(null); setResult(null); }} style={{
           padding: "3px 10px", borderRadius: 5, fontSize: 10, fontWeight: 600, cursor: "pointer",
-          background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#778",
+          background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "var(--color-v2-text-muted)",
         }}>↻ Reset</button>}
       </div>
       <div style={{
@@ -1582,11 +1582,11 @@ function SignalSimulator({ onComplete }) {
       }}>
         <span style={{
           width: 10, height: 10, borderRadius: "50%",
-          background: !signal ? "#7AE87A" : result?.outcome === "graceful" ? "#556" : "#FF4444",
+          background: !signal ? "#7AE87A" : result?.outcome === "graceful" ? "var(--color-v2-text-muted)" : "#FF4444",
           boxShadow: !signal ? "0 0 8px rgba(122,232,122,0.5)" : "none",
         }} />
         <span style={{ color: "#C8D8E8", fontSize: 11 }}>PID 1842 — postgres</span>
-        <span style={{ color: "#667", fontSize: 10, marginLeft: "auto" }}>
+        <span style={{ color: "var(--color-v2-text-muted)", fontSize: 10, marginLeft: "auto" }}>
           {!signal ? "STATE: running — writing transaction" : result?.outcome === "graceful" ? "STATE: exited (0)" : "STATE: killed (9)"}
         </span>
       </div>
@@ -1611,7 +1611,7 @@ function SignalSimulator({ onComplete }) {
           <p style={{ color: "#C8CCD0", margin: 0, fontSize: 11, lineHeight: 1.6 }}>{result.text}</p>
           <button onClick={reset} style={{
             marginTop: 12, padding: "6px 18px", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)",
-            borderRadius: 6, color: "#889", fontWeight: 600, fontSize: 10, cursor: "pointer",
+            borderRadius: 6, color: "var(--color-v2-text-muted)", fontWeight: 600, fontSize: 10, cursor: "pointer",
           }}>Try the other signal</button>
         </div>
       )}
@@ -1649,7 +1649,7 @@ function RackDiagnosis({ onComplete }) {
         </div>
         {checked && <button onClick={() => { setSelected(null); setChecked(false); }} style={{
           padding: "3px 10px", borderRadius: 5, fontSize: 10, fontWeight: 600, cursor: "pointer",
-          background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#778",
+          background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "var(--color-v2-text-muted)",
         }}>↻ Reset</button>}
       </div>
       <p style={{ color: "#E8ECF0", fontSize: 11, margin: "0 0 16px 0", lineHeight: 1.6 }}>
@@ -1670,7 +1670,7 @@ function RackDiagnosis({ onComplete }) {
       {!checked && (
         <button onClick={check} disabled={!selected} style={{
           padding: "8px 22px", background: selected ? "#50C8FF" : "rgba(80,200,255,0.15)",
-          border: "none", borderRadius: 6, color: selected ? "#1A1A2E" : "#556",
+          border: "none", borderRadius: 6, color: selected ? "#1A1A2E" : "var(--color-v2-text-muted)",
           fontWeight: 700, fontSize: 11, cursor: selected ? "pointer" : "not-allowed",
         }}>Diagnose</button>
       )}
@@ -1684,7 +1684,7 @@ function RackDiagnosis({ onComplete }) {
             {comp.correct ? "✓ Correct — shared infrastructure!" : "✗ Not a shared component."}
           </span>
           <p style={{ color: "#C8CCD0", margin: "8px 0 0 0", fontSize: 11, lineHeight: 1.6 }}>{comp.explanation}</p>
-          <p style={{ color: "#889", margin: "10px 0 0 0", fontSize: 10, fontStyle: "italic" }}>
+          <p style={{ color: "var(--color-v2-text-muted)", margin: "10px 0 0 0", fontSize: 10, fontStyle: "italic" }}>
             The key insight: simultaneous failures point to shared dependencies — ToR switch (network), PDU (power), or cooling. Never to individual server hardware.
           </p>
         </div>
@@ -1747,7 +1747,7 @@ function FlashcardRapidFire() {
         </div>
         <button onClick={() => { setIdx(0); setFlipped(false); setUserAnswer(""); setScore(0); setDone(false); }} style={{
           padding: "3px 10px", borderRadius: 5, fontSize: 10, fontWeight: 600, cursor: "pointer",
-          background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#778",
+          background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "var(--color-v2-text-muted)",
         }}>↻ Reset</button>
       </div>
       <div style={{ position: "relative", height: 6, background: "rgba(255,255,255,0.06)", borderRadius: 3, marginBottom: 16 }}>
@@ -1759,7 +1759,7 @@ function FlashcardRapidFire() {
         display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",
       }}>
         <div style={{ color: "#50C8FF", fontWeight: 700, fontSize: 15, marginBottom: 4 }}>{cards[idx].term}</div>
-        <div style={{ color: "#667", fontSize: 11, marginBottom: 12 }}>What is this?</div>
+        <div style={{ color: "var(--color-v2-text-muted)", fontSize: 11, marginBottom: 12 }}>What is this?</div>
         {!flipped ? (
           <>
             <textarea
@@ -1909,7 +1909,7 @@ function FilesystemTree() {
             borderRadius: 3,
           }}
         >
-          <span style={{ color: "#445" }}>{prefix}{connector}</span>
+          <span style={{ color: "var(--color-v2-text-muted)" }}>{prefix}{connector}</span>
           <span style={{
             color: hasChildren ? "#50C8FF" : "#AAB4BE",
             fontWeight: hasChildren ? 600 : 400,
@@ -1944,7 +1944,7 @@ function FilesystemTree() {
           <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#FF5F57" }} />
           <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#FEBC2E" }} />
           <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#28C840" }} />
-          <span style={{ fontFamily: "monospace", fontSize: 10, color: "#556", marginLeft: 8 }}>ops@srv-01:~$</span>
+          <span style={{ fontFamily: "monospace", fontSize: 10, color: "var(--color-v2-text-muted)", marginLeft: 8 }}>ops@srv-01:~$</span>
         </div>
 
         <div style={{ padding: "12px 14px" }}>
@@ -1971,7 +1971,7 @@ function FilesystemTree() {
                 <span style={{ color: "#FFA832" }}># </span>
                 The command is <span style={{ color: "#50C8FF" }}>tree</span>. Common flags:
               </p>
-              <p style={{ color: "#778899", fontSize: 10, margin: "0 0 0 0",
+              <p style={{ color: "var(--color-v2-text-muted)", fontSize: 10, margin: "0 0 0 0",
                 fontFamily: "'JetBrains Mono', monospace", lineHeight: 1.8,
               }}>
                 <span style={{ color: "#7AE87A" }}>tree /</span>          — show tree from root<br/>
@@ -1986,9 +1986,9 @@ function FilesystemTree() {
             <div key={i} style={{ marginBottom: 8 }}>
               <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10 }}>
                 <span style={{ color: "#7AE87A" }}>ops@srv-01</span>
-                <span style={{ color: "#556" }}>:</span>
+                <span style={{ color: "var(--color-v2-text-muted)" }}>:</span>
                 <span style={{ color: "#50C8FF" }}>~</span>
-                <span style={{ color: "#556" }}>$ </span>
+                <span style={{ color: "var(--color-v2-text-muted)" }}>$ </span>
                 <span style={{ color: "#E8ECF0" }}>{entry.cmd}</span>
               </div>
               {entry.type === "error" && (
@@ -2004,9 +2004,9 @@ function FilesystemTree() {
           {phase !== "tree" && (
             <div style={{ display: "flex", alignItems: "center", gap: 0, fontFamily: "'JetBrains Mono', monospace", fontSize: 10 }}>
               <span style={{ color: "#7AE87A" }}>ops@srv-01</span>
-              <span style={{ color: "#556" }}>:</span>
+              <span style={{ color: "var(--color-v2-text-muted)" }}>:</span>
               <span style={{ color: "#50C8FF" }}>~</span>
-              <span style={{ color: "#556" }}>$ </span>
+              <span style={{ color: "var(--color-v2-text-muted)" }}>$ </span>
               <input
                 ref={inputRef}
                 value={cmdInput}
@@ -2015,7 +2015,7 @@ function FilesystemTree() {
                 placeholder="type a command..."
                 autoFocus
                 style={{
-                  flex: 1, background: "transparent", border: "none", outline: "none",
+                  flex: 1, background: "transparent", border: "none",
                   color: "#E8ECF0", fontSize: 10, fontFamily: "'JetBrains Mono', monospace",
                   padding: 0, margin: 0,
                 }}
@@ -2028,7 +2028,7 @@ function FilesystemTree() {
             <button onClick={handleHint} style={{
               marginTop: 10, padding: "5px 14px", background: "rgba(255,255,255,0.04)",
               border: "1px solid rgba(255,255,255,0.1)", borderRadius: 5,
-              color: "#667", fontSize: 10, cursor: "pointer", fontFamily: "monospace",
+              color: "var(--color-v2-text-muted)", fontSize: 10, cursor: "pointer", fontFamily: "monospace",
             }}>Need a hint?</button>
           )}
 
@@ -2037,9 +2037,9 @@ function FilesystemTree() {
             <div>
               <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, marginBottom: 8 }}>
                 <span style={{ color: "#7AE87A" }}>ops@srv-01</span>
-                <span style={{ color: "#556" }}>:</span>
+                <span style={{ color: "var(--color-v2-text-muted)" }}>:</span>
                 <span style={{ color: "#50C8FF" }}>~</span>
-                <span style={{ color: "#556" }}>$ </span>
+                <span style={{ color: "var(--color-v2-text-muted)" }}>$ </span>
                 <span style={{ color: "#E8ECF0" }}>{cmdHistory[cmdHistory.length - 1]?.cmd}</span>
               </div>
             </div>
@@ -2067,7 +2067,7 @@ function FilesystemTree() {
                   <p style={{ color: "#E8ECF0", margin: 0, fontSize: 11, lineHeight: 1.6 }}>{selectedDesc.desc}</p>
                 </div>
               ) : (
-                <p style={{ color: "#556", fontSize: 11, fontStyle: "italic" }}>Click any node to learn what it's for.</p>
+                <p style={{ color: "var(--color-v2-text-muted)", fontSize: 11, fontStyle: "italic" }}>Click any node to learn what it's for.</p>
               )}
             </div>
           </div>
@@ -2095,7 +2095,7 @@ function FilesystemTree() {
               style={{
                 padding: "6px 14px", background: "transparent",
                 border: "1px solid rgba(255,255,255,0.15)", borderRadius: 6,
-                color: "#889", fontWeight: 600, fontSize: 10, cursor: "pointer",
+                color: "var(--color-v2-text-muted)", fontWeight: 600, fontSize: 10, cursor: "pointer",
               }}
             >↻ Reset</button>
           </div>
@@ -2153,12 +2153,12 @@ function FlipCardChallenge({ onComplete }) {
           {flipped.size > 0 && (
             <button onClick={handleReset} style={{
               padding: "3px 10px", borderRadius: 5, fontSize: 10, fontWeight: 600, cursor: "pointer",
-              background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#778",
+              background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "var(--color-v2-text-muted)",
             }}>↻ Reset</button>
           )}
         </div>
       </div>
-      <p style={{ color: "#778", fontSize: 11, margin: "0 0 14px 0" }}>Each card shows a clue. Pick which Linux advantage it represents, then flip.</p>
+      <p style={{ color: "var(--color-v2-text-muted)", fontSize: 11, margin: "0 0 14px 0" }}>Each card shows a clue. Pick which Linux advantage it represents, then flip.</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
         {cards.map((card, i) => {
           const isFlipped = flipped.has(i);
@@ -2175,16 +2175,16 @@ function FlipCardChallenge({ onComplete }) {
               {!isFlipped ? (
                 <div style={{ padding: "12px 10px", flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
                   <div style={{ color: "#E8ECF0", fontSize: 15, fontWeight: 800, lineHeight: 1 }}>{card.clue}</div>
-                  <div style={{ color: "#667", fontSize: 10, marginTop: 3, marginBottom: 10 }}>{card.clueLabel}</div>
+                  <div style={{ color: "var(--color-v2-text-muted)", fontSize: 10, marginTop: 3, marginBottom: 10 }}>{card.clueLabel}</div>
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 3, width: "100%" }}>
                     {options.map((opt) => {
-                      const pillColor = optionColors[opt] || "#778899";
+                      const pillColor = optionColors[opt] || "#93a5c1";
                       return (
                       <button key={opt} onClick={() => handleGuess(i, opt)} style={{
                         padding: "2px 0", borderRadius: 4, fontSize: 9, fontWeight: 600, cursor: "pointer",
                         background: guess === opt ? `${pillColor}30` : "rgba(255,255,255,0.04)",
                         border: guess === opt ? `1px solid ${pillColor}80` : `1px solid ${pillColor}25`,
-                        color: guess === opt ? pillColor : `${pillColor}99`,
+                        color: guess === opt ? pillColor : `${pillColor}CC`,
                         transition: "all 0.15s", textAlign: "center",
                       }}>{opt}</button>
                       );
@@ -2193,7 +2193,7 @@ function FlipCardChallenge({ onComplete }) {
                   <button onClick={() => handleFlip(i)} disabled={!guess} style={{
                     marginTop: 8, padding: "4px 14px", borderRadius: 5, fontSize: 10, fontWeight: 700, cursor: guess ? "pointer" : "not-allowed",
                     background: guess ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.12)", color: guess ? "#CCD" : "#445",
+                    border: "1px solid rgba(255,255,255,0.12)", color: guess ? "#CCD" : "var(--color-v2-text-muted)",
                     transition: "all 0.2s",
                   }}>Flip</button>
                 </div>
@@ -2294,7 +2294,7 @@ function DistroFamilySort({ onComplete }) {
         transition: "all 0.2s",
       }}
     >
-      <span style={{ fontSize: 10, color: "#556", fontWeight: 700 }}>{typeLabels[card.type]}</span>
+      <span style={{ fontSize: 10, color: "var(--color-v2-text-muted)", fontWeight: 700 }}>{typeLabels[card.type]}</span>
       {card.label}
     </div>
   );
@@ -2317,14 +2317,14 @@ function DistroFamilySort({ onComplete }) {
       <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 8 }}>
         <button onClick={() => { setPool([...allCards].sort(() => Math.random() - 0.5)); setRhel([]); setDebian([]); setChecked(false); }} style={{
           padding: "3px 10px", borderRadius: 5, fontSize: 10, fontWeight: 600, cursor: "pointer",
-          background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#778",
+          background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "var(--color-v2-text-muted)",
         }}>↻ Reset</button>
       </div>
       <div style={{ display: "flex", gap: 12, marginBottom: 10, flexWrap: "wrap" }}>
         {Object.entries(typeColors).map(([type, color]) => (
           <span key={type} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 10 }}>
             <span style={{ width: 8, height: 8, borderRadius: 2, background: color, display: "inline-block" }} />
-            <span style={{ color: "#778" }}>{typeLabels[type]}</span>
+            <span style={{ color: "var(--color-v2-text-muted)" }}>{typeLabels[type]}</span>
           </span>
         ))}
       </div>
@@ -2340,7 +2340,7 @@ function DistroFamilySort({ onComplete }) {
         }}
       >
         {pool.length > 0 ? pool.map(c => renderCard(c, "pool")) : (
-          <span style={{ color: "#445", fontSize: 10, fontStyle: "italic" }}>All cards placed — check your answers below</span>
+          <span style={{ color: "var(--color-v2-text-muted)", fontSize: 10, fontStyle: "italic" }}>All cards placed — check your answers below</span>
         )}
       </div>
 
@@ -2355,7 +2355,7 @@ function DistroFamilySort({ onComplete }) {
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
             {rhel.map(c => renderCard(c, "rhel"))}
           </div>
-          {rhel.length === 0 && <span style={{ color: "#334", fontSize: 10 }}>Drop cards here</span>}
+          {rhel.length === 0 && <span style={{ color: "var(--color-v2-text-muted)", fontSize: 10 }}>Drop cards here</span>}
         </div>
         <div
           onDragOver={(e) => e.preventDefault()}
@@ -2366,14 +2366,14 @@ function DistroFamilySort({ onComplete }) {
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
             {debian.map(c => renderCard(c, "debian"))}
           </div>
-          {debian.length === 0 && <span style={{ color: "#334", fontSize: 10 }}>Drop cards here</span>}
+          {debian.length === 0 && <span style={{ color: "var(--color-v2-text-muted)", fontSize: 10 }}>Drop cards here</span>}
         </div>
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 14, flexWrap: "wrap" }}>
         <button onClick={check} disabled={!allPlaced} style={{
           padding: "8px 22px", background: allPlaced ? "#50C8FF" : "rgba(80,200,255,0.15)",
-          border: "none", borderRadius: 6, color: allPlaced ? "#1A1A2E" : "#556",
+          border: "none", borderRadius: 6, color: allPlaced ? "#1A1A2E" : "var(--color-v2-text-muted)",
           fontWeight: 700, fontSize: 11, cursor: allPlaced ? "pointer" : "not-allowed",
         }}>Check Sort</button>
         {checked && (
@@ -2408,7 +2408,7 @@ function NetworkAddressBuilder() {
         </div>
         <button onClick={() => { setIp("10.0.5.20"); setPort("443"); setProtocol("TCP"); }} style={{
           padding: "3px 10px", borderRadius: 5, fontSize: 10, fontWeight: 600, cursor: "pointer",
-          background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#778",
+          background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "var(--color-v2-text-muted)",
         }}>↻ Reset</button>
       </div>
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 16 }}>
@@ -2449,14 +2449,14 @@ function NetworkAddressBuilder() {
         fontFamily: "'JetBrains Mono', monospace", fontSize: 11, textAlign: "center",
       }}>
         <span style={{ color: "#FF6B6B" }}>{ip}</span>
-        <span style={{ color: "#556" }}>:</span>
+        <span style={{ color: "var(--color-v2-text-muted)" }}>:</span>
         <span style={{ color: "#FFA832" }}>{port}</span>
-        <span style={{ color: "#556" }}> over </span>
+        <span style={{ color: "var(--color-v2-text-muted)" }}> over </span>
         <span style={{ color: "#7AE87A" }}>{protocol}</span>
-        <span style={{ color: "#556" }}> → </span>
+        <span style={{ color: "var(--color-v2-text-muted)" }}> → </span>
         <span style={{ color: "#50C8FF" }}>{serviceName}</span>
       </div>
-      <p style={{ color: "#889", fontSize: 10, marginTop: 10, textAlign: "center" }}>
+      <p style={{ color: "var(--color-v2-text-muted)", fontSize: 10, marginTop: 10, textAlign: "center" }}>
         {protocol === "TCP" ? "TCP guarantees delivery — packets arrive in order, lost packets are retransmitted. Used for SSH, HTTP, databases." : "UDP sends packets without confirmation — faster, but no delivery guarantee. Used for DNS queries, streaming, monitoring metrics."}
       </p>
     </div>
@@ -2530,7 +2530,7 @@ export default function LinuxFoundations({ initialSection, missionMode, onMissio
               opacity: 0.8, transition: "opacity 0.15s",
             }} onMouseEnter={e => e.currentTarget.style.opacity = 1} onMouseLeave={e => e.currentTarget.style.opacity = 0.8}
             >← Galaxy Map</Link>
-            <span style={{ color: "rgba(255,255,255,0.08)", fontSize: 13 }}>|</span>
+            <span aria-hidden="true" style={{ color: "rgba(255,255,255,0.25)", fontSize: 13 }}>|</span>
           </>
         )}
         <button onClick={() => setSidebarOpen(!sidebarOpen)} style={{
@@ -2539,7 +2539,7 @@ export default function LinuxFoundations({ initialSection, missionMode, onMissio
         }}>☰</button>
         <div style={{ display: "flex", alignItems: "center", gap: 10, flex: 1, minWidth: 0 }}>
           <span style={{ color: "#50C8FF", fontWeight: 800, fontSize: 11, whiteSpace: "nowrap" }}>LINUX FOUNDATIONS</span>
-          <span style={{ color: "#445", fontSize: 11 }}>|</span>
+          <span style={{ color: "var(--color-v2-text-muted)", fontSize: 11 }}>|</span>
           <span style={{ color: "#AAB4BE", fontSize: 11, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
             {SECTIONS[activeSection - 1].icon} {SECTIONS[activeSection - 1].title}
           </span>
@@ -2548,7 +2548,7 @@ export default function LinuxFoundations({ initialSection, missionMode, onMissio
           <div style={{ width: 100, height: 5, background: "rgba(255,255,255,0.06)", borderRadius: 3, overflow: "hidden" }}>
             <div style={{ height: "100%", borderRadius: 3, background: "#50C8FF", width: `${progress}%`, transition: "width 0.4s" }} />
           </div>
-          <span style={{ color: "#667", fontSize: 10, fontWeight: 600, minWidth: 36 }}>{progress}%</span>
+          <span style={{ color: "var(--color-v2-text-muted)", fontSize: 10, fontWeight: 600, minWidth: 36 }}>{progress}%</span>
           <button
             onClick={cycleLessonScale}
             title={`Text size: ${scaleLabel(lessonScale)} (click to cycle XS → S → M → L)`}
@@ -2598,7 +2598,7 @@ export default function LinuxFoundations({ initialSection, missionMode, onMissio
                 {activeSection < 10 && (
                   <button onClick={() => goTo(activeSection + 1)} style={{
                     padding: "6px 16px", background: "transparent", border: "none",
-                    color: "#556", fontSize: 10, cursor: "pointer",
+                    color: "var(--color-v2-text-muted)", fontSize: 10, cursor: "pointer",
                     transition: "color 0.2s",
                   }}>Leave the mission for now and read on →</button>
                 )}
@@ -2637,7 +2637,7 @@ function Section1({ markComplete }) {
   return (
     <div>
       <h2 style={{ color: "#E8ECF0", fontSize: 18, fontWeight: 700, margin: "0 0 6px 0" }}>1. What Is an Operating System?</h2>
-      <p style={{ color: "#667", fontSize: 11, marginTop: 0, marginBottom: 16, fontStyle: "italic" }}>Everything between your keystroke and the pixel on screen.</p>
+      <p style={{ color: "var(--color-v2-text-muted)", fontSize: 11, marginTop: 0, marginBottom: 16, fontStyle: "italic" }}>Everything between your keystroke and the pixel on screen.</p>
 
       <p style={{ color: "#D0D4D8", fontSize: 12, lineHeight: 1.55 }}>
         You press a key on your keyboard. Characters appear on a screen. Between those two events, thousands of operations occur: electrical signals travel from the keyboard to a USB controller, get translated into a scan code, routed through a driver, interpreted by a program, rendered as pixels by a graphics card, and pushed to a display. You never see any of it.
@@ -2681,7 +2681,7 @@ function Section2({ markComplete }) {
   return (
     <div>
       <h2 style={{ color: "#E8ECF0", fontSize: 18, fontWeight: 700, margin: "0 0 6px 0" }}>2. What Is Linux?</h2>
-      <p style={{ color: "#667", fontSize: 11, marginTop: 0, marginBottom: 16, fontStyle: "italic" }}>The kernel that runs 90%+ of the world's servers.</p>
+      <p style={{ color: "var(--color-v2-text-muted)", fontSize: 11, marginTop: 0, marginBottom: 16, fontStyle: "italic" }}>The kernel that runs 90%+ of the world's servers.</p>
 
       <p style={{ color: "#D0D4D8", fontSize: 12, lineHeight: 1.55 }}>
         Linux is an operating system kernel created by Linus Torvalds in 1991. Specifically, "Linux" refers to the kernel — the core component that manages hardware, memory, and processes. What most people call "Linux" is actually a <strong style={{ color: "#E8ECF0" }}>distribution</strong> (distro): the kernel bundled with a package manager, system utilities, default configurations, and sometimes a graphical interface.
@@ -2735,7 +2735,7 @@ function Section3({ markComplete }) {
   return (
     <div>
       <h2 style={{ color: "#E8ECF0", fontSize: 18, fontWeight: 700, margin: "0 0 6px 0" }}>3. The Command Line — Your Primary Interface</h2>
-      <p style={{ color: "#667", fontSize: 11, marginTop: 0, marginBottom: 16, fontStyle: "italic" }}>No GUI. No mouse. Just text — and that's an advantage.</p>
+      <p style={{ color: "var(--color-v2-text-muted)", fontSize: 11, marginTop: 0, marginBottom: 16, fontStyle: "italic" }}>No GUI. No mouse. Just text — and that's an advantage.</p>
 
       <p style={{ color: "#D0D4D8", fontSize: 12, lineHeight: 1.55 }}>
         Most computers you have used have a <strong style={{ color: "#E8ECF0" }}>graphical user interface</strong> (GUI): windows, icons, a mouse pointer. Servers almost never have one. They sit in racks in a datacenter — no monitor, no keyboard, no mouse attached. You access them remotely, and when you do, you get a <strong style={{ color: "#E8ECF0" }}>command line interface</strong> (CLI).
@@ -2801,7 +2801,7 @@ function Section4({ markComplete }) {
   return (
     <div>
       <h2 style={{ color: "#E8ECF0", fontSize: 18, fontWeight: 700, margin: "0 0 6px 0" }}>4. How Computers Work — The Operations Perspective</h2>
-      <p style={{ color: "#667", fontSize: 11, marginTop: 0, marginBottom: 16, fontStyle: "italic" }}>You don't need a CS degree. You need to know where to look when something breaks.</p>
+      <p style={{ color: "var(--color-v2-text-muted)", fontSize: 11, marginTop: 0, marginBottom: 16, fontStyle: "italic" }}>You don't need a CS degree. You need to know where to look when something breaks.</p>
 
       <SectionHeading>CPU — The Executor</SectionHeading>
       <p style={{ color: "#D0D4D8", fontSize: 12, lineHeight: 1.55 }}>
@@ -2860,7 +2860,7 @@ function Section5({ markComplete }) {
   return (
     <div>
       <h2 style={{ color: "#E8ECF0", fontSize: 18, fontWeight: 700, margin: "0 0 6px 0" }}>5. Files, Directories, and the Filesystem Tree</h2>
-      <p style={{ color: "#667", fontSize: 11, marginTop: 0, marginBottom: 16, fontStyle: "italic" }}>One tree. Everything lives in it — including hardware.</p>
+      <p style={{ color: "var(--color-v2-text-muted)", fontSize: 11, marginTop: 0, marginBottom: 16, fontStyle: "italic" }}>One tree. Everything lives in it — including hardware.</p>
 
       <p style={{ color: "#D0D4D8", fontSize: 12, lineHeight: 1.55 }}>
         Every piece of data on a Linux system lives in a <strong style={{ color: "#E8ECF0" }}>file</strong>. Every file lives inside a <strong style={{ color: "#E8ECF0" }}>directory</strong> (folder). Directories can contain other directories, forming a tree structure.
@@ -2928,7 +2928,7 @@ function Section6({ markComplete }) {
   return (
     <div>
       <h2 style={{ color: "#E8ECF0", fontSize: 18, fontWeight: 700, margin: "0 0 6px 0" }}>6. Users, Groups, and Ownership</h2>
-      <p style={{ color: "#667", fontSize: 11, marginTop: 0, marginBottom: 16, fontStyle: "italic" }}>Isolation and access control — the foundation of Linux security.</p>
+      <p style={{ color: "var(--color-v2-text-muted)", fontSize: 11, marginTop: 0, marginBottom: 16, fontStyle: "italic" }}>Isolation and access control — the foundation of Linux security.</p>
 
       <p style={{ color: "#D0D4D8", fontSize: 12, lineHeight: 1.55 }}>
         Linux is a <strong style={{ color: "#E8ECF0" }}>multi-user</strong> system. Even when only one person is logged in, the system has multiple user accounts operating behind the scenes — each service (web server, database, logging daemon) typically runs as its own user.
@@ -2985,7 +2985,7 @@ function Section6({ markComplete }) {
         background: "rgba(0,0,0,0.3)", borderRadius: 8, padding: "16px 20px", margin: "14px 0 20px",
         border: "1px solid rgba(80,200,255,0.1)", fontFamily: "'JetBrains Mono', monospace",
       }}>
-        <div style={{ color: "#889", fontSize: 10, marginBottom: 10, fontFamily: "'Chakra Petch', sans-serif", letterSpacing: "0.5px" }}>EXAMPLE: CONVERTING rwxr-xr-- TO OCTAL</div>
+        <div style={{ color: "var(--color-v2-text-muted)", fontSize: 10, marginBottom: 10, fontFamily: "'Chakra Petch', sans-serif", letterSpacing: "0.5px" }}>EXAMPLE: CONVERTING rwxr-xr-- TO OCTAL</div>
         <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "6px 16px", fontSize: 11 }}>
           <span style={{ color: "#FF6B6B", fontWeight: 700 }}>Owner:</span>
           <span style={{ color: "#C8CCD0" }}>rwx = 4 + 2 + 1 = <strong style={{ color: "#E8ECF0" }}>7</strong></span>
@@ -2995,9 +2995,9 @@ function Section6({ markComplete }) {
           <span style={{ color: "#C8CCD0" }}>r-- = 4 + 0 + 0 = <strong style={{ color: "#E8ECF0" }}>4</strong></span>
         </div>
         <div style={{ marginTop: 12, borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 10 }}>
-          <span style={{ color: "#889", fontSize: 10 }}>Result: </span>
+          <span style={{ color: "var(--color-v2-text-muted)", fontSize: 10 }}>Result: </span>
           <span style={{ color: "#50C8FF", fontSize: 15, fontWeight: 700 }}>754</span>
-          <span style={{ color: "#889", fontSize: 10 }}> — so <Code>chmod 754 file</Code> sets these exact permissions.</span>
+          <span style={{ color: "var(--color-v2-text-muted)", fontSize: 10 }}> — so <Code>chmod 754 file</Code> sets these exact permissions.</span>
         </div>
       </div>
 
@@ -3030,7 +3030,7 @@ function Section7({ markComplete }) {
   return (
     <div>
       <h2 style={{ color: "#E8ECF0", fontSize: 18, fontWeight: 700, margin: "0 0 6px 0" }}>7. Processes — Programs in Motion</h2>
-      <p style={{ color: "#667", fontSize: 11, marginTop: 0, marginBottom: 16, fontStyle: "italic" }}>A program is a file on disk. A process is that file alive in memory.</p>
+      <p style={{ color: "var(--color-v2-text-muted)", fontSize: 11, marginTop: 0, marginBottom: 16, fontStyle: "italic" }}>A program is a file on disk. A process is that file alive in memory.</p>
 
       <p style={{ color: "#D0D4D8", fontSize: 12, lineHeight: 1.55 }}>
         A <strong style={{ color: "#E8ECF0" }}>program</strong> is a file on disk — a set of instructions. A <strong style={{ color: "#E8ECF0" }}>process</strong> is what happens when that program is loaded into memory and begins executing. The same program can have multiple processes running simultaneously (e.g., multiple users each running their own instance of a text editor).
@@ -3100,7 +3100,7 @@ function Section8({ markComplete }) {
   return (
     <div>
       <h2 style={{ color: "#E8ECF0", fontSize: 18, fontWeight: 700, margin: "0 0 6px 0" }}>8. Networking Fundamentals</h2>
-      <p style={{ color: "#667", fontSize: 11, marginTop: 0, marginBottom: 16, fontStyle: "italic" }}>The fabric that connects everything in the datacenter.</p>
+      <p style={{ color: "var(--color-v2-text-muted)", fontSize: 11, marginTop: 0, marginBottom: 16, fontStyle: "italic" }}>The fabric that connects everything in the datacenter.</p>
 
       <SectionHeading>IP Addresses — The Mailing Address</SectionHeading>
       <p style={{ color: "#D0D4D8", fontSize: 12, lineHeight: 1.55 }}>
@@ -3179,7 +3179,7 @@ function Section9({ markComplete }) {
   return (
     <div>
       <h2 style={{ color: "#E8ECF0", fontSize: 18, fontWeight: 700, margin: "0 0 6px 0" }}>9. Servers and the Datacenter Context</h2>
-      <p style={{ color: "#667", fontSize: 11, marginTop: 0, marginBottom: 16, fontStyle: "italic" }}>Where the hardware lives and how it all stays running.</p>
+      <p style={{ color: "var(--color-v2-text-muted)", fontSize: 11, marginTop: 0, marginBottom: 16, fontStyle: "italic" }}>Where the hardware lives and how it all stays running.</p>
 
       <SectionHeading>What Makes a Server a Server?</SectionHeading>
       <p style={{ color: "#D0D4D8", fontSize: 12, lineHeight: 1.55 }}>
@@ -3242,7 +3242,7 @@ function Section10({ markComplete }) {
   return (
     <div>
       <h2 style={{ color: "#E8ECF0", fontSize: 18, fontWeight: 700, margin: "0 0 6px 0" }}>10. Putting It All Together</h2>
-      <p style={{ color: "#667", fontSize: 11, marginTop: 0, marginBottom: 16, fontStyle: "italic" }}>The mental model you need before Level 2.</p>
+      <p style={{ color: "var(--color-v2-text-muted)", fontSize: 11, marginTop: 0, marginBottom: 16, fontStyle: "italic" }}>The mental model you need before Level 2.</p>
 
       <p style={{ color: "#D0D4D8", fontSize: 12, lineHeight: 1.55 }}>
         Before you proceed to Level 2, you should be able to hold this complete mental model:

@@ -11,7 +11,7 @@ export default function BootProcessPage() {
 
   return (
     <div className="min-h-screen bg-v2-bg-deep">
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
         {mode === "hub" && (
           <BootHub onLearn={() => setMode("learn")} onTriage={() => setMode("triage")} />
         )}
@@ -21,7 +21,7 @@ export default function BootProcessPage() {
         {mode === "triage" && (
           <BootTriage onBack={() => setMode("hub")} />
         )}
-      </main>
+      </div>
     </div>
   );
 }
@@ -41,8 +41,8 @@ function BootHub({ onLearn, onTriage }: { onLearn: () => void; onTriage: () => v
           className="text-left rounded-xl p-6 border border-forge-border bg-forge-surface hover:border-forge-accent/30 hover:bg-forge-accent/5 transition-all"
         >
           <div className="flex items-center gap-3 mb-3">
-            <span className="text-2xl text-forge-accent">&#9655;</span>
-            <span className="font-bold text-forge-accent">Learn</span>
+            <span className="text-2xl text-forge-accent-text">&#9655;</span>
+            <span className="font-bold text-forge-accent-text">Learn</span>
           </div>
           <p className="text-sm text-forge-text mb-3">
             Start with the 3-layer mental model, then walk through each boot stage with forced-recall checks, then go deep on tools, failure modes, and recovery.
@@ -81,11 +81,11 @@ function BootHub({ onLearn, onTriage }: { onLearn: () => void; onTriage: () => v
         </p>
         <div className="grid grid-cols-2 gap-3">
           <div className="bg-forge-bg rounded-lg p-3 border border-forge-border">
-            <p className="mono text-xs text-forge-accent font-bold mb-1">1. How far did it get?</p>
+            <p className="mono text-xs text-forge-accent-text font-bold mb-1">1. How far did it get?</p>
             <p className="text-[11px] text-forge-text-dim">Identify the phase — each phase has distinct symptoms.</p>
           </div>
           <div className="bg-forge-bg rounded-lg p-3 border border-forge-border">
-            <p className="mono text-xs text-forge-accent font-bold mb-1">2. What can I still reach?</p>
+            <p className="mono text-xs text-forge-accent-text font-bold mb-1">2. What can I still reach?</p>
             <p className="text-[11px] text-forge-text-dim">Determines which tools are available for diagnosis.</p>
           </div>
         </div>

@@ -39,7 +39,10 @@ export default function Nav() {
       className="sticky top-0 z-50 backdrop-blur-md"
       style={{
         background: "rgba(5, 5, 8, 0.85)",
-        borderBottom: "1px solid var(--color-v2-border)",
+        // An inset shadow, not a border: a border made the nav 57px while
+        // --chrome-h says 56, so every full-height page overflowed by 1px
+        // and grew a scrollbar.
+        boxShadow: "inset 0 -1px 0 var(--color-v2-border)",
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6">

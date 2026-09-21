@@ -62,13 +62,13 @@ export default function DiagnosisLabPage() {
   if (screen === "playing" && activeScenario) {
     return (
       <div className="min-h-screen bg-v2-bg-deep">
-        <main className="px-4 sm:px-6 py-8">
+        <div className="px-4 sm:px-6 py-8">
           <DiagnosisGame
             scenario={activeScenario}
             onComplete={handleDiagnosisComplete}
             onQuit={() => setScreen("browse")}
           />
-        </main>
+        </div>
       </div>
     );
   }
@@ -76,13 +76,13 @@ export default function DiagnosisLabPage() {
   if (screen === "results" && result && activeScenario) {
     return (
       <div className="min-h-screen bg-v2-bg-deep">
-        <main className="px-4 sm:px-6 py-8">
+        <div className="px-4 sm:px-6 py-8">
           <DiagnosisResults
             result={result}
             onPlayAgain={() => startScenario(activeScenario)}
             onBack={() => setScreen("browse")}
           />
-        </main>
+        </div>
       </div>
     );
   }
@@ -90,7 +90,7 @@ export default function DiagnosisLabPage() {
   // Browse scenarios
   return (
     <div className="min-h-screen bg-v2-bg-deep">
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
         <h1 className="text-2xl font-bold mono mb-1">Diagnosis Lab</h1>
         <p className="text-sm text-forge-text-dim mb-6">
           Step-by-step troubleshooting — {scenarios.length} scenarios across 4 difficulty levels
@@ -102,7 +102,7 @@ export default function DiagnosisLabPage() {
             onClick={() => setDifficultyFilter("all")}
             className={`px-3 py-1.5 rounded-lg text-xs mono border transition-colors ${
               difficultyFilter === "all"
-                ? "bg-forge-accent/20 text-forge-accent border-forge-accent/40"
+                ? "bg-forge-accent/20 text-forge-accent-text border-forge-accent/40"
                 : "border-forge-border text-forge-text-dim hover:text-forge-text"
             }`}
           >
@@ -117,7 +117,7 @@ export default function DiagnosisLabPage() {
                 onClick={() => setDifficultyFilter(d)}
                 className={`px-3 py-1.5 rounded-lg text-xs mono border transition-colors ${
                   difficultyFilter === d
-                    ? "bg-forge-accent/20 text-forge-accent border-forge-accent/40"
+                    ? "bg-forge-accent/20 text-forge-accent-text border-forge-accent/40"
                     : "border-forge-border text-forge-text-dim hover:text-forge-text"
                 }`}
               >
@@ -152,7 +152,7 @@ export default function DiagnosisLabPage() {
             );
           })}
         </div>
-      </main>
+      </div>
     </div>
   );
 }

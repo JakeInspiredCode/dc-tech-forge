@@ -348,7 +348,7 @@ function InlineStat({
       >
         {value}
       </span>
-      <span className="text-[10px] display-font tracking-[0.1em] text-[#6a7288] uppercase shrink-0">
+      <span className="text-[10px] display-font tracking-[0.1em] text-v2-text-muted uppercase shrink-0">
         {label}
       </span>
     </div>
@@ -532,7 +532,7 @@ export default function StatsSidebar({
             >
               Bounties
             </h2>
-            <span className="text-[10px] text-[#6a7288] tracking-wider uppercase" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            <span className="text-[10px] text-v2-text-muted tracking-wider uppercase" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
               Suggested review
             </span>
           </div>

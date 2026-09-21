@@ -73,7 +73,7 @@ export default function SpeedRunResults({
           <p className="text-xs mono text-forge-warning mb-2">🏆 New High Score!</p>
         )}
         <div className="flex items-center justify-center gap-2 mb-4">
-          <span className="text-3xl font-bold mono text-forge-accent">⚡ {summary.totalPoints}</span>
+          <span className="text-3xl font-bold mono text-forge-accent-text">⚡ {summary.totalPoints}</span>
           <span className="text-forge-text-dim">pts</span>
         </div>
 
@@ -123,7 +123,7 @@ export default function SpeedRunResults({
                       onClick={() => setExpandedCardId(isExpanded ? null : r.cardId)}
                     >
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs text-forge-text truncate group-hover:text-forge-accent transition-colors">
+                        <p className="text-xs text-forge-text truncate group-hover:text-forge-accent-text transition-colors">
                           {card.front.slice(0, 80)}
                         </p>
                       </div>
@@ -191,7 +191,7 @@ export default function SpeedRunResults({
         <button
           onClick={onPlayAgain}
           className="flex-1 py-2.5 rounded-lg border text-sm font-medium transition-colors
-            bg-forge-accent/15 text-forge-accent border-forge-accent/30 hover:bg-forge-accent/25"
+            bg-forge-accent/15 text-forge-accent-text border-forge-accent/30 hover:bg-forge-accent/25"
         >
           Play Again
         </button>
@@ -214,7 +214,7 @@ export default function SpeedRunResults({
               const acc = hs.totalCards > 0 ? Math.round((hs.correctCards / hs.totalCards) * 100) : 0;
               const date = new Date(hs.timestamp).toLocaleDateString("en-US", { month: "short", day: "numeric" });
               return (
-                <div key={i} className={`flex items-center gap-3 text-xs mono ${isNew ? "text-forge-accent" : "text-forge-text-dim"}`}>
+                <div key={i} className={`flex items-center gap-3 text-xs mono ${isNew ? "text-forge-accent-text" : "text-forge-text-dim"}`}>
                   <span className="w-4 text-right text-forge-text-muted">{i + 1}.</span>
                   <span className="font-bold text-forge-text">{hs.totalPoints} pts</span>
                   <span>{date}</span>

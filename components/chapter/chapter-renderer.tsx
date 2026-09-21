@@ -221,7 +221,7 @@ export default function ChapterRenderer({
             >
               ← Galaxy Map
             </Link>
-            <span style={{ color: "rgba(255,255,255,0.08)", fontSize: 13 }}>|</span>
+            <span aria-hidden="true" style={{ color: "rgba(255,255,255,0.25)", fontSize: 13 }}>|</span>
           </>
         )}
         <div
@@ -245,7 +245,7 @@ export default function ChapterRenderer({
           >
             {section.topicId} chapter
           </span>
-          <span style={{ color: "#445", fontSize: 11 }}>|</span>
+          <span style={{ color: "var(--color-v2-text-muted)", fontSize: 11 }}>|</span>
           <span
             style={{
               color: "#AAB4BE",

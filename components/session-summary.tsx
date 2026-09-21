@@ -118,7 +118,7 @@ export default function SessionSummary({ results, cards, duration, onClose }: Se
             <span className="block text-xs text-forge-text-dim mt-1">Accuracy</span>
           </div>
           <div className="bg-forge-surface-2 rounded-lg p-4 text-center">
-            <span className="text-2xl font-bold mono text-forge-accent">{profile?.totalPoints ?? 0}</span>
+            <span className="text-2xl font-bold mono text-forge-accent-text">{profile?.totalPoints ?? 0}</span>
             <span className="block text-xs text-forge-text-dim mt-1">Total Points</span>
           </div>
           <div className="bg-forge-surface-2 rounded-lg p-4 text-center">
@@ -150,7 +150,7 @@ export default function SessionSummary({ results, cards, duration, onClose }: Se
 
         <button
           onClick={onClose}
-          className="w-full py-3 bg-forge-accent/20 text-forge-accent border border-forge-accent/30 rounded-lg font-medium hover:bg-forge-accent/30 transition-colors"
+          className="w-full py-3 bg-forge-accent/20 text-forge-accent-text border border-forge-accent/30 rounded-lg font-medium hover:bg-forge-accent/30 transition-colors"
         >
           Continue
         </button>

@@ -39,7 +39,7 @@ export function Heading({
         {subtitle && (
           <p
             style={{
-              color: "#667",
+              color: "var(--color-v2-text-muted)",
               fontSize: 11,
               marginTop: 0,
               marginBottom: 16,
@@ -82,7 +82,7 @@ export function CodeBlock({
       {label && (
         <div
           style={{
-            color: "#607080",
+            color: "var(--color-v2-text-muted)",
             fontSize: 10,
             fontWeight: 600,
             marginBottom: 4,
@@ -515,7 +515,7 @@ export function KnowledgeCheck({
               flexWrap: "wrap",
             }}
           >
-            <span style={{ color: "#7090A8", fontSize: 10, marginRight: 4 }}>
+            <span style={{ color: "var(--color-v2-text-muted)", fontSize: 10, marginRight: 4 }}>
               Confidence:
             </span>
             {["Sure", "Unsure", "Guessing"].map((c) => (
@@ -537,7 +537,7 @@ export function KnowledgeCheck({
                     confidence === c
                       ? "none"
                       : "1px solid rgba(255,255,255,0.15)",
-                  color: confidence === c ? "#FFF" : "#8899AA",
+                  color: confidence === c ? "#FFF" : "var(--color-v2-text-muted)",
                   fontSize: 10,
                   fontWeight: 600,
                   cursor: "pointer",
@@ -736,7 +736,7 @@ export function Collapsible({
                   {!isOpen && (
                     <span
                       style={{
-                        color: "#8899AA",
+                        color: "var(--color-v2-text-muted)",
                         fontSize: 10,
                         fontStyle: "italic",
                       }}
@@ -746,7 +746,7 @@ export function Collapsible({
                   )}
                   <span
                     style={{
-                      color: "#8899AA",
+                      color: "var(--color-v2-text-muted)",
                       fontSize: 10,
                       flexShrink: 0,
                       transition: "transform 0.2s",
@@ -900,7 +900,6 @@ export function FillBlank({
                   fontFamily:
                     "'JetBrains Mono', 'Fira Code', monospace",
                   fontSize: 11,
-                  outline: "none",
                 }}
               />
             );
@@ -1221,7 +1220,7 @@ export function MCQInline({
               <span
                 style={{
                   fontWeight: 800,
-                  color: showState && isCorrectChoice ? "#9EE8AE" : "#7090A8",
+                  color: showState && isCorrectChoice ? "#9EE8AE" : "var(--color-v2-text-muted)",
                   minWidth: 18,
                 }}
               >
@@ -1243,7 +1242,7 @@ export function MCQInline({
             background: selected ? "#50C8FF" : "rgba(80,200,255,0.2)",
             border: "none",
             borderRadius: 6,
-            color: selected ? "#1A1A2E" : "#7090A8",
+            color: selected ? "#1A1A2E" : "var(--color-v2-text-muted)",
             fontWeight: 700,
             fontSize: 11,
             cursor: selected ? "pointer" : "not-allowed",

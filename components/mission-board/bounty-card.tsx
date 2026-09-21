@@ -64,11 +64,11 @@ export default function BountyCard({ bounty, campaignColor, onClick }: BountyCar
             {bounty.title}
           </div>
           <div className="flex items-center gap-1.5 mt-0.5">
-            <span className="text-[11px] telemetry-font text-[#6a7288]">
+            <span className="text-[11px] telemetry-font text-v2-text-muted">
               {bounty.estimatedMinutes}m
             </span>
-            <span className="text-[11px] text-[#444b5c]">|</span>
-            <span className="text-[11px] telemetry-font" style={{ color: `${color}99` }}>
+            <span className="text-[11px] text-v2-text-muted">|</span>
+            <span className="text-[11px] telemetry-font" style={{ color }}>
               +{bounty.xpReward} XP
             </span>
           </div>

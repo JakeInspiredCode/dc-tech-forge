@@ -17,9 +17,9 @@ export default function TierUnlockToast({ topicId, newTier, onDismiss }: TierUnl
   }, [onDismiss]);
 
   return (
-    <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[100] tier-unlock-toast">
+    <div role="status" className="fixed top-4 left-1/2 -translate-x-1/2 z-[100] tier-unlock-toast">
       <div className="bg-forge-accent/95 text-white px-6 py-3 rounded-xl shadow-lg flex items-center gap-3">
-        <span className="text-lg">▲</span>
+        <span className="text-lg" aria-hidden="true">▲</span>
         <div>
           <span className="font-semibold text-sm block">
             Tier {newTier} Unlocked

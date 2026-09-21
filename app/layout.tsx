@@ -55,10 +55,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className="dark">
       <body className="min-h-screen">
+        {/* First stop for a keyboard: jump past the nav. Hidden until focused. */}
+        <a href="#main-content" className="skip-link">Skip to main content</a>
         <DataProvider>
           <Nav />
           <SampleDataBanner />
-          {children}
+          {/* The one <main> landmark. Pages render plain <div>s inside it;
+              tabIndex lets the skip link move focus here, not just scroll. */}
+          <main id="main-content" tabIndex={-1}>
+            {children}
+          </main>
           <BadgeBanner />
         </DataProvider>
       </body>

@@ -5,7 +5,7 @@ export const metadata: Metadata = { title: "Off the map" };
 
 export default function NotFound() {
   return (
-    <main className="h-[calc(100vh-var(--chrome-h))] w-full flex items-center justify-center p-6">
+    <div className="h-[calc(100vh-var(--chrome-h))] w-full flex items-center justify-center p-6">
       <div className="max-w-md text-center">
         <p className="telemetry-font text-sm tracking-widest text-v2-amber mb-3">404 · NO SIGNAL</p>
         <h1 className="display-font text-2xl text-v2-cyan tracking-wider mb-4">Off the map</h1>
@@ -27,6 +27,6 @@ export default function NotFound() {
           </Link>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

@@ -49,7 +49,7 @@ export default function LoadoutEditor({ steps, onConfirm, onCancel }: LoadoutEdi
                 className={`w-full flex items-center gap-3 p-3 rounded transition-colors text-left ${
                   enabled[step.id]
                     ? "bg-v2-bg-elevated border border-v2-cyan/20"
-                    : "bg-v2-bg-surface border border-v2-border opacity-50"
+                    : "bg-v2-bg-surface border border-v2-border opacity-75"
                 }`}
               >
                 {/* Toggle */}

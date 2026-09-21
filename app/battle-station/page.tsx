@@ -63,7 +63,7 @@ function Toggle({
             borderRight: i === 0 ? "1px solid #141825" : "none",
             background: value === o.val ? `${accent}10` : "transparent",
             fontSize: 11,
-            color: value === o.val ? accent : "#3a4258",
+            color: value === o.val ? accent : "var(--color-v2-text-muted)",
             letterSpacing: "0.06em",
           }}
         >
@@ -155,7 +155,7 @@ function StatCircle({
       </div>
       <span
         className="mono text-[10px] 2xl:text-[11px] tracking-[0.12em] mt-1"
-        style={{ color: "#6a7a94" }}
+        style={{ color: "var(--color-v2-text-muted)" }}
       >
         {label}
       </span>
@@ -426,13 +426,13 @@ export default function BattleStationPage() {
             >
               {TICKET_LEVELS[activeDifficulty].label.toUpperCase()}
             </span>
-            <span className="mono text-[10px] 2xl:text-[11px]" style={{ color: "#6a7a94" }}>
+            <span className="mono text-[10px] 2xl:text-[11px]" style={{ color: "var(--color-v2-text-muted)" }}>
               {cat?.done ?? 0}/{cat?.total ?? 0}
             </span>
           </div>
 
           {/* Description */}
-          <div className="text-[11px] 2xl:text-[12px] mb-2 shrink-0" style={{ color: "#6a7a94" }}>
+          <div className="text-[11px] 2xl:text-[12px] mb-2 shrink-0" style={{ color: "var(--color-v2-text-muted)" }}>
             {TICKET_LEVELS[activeDifficulty].description}
           </div>
 
@@ -473,7 +473,7 @@ export default function BattleStationPage() {
                   }}
                 >
                   {/* Index */}
-                  <span className="mono text-[10px] 2xl:text-[11px] w-3 text-right" style={{ color: "#3e4e64" }}>
+                  <span className="mono text-[10px] 2xl:text-[11px] w-3 text-right" style={{ color: "var(--color-v2-text-muted)" }}>
                     {i + 1}
                   </span>
 
@@ -492,9 +492,9 @@ export default function BattleStationPage() {
                     <div
                       className="text-[11px] 2xl:text-xs font-medium truncate"
                       style={{
-                        color: isDone ? "#4a5268" : "#e0e4ec",
+                        color: isDone ? "var(--color-v2-text-muted)" : "#e0e4ec",
                         textDecorationLine: isDone ? "line-through" : "none",
-                        textDecorationColor: "#4a5a70",
+                        textDecorationColor: "var(--color-v2-text-muted)",
                         textDecorationStyle: "solid",
                       }}
                     >
@@ -503,7 +503,7 @@ export default function BattleStationPage() {
                     <div
                       className="text-[11px] 2xl:text-[12px] overflow-hidden transition-all duration-200 leading-snug"
                       style={{
-                        color: "#6a7a94",
+                        color: "var(--color-v2-text-muted)",
                         maxHeight: isHov ? 60 : 0,
                       }}
                     >
@@ -514,7 +514,7 @@ export default function BattleStationPage() {
                   {/* XP */}
                   <span
                     className="mono text-[11px] shrink-0"
-                    style={{ color: sectorColor, opacity: isDone ? 0.2 : 0.45 }}
+                    style={{ color: sectorColor, opacity: isDone ? 0.7 : 1 }}
                   >
                     {ticket.xpReward}xp
                   </span>
@@ -534,7 +534,7 @@ export default function BattleStationPage() {
             })}
 
             {activeTickets.length === 0 && (
-              <div className="text-center py-12 text-sm" style={{ color: "#6a7a94" }}>
+              <div className="text-center py-12 text-sm" style={{ color: "var(--color-v2-text-muted)" }}>
                 No tickets at this difficulty level.
               </div>
             )}
@@ -546,7 +546,7 @@ export default function BattleStationPage() {
             style={{ borderTop: "1px solid #0e1420" }}
           >
             <div className="flex items-center gap-1.5">
-              <span className="mono text-[10px] 2xl:text-[11px] tracking-[0.1em]" style={{ color: "#5a6a82" }}>
+              <span className="mono text-[10px] 2xl:text-[11px] tracking-[0.1em]" style={{ color: "var(--color-v2-text-muted)" }}>
                 ORDER
               </span>
               <Toggle
@@ -558,7 +558,7 @@ export default function BattleStationPage() {
               />
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="mono text-[10px] 2xl:text-[11px] tracking-[0.1em]" style={{ color: "#5a6a82" }}>
+              <span className="mono text-[10px] 2xl:text-[11px] tracking-[0.1em]" style={{ color: "var(--color-v2-text-muted)" }}>
                 LOOP
               </span>
               <Toggle

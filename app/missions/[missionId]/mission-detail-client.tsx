@@ -12,7 +12,7 @@ export default function MissionDetailClient({ missionId }: { missionId: string }
   if (!mission) {
     return (
       <>
-        <main className="relative min-h-screen bg-v2-bg-deep">
+        <div className="relative min-h-screen bg-v2-bg-deep">
           <ScanOverlay />
           <div className="relative z-10 max-w-2xl mx-auto px-4 py-20 text-center">
             <h1 className="display-font text-xl text-v2-warning mb-2">
@@ -28,19 +28,19 @@ export default function MissionDetailClient({ missionId }: { missionId: string }
               ← Return to Galaxy Map
             </button>
           </div>
-        </main>
+        </div>
       </>
     );
   }
 
   return (
     <>
-      <main className="relative min-h-screen bg-v2-bg-deep">
+      <div className="relative min-h-screen bg-v2-bg-deep">
         <ScanOverlay />
         <div className="relative z-10 px-4 py-6">
           <MissionPlayer mission={mission} />
         </div>
-      </main>
+      </div>
     </>
   );
 }

@@ -10,6 +10,7 @@ import { TOPICS } from "@/lib/types";
 import { resetPersistedData } from "@/lib/data/persistence";
 import DataSettings from "@/components/profile/data-settings";
 import { BRAND } from "@/lib/brand";
+import { V2 } from "@/lib/design/forge-v2-tokens";
 
 const RESET_PHRASE = "RESET";
 const dangerColor = "#ef4444";
@@ -21,7 +22,7 @@ const accentGlow = "rgba(224, 228, 236, 0.2)";
 
 // ── SVG icons for tabs ──
 function TabIcon({ tab, active }: { tab: string; active: boolean }) {
-  const color = active ? accentColor : "#6a7288";
+  const color = active ? accentColor : V2.text.muted;
   const common = { width: 12, height: 12, viewBox: "0 0 16 16", fill: "none", stroke: color, strokeWidth: 1.4, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
   switch (tab) {
     case "stats":
@@ -79,7 +80,7 @@ function ProfileGauge({ value, label, suffix, color, max }: { value: number | st
 
 // ── Badge icon (SVG, no emoji) ──
 function BadgeIcon({ earned }: { earned: boolean }) {
-  const color = earned ? accentColor : "#333845";
+  const color = earned ? accentColor : V2.text.muted;
   return (
     <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
       {/* Hexagon */}
@@ -206,7 +207,7 @@ export default function ProfilePage() {
                 onClick={() => setActiveTab(tab.id)}
                 className="flex items-center gap-1.5 px-3 sm:px-4 py-0 transition-all duration-200"
                 style={{
-                  color: activeTab === tab.id ? accentColor : "#6a7288",
+                  color: activeTab === tab.id ? accentColor : V2.text.muted,
                   borderBottom: activeTab === tab.id ? `1px solid ${accentColor}60` : "1px solid transparent",
                   fontFamily: "'Chakra Petch', sans-serif",
                   fontSize: 12,
@@ -260,7 +261,7 @@ export default function ProfilePage() {
                   >
                     Earned Badges
                   </h2>
-                  <span className="text-[11px] telemetry-font text-[#6a7288]">
+                  <span className="text-[11px] telemetry-font text-v2-text-muted">
                     {profile?.badges?.length ?? 0} earned
                   </span>
                 </div>
@@ -393,8 +394,8 @@ export default function ProfilePage() {
                                   : `${dangerColor}20`
                               }`,
                               color:
-                                resetPhrase === RESET_PHRASE ? dangerColor : "#6a7288",
-                              opacity: resetPhrase === RESET_PHRASE ? 1 : 0.55,
+                                resetPhrase === RESET_PHRASE ? dangerColor : V2.text.muted,
+                              opacity: resetPhrase === RESET_PHRASE ? 1 : 0.8,
                             }}
                           >
                             <span className="text-[11px] display-font tracking-wider uppercase">

@@ -119,7 +119,7 @@ function CmdDetail({ info, onClose }: { info: CmdInfo; onClose: () => void }) {
         {info.purpose}
       </div>
       <div className="text-[10px] text-forge-text-muted">
-        <span className="text-forge-accent/70 font-bold">FLAGS: </span>
+        <span className="text-forge-accent-text/70 font-bold">FLAGS: </span>
         {info.flags}
       </div>
     </div>
@@ -154,13 +154,13 @@ function CommandGroupSection({
         onClick={() => setCollapsed(!collapsed)}
         className="w-full flex items-center gap-2 px-2.5 py-2 text-left hover:bg-forge-surface-2 transition-colors"
       >
-        <span className="text-forge-text-muted/50 text-[10px] shrink-0">
+        <span className="text-forge-text-muted text-[10px] shrink-0">
           {collapsed ? "+" : "\u2212"}
         </span>
         <span className="mono text-[9px] text-forge-text-muted font-bold tracking-wider flex-1">
           {group.title.toUpperCase()}
         </span>
-        <span className="mono text-[9px] text-forge-text-muted/50">
+        <span className="mono text-[9px] text-forge-text-muted">
           {practiceMode ? `${hitCount}/` : ""}{total}
         </span>
       </button>
@@ -190,11 +190,11 @@ function CommandGroupSection({
                 }`}
               >
                 {practiceMode && (
-                  <span className={`shrink-0 text-[9px] ${isHit ? "text-green-400" : "text-forge-text-muted/30"}`}>
+                  <span className={`shrink-0 text-[9px] ${isHit ? "text-green-400" : "text-forge-text-muted"}`}>
                     {isHit ? "\u2713" : "\u25CB"}
                   </span>
                 )}
-                <span className={`truncate ${practiceMode && isHit ? "line-through opacity-50" : ""}`}>
+                <span className={`truncate ${practiceMode && isHit ? "line-through opacity-70" : ""}`}>
                   $ {info.cmd}
                 </span>
               </button>
@@ -210,7 +210,7 @@ function CommandGroupSection({
             className={`mt-1.5 w-full mono text-[9px] px-2 py-1 rounded border transition-colors ${
               practiceMode
                 ? "border-green-400/40 text-green-400 bg-green-400/10 hover:bg-green-400/20"
-                : "border-forge-border text-forge-text-muted hover:border-forge-accent hover:text-forge-accent"
+                : "border-forge-border text-forge-text-muted hover:border-forge-accent hover:text-forge-accent-text"
             }`}
           >
             {practiceMode
@@ -298,7 +298,7 @@ export default function TerminalPage() {
 
   return (
     <>
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
         {/* Header */}
         <div className="flex items-end justify-between mb-4">
           <div>
@@ -324,7 +324,7 @@ export default function TerminalPage() {
                 className="mono text-[10px] px-2 py-1 rounded transition-all"
                 style={{
                   background: termHeight === p.height ? "rgba(34,197,94,0.15)" : "transparent",
-                  color: termHeight === p.height ? "#22c55e" : "#555",
+                  color: termHeight === p.height ? "#22c55e" : "var(--color-v2-text-muted)",
                   border: `1px solid ${termHeight === p.height ? "rgba(34,197,94,0.3)" : "#222"}`,
                 }}
               >
@@ -390,7 +390,7 @@ export default function TerminalPage() {
             />
           ))}
         </div>
-      </main>
+      </div>
     </>
   );
 }

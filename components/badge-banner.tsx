@@ -67,23 +67,30 @@ export default function BadgeBanner() {
     return () => clearTimeout(timer);
   }, [queue, current]);
 
-  if (!current) return null;
+  const icon = current
+    ? BADGE_ICONS[BADGE_DEFS.find((b) => b.id === current.badgeId)?.icon ?? ""] ?? "🏆"
+    : null;
 
-  const icon = BADGE_ICONS[BADGE_DEFS.find((b) => b.id === current.badgeId)?.icon ?? ""] ?? "🏆";
-
+  // The live region stays mounted (empty and inert) so a screen reader
+  // announces the banner when it is inserted.
   return (
-    <div className="fixed top-0 left-0 right-0 z-[100] flex justify-center pointer-events-none px-4 pt-4">
+    <div
+      role="status"
+      aria-live="polite"
+      className="fixed top-0 left-0 right-0 z-[100] flex justify-center pointer-events-none px-4 pt-4"
+    >
+      {current && (
       <div
         key={current.id}
         className="badge-banner pointer-events-auto max-w-md w-full"
       >
         <div className="badge-shimmer bg-forge-surface border-2 border-forge-accent/50 rounded-xl px-6 py-4 shadow-2xl shadow-forge-accent/20">
           <div className="flex items-center gap-4">
-            <div className="badge-icon-pop text-3xl shrink-0">
+            <div className="badge-icon-pop text-3xl shrink-0" aria-hidden="true">
               {icon}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[11px] uppercase tracking-widest text-forge-accent mono mb-0.5">
+              <p className="text-[11px] uppercase tracking-widest text-forge-accent-text mono mb-0.5">
                 Badge Earned
               </p>
               <p className="text-base font-bold text-forge-text truncate">
@@ -96,6 +103,7 @@ export default function BadgeBanner() {
           </div>
         </div>
       </div>
+      )}
     </div>
   );
 }

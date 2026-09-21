@@ -50,7 +50,7 @@ export default function SpeedRunInput({ card, onSubmit, disabled }: SpeedRunInpu
       <div className="relative">
         <div className="bg-forge-surface border border-forge-border rounded-xl overflow-hidden focus-within:border-forge-accent/50 transition-colors">
           <div className="flex items-center gap-2 px-4 pt-3 pb-1 border-b border-forge-border/50">
-            <span className="text-forge-accent mono text-sm">›</span>
+            <span className="text-forge-accent-text mono text-sm">›</span>
             <span className="text-xs text-forge-text-muted mono">
               {isCommand ? "command" : "answer"} — Enter to submit
             </span>
@@ -70,7 +70,7 @@ export default function SpeedRunInput({ card, onSubmit, disabled }: SpeedRunInpu
             className={`
               w-full bg-transparent px-4 py-3 mono text-sm text-forge-text
               placeholder:text-forge-text-muted resize-none outline-none
-              ${disabled ? "opacity-40" : ""}
+              ${disabled ? "opacity-50" : ""}
             `}
           />
         </div>
@@ -80,8 +80,8 @@ export default function SpeedRunInput({ card, onSubmit, disabled }: SpeedRunInpu
           onClick={handleSubmit}
           disabled={disabled}
           className="absolute right-3 bottom-3 px-3 py-1 rounded text-xs mono
-            bg-forge-accent/20 text-forge-accent border border-forge-accent/30
-            hover:bg-forge-accent/30 transition-colors disabled:opacity-40"
+            bg-forge-accent/20 text-forge-accent-text border border-forge-accent/30
+            hover:bg-forge-accent/30 transition-colors disabled:opacity-50"
         >
           Submit
         </button>

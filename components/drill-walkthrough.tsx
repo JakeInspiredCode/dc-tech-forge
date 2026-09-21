@@ -263,7 +263,7 @@ export default function DrillWalkthrough({
               className="px-5 py-2 rounded-lg font-bold mono text-xs transition-all"
               style={{
                 background: userInput.trim() ? "#ef4444" : "#222",
-                color: userInput.trim() ? "#fff" : "#555",
+                color: userInput.trim() ? "#fff" : "var(--color-v2-text-muted)",
                 cursor: userInput.trim() ? "pointer" : "default",
               }}
             >

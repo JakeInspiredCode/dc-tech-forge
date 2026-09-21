@@ -26,7 +26,7 @@ export default function DiagnosisResults({ result, onPlayAgain, onBack }: Props)
           <span className="block text-xs text-forge-text-dim mt-1">First-try accuracy</span>
         </div>
         <div className="bg-forge-surface border border-forge-border rounded-xl p-4 text-center">
-          <span className="text-2xl font-bold mono text-forge-accent">{totalCorrectFirstTry}/{totalSteps}</span>
+          <span className="text-2xl font-bold mono text-forge-accent-text">{totalCorrectFirstTry}/{totalSteps}</span>
           <span className="block text-xs text-forge-text-dim mt-1">Steps correct</span>
         </div>
         <div className="bg-forge-surface border border-forge-border rounded-xl p-4 text-center">
@@ -58,7 +58,7 @@ export default function DiagnosisResults({ result, onPlayAgain, onBack }: Props)
               </span>
             </div>
             <p className="text-xs text-forge-text">{sr.step.prompt}</p>
-            <code className="text-[11px] mono text-forge-accent mt-1 block">{sr.step.command}</code>
+            <code className="text-[11px] mono text-forge-accent-text mt-1 block">{sr.step.command}</code>
           </div>
         ))}
       </div>

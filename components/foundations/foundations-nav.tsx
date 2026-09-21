@@ -16,7 +16,7 @@ export default function FoundationsNav({ activeSection, sidebarOpen, onGoTo }: F
       transition: "width 0.25s ease", zIndex: 50,
     }}>
       <div style={{ width: 280, padding: "16px 12px" }}>
-        <div style={{ color: "#556", fontSize: 12, fontWeight: 700, letterSpacing: "1px", padding: "8px 12px", marginBottom: 4 }}>
+        <div style={{ color: "var(--color-v2-text-muted)", fontSize: 12, fontWeight: 700, letterSpacing: "1px", padding: "8px 12px", marginBottom: 4 }}>
           SECTIONS
         </div>
         {SECTIONS.map((s) => (
@@ -29,11 +29,11 @@ export default function FoundationsNav({ activeSection, sidebarOpen, onGoTo }: F
             <span style={{
               width: 28, height: 28, borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center",
               background: activeSection === s.id ? "rgba(80,200,255,0.2)" : "rgba(255,255,255,0.04)",
-              color: activeSection === s.id ? "#50C8FF" : "#556", fontSize: 13, fontWeight: 700,
+              color: activeSection === s.id ? "#50C8FF" : "var(--color-v2-text-muted)", fontSize: 13, fontWeight: 700,
               border: `1px solid ${activeSection === s.id ? "rgba(80,200,255,0.3)" : "rgba(255,255,255,0.06)"}`,
             }}>{s.id}</span>
             <span style={{
-              color: activeSection === s.id ? "#E8ECF0" : "#889", fontSize: 13, fontWeight: 500,
+              color: activeSection === s.id ? "#E8ECF0" : "var(--color-v2-text-muted)", fontSize: 13, fontWeight: 500,
               overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
             }}>{s.title}</span>
           </button>

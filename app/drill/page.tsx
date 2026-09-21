@@ -81,7 +81,7 @@ function ScenarioCard({
           </span>
         ))}
         {attempts > 0 && (
-          <span className="mono text-[9px] text-forge-accent">
+          <span className="mono text-[9px] text-forge-accent-text">
             {attempts} attempt{attempts !== 1 ? "s" : ""}
           </span>
         )}
@@ -97,19 +97,19 @@ export default function DrillPage() {
   if (activeScenario) {
     return (
       <>
-        <main className="py-6">
+        <div className="py-6">
           <DrillWalkthrough
             scenario={activeScenario}
             onComplete={() => setActiveScenario(null)}
           />
-        </main>
+        </div>
       </>
     );
   }
 
   return (
     <>
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
         <div className="mb-8">
           <h1 className="mono text-xl font-bold text-forge-danger mb-1">
             Incident Drills
@@ -170,7 +170,7 @@ export default function DrillPage() {
             );
           })}
         </div>
-      </main>
+      </div>
     </>
   );
 }

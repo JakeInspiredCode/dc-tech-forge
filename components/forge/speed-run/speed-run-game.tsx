@@ -263,7 +263,7 @@ export default function SpeedRunGame({
           />
           {/* Keep card visible during feedback */}
           {currentCard && (
-            <div className="bg-forge-surface border border-forge-border rounded-xl p-6 min-h-[80px] flex items-center justify-center opacity-40">
+            <div className="bg-forge-surface border border-forge-border rounded-xl p-6 min-h-[80px] flex items-center justify-center opacity-70">
               <div className="text-sm text-forge-text-dim text-center mono">
                 {currentCard.front.slice(0, 100)}
               </div>

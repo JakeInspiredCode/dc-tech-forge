@@ -32,7 +32,7 @@ export default function QuickDrawResults({ summary, moduleName, onPlayAgain, onB
           <span className="block text-xs text-forge-text-dim mt-1">Accuracy</span>
         </div>
         <div className="bg-forge-surface border border-forge-border rounded-xl p-4 text-center">
-          <span className="text-2xl font-bold mono text-forge-accent">{correctCount}/{totalCount}</span>
+          <span className="text-2xl font-bold mono text-forge-accent-text">{correctCount}/{totalCount}</span>
           <span className="block text-xs text-forge-text-dim mt-1">Correct</span>
         </div>
         <div className="bg-forge-surface border border-forge-border rounded-xl p-4 text-center">

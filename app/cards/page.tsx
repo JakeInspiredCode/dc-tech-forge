@@ -101,7 +101,7 @@ export default function CardsPage() {
 
   return (
     <div className="min-h-screen bg-v2-bg-deep">
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         <div className="flex items-end justify-between mb-6">
           <div>
             <h1 className="text-xl font-bold mono mb-1">📇 Card Browser</h1>
@@ -239,7 +239,7 @@ export default function CardsPage() {
                   onClick={() => toggleExpand(card.id)}
                   className="w-full text-left px-4 py-3 flex items-center gap-3 hover:bg-forge-surface-2 transition-colors"
                 >
-                  <span className="mono text-forge-accent text-sm shrink-0">{topic?.icon ?? "?"}</span>
+                  <span className="mono text-forge-accent-text text-sm shrink-0">{topic?.icon ?? "?"}</span>
                   <span className="text-sm flex-1 truncate">{card.front}</span>
                   <span className={`text-[10px] mono shrink-0 ${statusColor[status]}`}>
                     {statusLabel[status]}
@@ -282,7 +282,7 @@ export default function CardsPage() {
             );
           })}
         </div>
-      </main>
+      </div>
     </div>
   );
 }

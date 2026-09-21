@@ -108,7 +108,7 @@ export default function GuidedTerminal({
                     </span>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <code className={`text-[11px] ${isDone ? "text-v2-cyan/60 line-through" : "text-v2-cyan"}`}>
+                        <code className={`text-[11px] ${isDone ? "text-v2-cyan/80 line-through" : "text-v2-cyan"}`}>
                           {task.command}
                         </code>
                         <span className="text-[10px] text-v2-text-muted truncate">{task.hint}</span>
