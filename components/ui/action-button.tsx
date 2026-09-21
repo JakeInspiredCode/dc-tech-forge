@@ -45,7 +45,7 @@ export default function ActionButton({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`inline-flex items-center justify-center gap-2 font-medium rounded transition-all duration-200 ${
+      className={`inline-flex items-center justify-center gap-2 font-medium rounded transition-all duration-200 max-md:min-h-[44px] ${
         variantStyles[variant]
       } ${sizeStyles[size]} ${
         disabled ? "opacity-60 cursor-not-allowed" : "cursor-pointer"

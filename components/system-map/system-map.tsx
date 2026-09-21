@@ -11,6 +11,7 @@ import { SESSION_KEYS, STORAGE_KEYS } from "@/lib/storage-keys";
 import type { Mission, MissionStatus, MissionStep } from "@/lib/types/campaign";
 import StarfieldCanvas from "@/components/star-map/starfield-canvas";
 import { useSvgMotionRef } from "@/lib/use-reduced-motion";
+import MissionList from "./mission-list";
 import ScanOverlay from "@/components/ui/scan-overlay";
 import CentralStar from "./central-star";
 import MissionNode from "./mission-node";
@@ -286,7 +287,7 @@ export default function SystemMap() {
   const hasNoCampaign = !isLoading && !activeCampaign;
 
   return (
-    <div className="h-[calc(100vh-var(--chrome-h))] w-full relative overflow-hidden" onMouseMove={handleMouseMove}>
+    <div className="h-below-chrome w-full relative overflow-hidden" onMouseMove={handleMouseMove}>
       <StarfieldCanvas />
       <ScanOverlay />
 
@@ -308,10 +309,24 @@ export default function SystemMap() {
         </div>
       </div>
 
-      {/* Main layout: map + sidebar */}
-      <div className="absolute inset-0 z-[5] flex flex-col md:flex-row pt-11 pb-1 px-1 gap-2">
-        {/* Solar system SVG — glass panel framed */}
-        <div className="flex-1 relative flex flex-col min-w-0 min-h-0">
+      {/* Main layout. From lg: orbit map + sidebar, filling the screen.
+          Below lg: one scrolling column — mission list, then campaign status.
+          (lg, not md: the orbit map needs ~650px to draw a title at 11px.) */}
+      <div className="absolute inset-0 z-[5] flex flex-col lg:flex-row pt-11 pb-1 px-1 gap-2 max-lg:px-3 max-lg:pb-3 overflow-y-auto lg:overflow-visible">
+        {!isLoading && !hasNoCampaign && (
+          <div className="lg:hidden shrink-0 pt-4">
+            <MissionList
+              missions={missions}
+              statuses={effectiveStatuses}
+              currentMissionIndex={currentMissionIndex}
+              campaignColor={campaignColor}
+              onOpen={handleMissionClick}
+            />
+          </div>
+        )}
+
+        {/* Solar system SVG — glass panel framed (lg and up) */}
+        <div className="hidden lg:flex flex-1 relative flex-col min-w-0 min-h-0">
           <div className="glass-panel-header">
             <span>
               Campaign Map
@@ -433,7 +448,7 @@ export default function SystemMap() {
         </div>
 
         {/* Right sidebar — Campaign Status (default) or Mission Preview (sticky) */}
-        <div className="md:w-[280px] lg:w-[320px] xl:w-[340px] shrink-0 flex flex-col min-h-0 max-h-[40vh] md:max-h-none">
+        <div className="lg:w-[320px] xl:w-[340px] shrink-0 flex flex-col lg:min-h-0">
           <div className="glass-panel-header">
             <span>
               {pinnedMission

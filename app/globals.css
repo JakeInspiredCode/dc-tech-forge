@@ -102,6 +102,14 @@ html.has-sample-banner {
   --chrome-h: 92px;
 }
 
+/* A screen that exactly fills the viewport below the app chrome. `dvh` follows
+   a phone's collapsing URL bar — with `vh` the bottom of every hub sat under
+   it — and `vh` stays as the fallback for browsers without dvh. */
+@utility h-below-chrome {
+  height: calc(100vh - var(--chrome-h));
+  height: calc(100dvh - var(--chrome-h));
+}
+
 /* First-run tour: the spotlight and its card glide between targets. */
 .tour-spot,
 .tour-card {
@@ -851,6 +859,30 @@ code, pre, .mono {
   text-transform: uppercase;
   color: rgba(6, 214, 214, 0.85);
   padding-left: 4px;
+}
+/* Below lg the hubs scroll, so the header is one line and an opaque bar —
+   the page passes underneath it. */
+@media (max-width: 1023px) {
+  .galaxy-header-bar {
+    padding: 10px 12px;
+    gap: 8px;
+    background: rgba(5, 5, 8, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .galaxy-header-bar > .flex {
+    min-width: 0;
+  }
+  .galaxy-title {
+    font-size: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+  .galaxy-subtitle {
+    white-space: nowrap;
+  }
 }
 .header-accent-line {
   flex: 1;

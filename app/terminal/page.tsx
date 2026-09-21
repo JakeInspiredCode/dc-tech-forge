@@ -183,7 +183,7 @@ function CommandGroupSection({
               <button
                 key={info.cmd}
                 onClick={() => onSelectCmd(isSelected ? null : info.cmd)}
-                className={`w-full text-left mono text-[10px] mb-0.5 px-1.5 py-0.5 rounded transition-colors flex items-center gap-1.5 ${
+                className={`w-full text-left mono text-[10px] max-md:text-xs mb-0.5 px-1.5 py-0.5 max-md:min-h-[36px] rounded transition-colors flex items-center gap-1.5 ${
                   isSelected
                     ? "bg-forge-accent/10 text-green-400"
                     : "text-green-400/70 hover:bg-forge-surface-2 hover:text-green-400"

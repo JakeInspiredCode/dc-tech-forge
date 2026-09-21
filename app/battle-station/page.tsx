@@ -57,7 +57,7 @@ function Toggle({
           type="button"
           aria-pressed={value === o.val}
           onClick={() => onChange(o.val)}
-          className="relative mono transition-all duration-200"
+          className="relative mono transition-all duration-200 max-md:min-h-[44px] max-md:min-w-[44px]"
           style={{
             padding: "4px 10px",
             border: "none",
@@ -348,7 +348,7 @@ export default function BattleStationPage() {
   // ── Playing screen ──
   if (screen === "playing" && activeTicket) {
     return (
-      <div className="h-[calc(100vh-var(--chrome-h))] bg-v2-bg-deep flex flex-col">
+      <div className="h-below-chrome bg-v2-bg-deep flex flex-col">
         <TicketTerminal
           key={terminalKey}
           ticket={activeTicket}
@@ -369,7 +369,10 @@ export default function BattleStationPage() {
 
   return (
     <div
-      className="w-full h-[calc(100vh-var(--chrome-h))] overflow-hidden flex flex-col"
+      // From md the screen is fixed-height with the radar beside the ticket
+      // list. On a phone the two stack and the page scrolls: side by side, the
+      // radar overflowed a 181px column and the list got 158px.
+      className="w-full md:h-below-chrome md:overflow-hidden max-md:min-h-[calc(100dvh-var(--chrome-h))] flex flex-col"
       style={{ background: "#03040a", fontFamily: "'IBM Plex Sans', sans-serif", color: "#e0e4ec" }}
     >
       {/* Header — compact on small windows */}
@@ -393,9 +396,9 @@ export default function BattleStationPage() {
       </div>
 
       {/* Main: Radar + Command List */}
-      <div className="flex-1 flex gap-1 2xl:gap-2 px-4 2xl:px-7 pb-3 2xl:pb-5 min-h-0 pt-1 2xl:pt-2">
+      <div className="flex-1 flex flex-col md:flex-row gap-1 2xl:gap-2 px-4 2xl:px-7 pb-3 2xl:pb-5 min-h-0 pt-1 2xl:pt-2">
         {/* Radar — fluid width, square aspect */}
-        <div className="flex-[5] min-w-0 min-h-0">
+        <div className="md:flex-[5] min-w-0 min-h-0 max-md:h-[min(88vw,360px)] max-md:shrink-0">
           <RadarCanvas
             categories={radarCategories}
             activeIdx={activeSectorIdx}
@@ -409,7 +412,7 @@ export default function BattleStationPage() {
 
         {/* Command list panel */}
         <div
-          className="flex-[4] flex flex-col min-h-0 min-w-0 pl-3 2xl:pl-5"
+          className="md:flex-[4] flex flex-col min-h-0 min-w-0 md:pl-3 2xl:pl-5 max-md:pt-3"
           style={{ borderLeft: `1px solid ${sectorColor}12` }}
         >
           {/* Section header */}
@@ -468,7 +471,7 @@ export default function BattleStationPage() {
                   onClick={() => startTicket(ticket)}
                   onMouseEnter={() => setHoveredItem(ticket.id)}
                   onMouseLeave={() => setHoveredItem(null)}
-                  className="flex items-center gap-2 2xl:gap-3 text-left rounded transition-all duration-150 cursor-pointer shrink-0"
+                  className="flex items-center gap-2 2xl:gap-3 text-left rounded transition-all duration-150 cursor-pointer shrink-0 max-md:min-h-[44px]"
                   style={{
                     padding: "4px 8px",
                     background: isHov ? `${sectorColor}06` : "transparent",
@@ -574,7 +577,7 @@ export default function BattleStationPage() {
             <div className="flex-1" />
             <button
               onClick={startSection}
-              className="mono text-[11px] 2xl:text-[12px] font-semibold tracking-[0.1em] cursor-pointer"
+              className="mono text-[11px] 2xl:text-[12px] font-semibold tracking-[0.1em] cursor-pointer max-md:min-h-[44px]"
               style={{
                 padding: "6px 14px",
                 background: `linear-gradient(135deg, ${sectorColor}14, ${sectorColor}08)`,

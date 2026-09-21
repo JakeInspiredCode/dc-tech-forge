@@ -1,6 +1,6 @@
 export default function MissionLoading() {
   return (
-    <div className="h-[calc(100vh-var(--chrome-h))] w-full bg-v2-bg-deep flex items-center justify-center">
+    <div className="h-below-chrome w-full bg-v2-bg-deep flex items-center justify-center">
       <div className="flex items-center gap-3">
         <span className="embark-dot" style={{ background: "#8eafc8" }} />
         <span className="embark-dot" style={{ background: "#8eafc8", animationDelay: "120ms" }} />

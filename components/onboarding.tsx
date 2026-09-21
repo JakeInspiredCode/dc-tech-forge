@@ -16,6 +16,7 @@ import { hasUserActivity } from "@/lib/data/activity";
 import { isSampleDataLoaded } from "@/lib/data/sample-flag";
 import { STORAGE_KEYS } from "@/lib/storage-keys";
 import { inflate, placeCard, type Placement, type Rect } from "@/lib/tour/placement";
+import { COMPACT_LAYOUT_QUERY, useMediaQuery } from "@/lib/use-media-query";
 
 const FIRST_MISSION_HREF = "/missions/linux-m01?autostart=true";
 /** The sector whose preview the tour keeps open. */
@@ -50,6 +51,24 @@ const STEPS: Step[] = [
   },
 ];
 
+// Below lg the maps are lists: there are no stars, and nothing to hover. The
+// same four beats, in words that match what is on screen — and the panel step
+// (a hover preview) becomes the "next step" button, which is what a phone has.
+const COMPACT_STEPS: Step[] = [
+  STEPS[0],
+  {
+    anchor: `[data-sector-id="${TOUR_SECTOR_ID}"]`,
+    title: "Each row is a skill area",
+    body: "This list is your curriculum. Each row is a sector — Linux, networking, hardware, and so on. Linux Operations, at the top, is the best place to start.",
+  },
+  {
+    anchor: '[data-tour="next-up"]',
+    title: "One next step, always",
+    body: "This button always points at your next mission. Whenever you are not sure what to do, it is the answer.",
+  },
+  STEPS[3],
+];
+
 export function isOnboardingDone(): boolean {
   try {
     return window.localStorage.getItem(STORAGE_KEYS.onboardingDone) === "true";
@@ -80,11 +99,13 @@ function sameRect(a: Rect | null, b: Rect | null): boolean {
 
 function rectOf(selector: string | undefined): Rect | null {
   if (!selector) return null;
-  const el = document.querySelector(selector);
-  if (!el) return null;
-  const r = el.getBoundingClientRect();
-  if (r.width === 0 || r.height === 0) return null;
-  return { x: r.x, y: r.y, width: r.width, height: r.height };
+  // The first match that is actually rendered: a sector exists twice in the DOM
+  // (the SVG planet, and the phone's list row) and only one is ever displayed.
+  for (const el of document.querySelectorAll(selector)) {
+    const r = el.getBoundingClientRect();
+    if (r.width > 0 && r.height > 0) return { x: r.x, y: r.y, width: r.width, height: r.height };
+  }
+  return null;
 }
 
 interface OnboardingProps {
@@ -108,9 +129,22 @@ export default function Onboarding({ onComplete, onFocusSector }: OnboardingProp
   const titleId = useId();
   const bodyId = useId();
 
-  const step = STEPS[index];
+  const compact = useMediaQuery(COMPACT_LAYOUT_QUERY);
+  const steps = compact ? COMPACT_STEPS : STEPS;
+  const step = steps[index];
   const isWelcome = index === 0;
-  const isLast = index === STEPS.length - 1;
+  const isLast = index === steps.length - 1;
+
+  // The compact layout scrolls, so a step's target may be off screen.
+  useEffect(() => {
+    if (!step.anchor) return;
+    for (const el of document.querySelectorAll(step.anchor)) {
+      const r = el.getBoundingClientRect();
+      if (r.width === 0) continue;
+      if (r.top < 64 || r.bottom > window.innerHeight - 16) el.scrollIntoView({ block: "center" });
+      break;
+    }
+  }, [step.anchor]);
 
   // Sample progress is only offered to an account with nothing in it.
   useEffect(() => {
@@ -272,7 +306,7 @@ export default function Onboarding({ onComplete, onFocusSector }: OnboardingProp
             className="telemetry-font text-[11px] tracking-widest mb-2"
             style={{ color: "var(--color-v2-amber-bright)" }}
           >
-            STEP {index} OF {STEPS.length - 1}
+            STEP {index} OF {steps.length - 1}
           </p>
         )}
         <h2 id={titleId} className="display-font text-lg tracking-wider mb-3" style={{ color: "var(--color-v2-cyan)" }}>

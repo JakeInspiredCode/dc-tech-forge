@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useCallback, useState } from "react";
 import { V2 } from "@/lib/design/forge-v2-tokens";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 
@@ -61,6 +61,15 @@ export default function RadarCanvas({
   // inside the <canvas>, so they are never painted: the wedge is drawn instead.
   const [focusIdx, setFocusIdx] = useState<number | null>(null);
   const reducedMotion = useReducedMotion();
+
+  // Size to the container before the first paint — the 380px default overflows
+  // a phone — then keep tracking it.
+  useLayoutEffect(() => {
+    const box = containerRef.current?.getBoundingClientRect();
+    if (box && box.width > 0 && box.height > 0) {
+      setCanvasSize(Math.max(160, Math.floor(Math.min(box.width, box.height))));
+    }
+  }, []);
 
   // Observe container size and pick the smaller dimension
   useEffect(() => {

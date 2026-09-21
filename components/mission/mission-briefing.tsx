@@ -73,7 +73,7 @@ export default function MissionBriefing({
           </span>
           <button
             onClick={onCustomize}
-            className="text-xs text-v2-cyan hover:text-v2-cyan-bright transition-colors"
+            className="text-xs text-v2-cyan hover:text-v2-cyan-bright transition-colors max-md:min-h-[44px] max-md:pl-3"
           >
             Customize loadout →
           </button>
