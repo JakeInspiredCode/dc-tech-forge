@@ -205,7 +205,7 @@ export default function TicketPanel({
             <div className="text-[11px] text-v2-text-dim leading-snug">
               {answerPrompt}
             </div>
-            <input
+            <input aria-label="Type your answer"
               type="text"
               value={answerText}
               onChange={(e) => setAnswerText(e.target.value)}

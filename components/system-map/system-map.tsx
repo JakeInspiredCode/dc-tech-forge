@@ -243,9 +243,11 @@ export default function SystemMap() {
   //   - pins the mission in the sidebar (sticky — drives the side panel)
   // Mouseleave clears activeHover but leaves pinnedMission alone, so users
   // can move the cursor off the planet to interact with the sidebar.
-  const handleMissionHover = useCallback((mission: Mission | null) => {
+  const handleMissionHover = useCallback((mission: Mission | null, at?: { x: number; y: number }) => {
     setActiveHover(mission);
     if (mission) setPinnedMission(mission);
+    // Keyboard focus has no cursor: anchor the tooltip to the planet instead.
+    if (at) setMousePos(at);
   }, []);
 
   const handleDeploy = useCallback((missionId: string, loadout: MissionStep[]) => {
@@ -289,7 +291,7 @@ export default function SystemMap() {
       <ScanOverlay />
 
       {/* Cockpit viewport vignette */}
-      <div className="viewport-vignette fixed inset-0 z-[8] pointer-events-none" />
+      <div className="viewport-vignette fixed inset-0 z-[8] pointer-events-none" aria-hidden="true" />
 
       {/* Header — top bar */}
       <div className="absolute top-0 left-0 right-0 z-10 pointer-events-none">
@@ -332,6 +334,8 @@ export default function SystemMap() {
             ) : (
               <svg
                 ref={svgMotionRef}
+                role="group"
+                aria-label={`${activeCampaign?.title ?? "Campaign"} missions, in order`}
                 viewBox="110 80 690 680"
                 preserveAspectRatio="xMidYMid meet"
                 className="w-full h-full relative z-[1]"

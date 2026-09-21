@@ -185,7 +185,7 @@ function HistorySection({
         Browse past sessions and find specific cards you've reviewed.
       </p>
 
-      <input
+      <input aria-label="Search session history by card question"
         type="text"
         placeholder='Search by card question — e.g. "what is iSCSI"'
         value={historySearch}

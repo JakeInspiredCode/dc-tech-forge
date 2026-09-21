@@ -252,7 +252,7 @@ export default function GalaxyMap({ tourSectorId = null }: GalaxyMapProps) {
       <ScanOverlay />
 
       {/* Cockpit viewport vignette */}
-      <div className="viewport-vignette fixed inset-0 z-[8] pointer-events-none" />
+      <div className="viewport-vignette fixed inset-0 z-[8] pointer-events-none" aria-hidden="true" />
 
       {/* Galaxy header */}
       <div className="absolute top-0 left-0 right-0 z-10">
@@ -276,6 +276,8 @@ export default function GalaxyMap({ tourSectorId = null }: GalaxyMapProps) {
             ) : (
               <svg
                 ref={svgMotionRef}
+                role="group"
+                aria-label="Sectors — each opens its campaign"
                 viewBox="0 0 1000 800"
                 preserveAspectRatio="xMidYMid meet"
                 className="w-full h-full relative z-[1]"

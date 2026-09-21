@@ -55,7 +55,7 @@ export default function SpeedRunInput({ card, onSubmit, disabled }: SpeedRunInpu
               {isCommand ? "command" : "answer"} — Enter to submit
             </span>
           </div>
-          <textarea
+          <textarea aria-label="Your answer"
             ref={inputRef}
             value={value}
             onChange={(e) => setValue(e.target.value)}

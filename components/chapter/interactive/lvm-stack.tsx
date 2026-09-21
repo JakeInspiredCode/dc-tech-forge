@@ -196,7 +196,7 @@ export default function LvmStack({
           <div style={{ fontSize: 10, color: "#9EE8AE", marginBottom: 6, fontWeight: 600 }}>
             Drag to resize the LV (lvextend / lvreduce)
           </div>
-          <input
+          <input aria-label="Logical volume size in GB"
             type="range"
             min={100}
             max={VG_TOTAL_GB}

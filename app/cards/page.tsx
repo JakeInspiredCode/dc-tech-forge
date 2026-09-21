@@ -121,7 +121,7 @@ export default function CardsPage() {
               className="px-3 py-1.5 text-xs mono border border-forge-border rounded-lg hover:bg-forge-surface-2 transition-colors">
               Export
             </button>
-            <input ref={fileInputRef} type="file" accept=".json" className="hidden" onChange={async (e) => {
+            <input aria-label="Import a card deck (JSON file)" ref={fileInputRef} type="file" accept=".json" className="hidden" onChange={async (e) => {
               const file = e.target.files?.[0];
               if (!file) return;
               const text = await file.text();
@@ -162,7 +162,7 @@ export default function CardsPage() {
         {showEditor && <CardEditor onClose={() => setShowEditor(false)} onCreated={() => {}} />}
 
         {/* Search */}
-        <input
+        <input aria-label="Search cards"
           type="text"
           placeholder="Search cards..."
           value={search}
@@ -172,13 +172,13 @@ export default function CardsPage() {
 
         {/* Filters */}
         <div className="flex flex-wrap gap-2 mb-6">
-          <select value={topicFilter} onChange={(e) => setTopicFilter(e.target.value)}
+          <select aria-label="Filter by topic" value={topicFilter} onChange={(e) => setTopicFilter(e.target.value)}
             className="bg-forge-surface border border-forge-border rounded-lg px-2 py-1.5 text-xs text-forge-text mono outline-none focus:border-forge-accent/50">
             <option value="all">All Topics</option>
             {TOPICS.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
           </select>
 
-          <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}
+          <select aria-label="Filter by card type" value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}
             className="bg-forge-surface border border-forge-border rounded-lg px-2 py-1.5 text-xs text-forge-text mono outline-none focus:border-forge-accent/50">
             <option value="all">All Types</option>
             <option value="easy">Easy</option>
@@ -186,7 +186,7 @@ export default function CardsPage() {
             <option value="scenario">Scenario</option>
           </select>
 
-          <select value={difficultyFilter} onChange={(e) => setDifficultyFilter(e.target.value)}
+          <select aria-label="Filter by difficulty" value={difficultyFilter} onChange={(e) => setDifficultyFilter(e.target.value)}
             className="bg-forge-surface border border-forge-border rounded-lg px-2 py-1.5 text-xs text-forge-text mono outline-none focus:border-forge-accent/50">
             <option value="all">All Difficulty</option>
             <option value="1">★</option>
@@ -194,7 +194,7 @@ export default function CardsPage() {
             <option value="3">★★★</option>
           </select>
 
-          <select value={tierFilter} onChange={(e) => setTierFilter(e.target.value)}
+          <select aria-label="Filter by tier" value={tierFilter} onChange={(e) => setTierFilter(e.target.value)}
             className="bg-forge-surface border border-forge-border rounded-lg px-2 py-1.5 text-xs text-forge-text mono outline-none focus:border-forge-accent/50">
             <option value="all">All Tiers</option>
             <option value="1">Tier 1</option>
@@ -203,7 +203,7 @@ export default function CardsPage() {
             <option value="4">Tier 4</option>
           </select>
 
-          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
+          <select aria-label="Filter by review status" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
             className="bg-forge-surface border border-forge-border rounded-lg px-2 py-1.5 text-xs text-forge-text mono outline-none focus:border-forge-accent/50">
             <option value="all">All Status</option>
             <option value="new">New</option>
@@ -212,7 +212,7 @@ export default function CardsPage() {
             <option value="overdue">Overdue</option>
           </select>
 
-          <select value={sortBy} onChange={(e) => setSortBy(e.target.value as SortKey)}
+          <select aria-label="Sort cards by" value={sortBy} onChange={(e) => setSortBy(e.target.value as SortKey)}
             className="bg-forge-surface border border-forge-border rounded-lg px-2 py-1.5 text-xs text-forge-text mono outline-none focus:border-forge-accent/50">
             <option value="topic">Sort: Topic</option>
             <option value="type">Sort: Type</option>

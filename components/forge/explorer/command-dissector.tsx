@@ -146,7 +146,7 @@ export default function CommandDissector({ onBack }: Props) {
       </div>
 
       {/* Search */}
-      <input
+      <input aria-label="Search commands"
         type="text"
         value={search}
         onChange={(e) => setSearch(e.target.value)}

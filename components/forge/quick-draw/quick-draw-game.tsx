@@ -195,7 +195,7 @@ export default function QuickDrawGame({ items, mode, onComplete, onQuit }: Props
       {/* Answer input */}
       {mode === "type" && !showFeedback && (
         <form onSubmit={handleSubmit}>
-          <input
+          <input aria-label="Type your answer"
             ref={inputRef}
             type="text"
             value={userInput}

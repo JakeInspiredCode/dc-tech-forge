@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { SpeedRunSummary } from "./speed-run-game";
 import { ForgeCard } from "@/lib/types";
+import { onActivate } from "@/lib/a11y";
 
 interface HighScore {
   totalPoints: number;
@@ -119,8 +120,12 @@ export default function SpeedRunResults({
                 return (
                   <div key={r.cardId} className="px-5 py-2.5">
                     <div
+                      role="button"
+                      tabIndex={0}
+                      aria-expanded={isExpanded}
                       className="flex items-start justify-between gap-2 cursor-pointer group"
                       onClick={() => setExpandedCardId(isExpanded ? null : r.cardId)}
+                      onKeyDown={onActivate(() => setExpandedCardId(isExpanded ? null : r.cardId))}
                     >
                       <div className="flex-1 min-w-0">
                         <p className="text-xs text-forge-text truncate group-hover:text-forge-accent-text transition-colors">

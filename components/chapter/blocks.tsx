@@ -10,6 +10,7 @@ import type {
   TableCell,
 } from "@/lib/types/chapter";
 import { Prose } from "./prose";
+import { onActivate } from "@/lib/a11y";
 
 // ─── Heading ────────────────────────────────────────────────────────────────
 
@@ -358,7 +359,7 @@ export function ThinkAboutIt({
       )}
       {!revealed && (
         <>
-          <textarea
+          <textarea aria-label="Your answer"
             value={userAnswer}
             onChange={(e) => setUserAnswer(e.target.value)}
             placeholder="Try to answer before revealing — or reveal when ready..."
@@ -488,7 +489,7 @@ export function KnowledgeCheck({
       </div>
       {!revealed && (
         <>
-          <textarea
+          <textarea aria-label="Your answer"
             value={userAnswer}
             onChange={(e) => setUserAnswer(e.target.value)}
             placeholder="Try to answer before checking — or check when ready..."
@@ -724,6 +725,10 @@ export function Collapsible({
               }}
             >
               <div
+                role="button"
+                tabIndex={0}
+                aria-expanded={isOpen}
+                onKeyDown={onActivate(() => toggle(i))}
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -873,6 +878,7 @@ export function FillBlank({
             return (
               <input
                 key={idx}
+                aria-label={`Blank ${slotIdx + 1}`}
                 value={val}
                 onChange={(e) => updateValue(slotIdx, e.target.value)}
                 placeholder={slot.hint ?? "…"}
@@ -1033,7 +1039,11 @@ function FlipCard({ card, index }: { card: FlipCardItem; index: number }) {
   const accent = COLLAPSIBLE_COLORS[index % COLLAPSIBLE_COLORS.length];
   return (
     <div
+      role="button"
+      tabIndex={0}
+      aria-pressed={flipped}
       onClick={() => setFlipped((f) => !f)}
+      onKeyDown={onActivate(() => setFlipped((f) => !f))}
       style={{
         position: "relative",
         minHeight: 140,

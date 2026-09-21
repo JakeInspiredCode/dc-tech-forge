@@ -240,13 +240,13 @@ function ChunkBlock({
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <label className="text-xs text-forge-text-dim shrink-0">Summary:</label>
-                <input
+                <input aria-label="Summary"
                   value={editSummary}
                   onChange={(e) => setEditSummary(e.target.value)}
                   className="flex-1 bg-forge-surface-2 border border-forge-border rounded px-2 py-1 text-sm focus:border-forge-accent focus:outline-none"
                 />
               </div>
-              <textarea
+              <textarea aria-label="Story text"
                 value={editContent}
                 onChange={(e) => setEditContent(e.target.value)}
                 rows={5}

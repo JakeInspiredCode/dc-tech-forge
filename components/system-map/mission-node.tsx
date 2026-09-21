@@ -15,9 +15,18 @@ interface MissionNodeProps {
   campaignColor: string;
   isCurrent: boolean;
   isHovered: boolean;
-  onHover: (mission: Mission | null) => void;
+  /** `at` anchors the tooltip when there is no cursor (keyboard focus). */
+  onHover: (mission: Mission | null, at?: { x: number; y: number }) => void;
   onClick: (mission: Mission) => void;
 }
+
+const STATUS_WORDS: Record<MissionStatus, string> = {
+  locked: "locked",
+  available: "not started",
+  "in-progress": "in progress",
+  accomplished: "completed",
+  decaying: "needs review",
+};
 
 // Deterministic hash from mission id — consistent per-planet look
 function hashId(id: string): number {
@@ -89,10 +98,26 @@ export default function MissionNode({
 
   return (
     <g
-      className={`${isInteractive ? "cursor-pointer sector-node" : "cursor-default"} transition-transform duration-200`}
+      className={`${isInteractive ? "cursor-pointer sector-node map-node" : "cursor-default"} transition-transform duration-200`}
+      role={isInteractive ? "link" : undefined}
+      tabIndex={isInteractive ? 0 : undefined}
+      aria-label={`Mission ${missionIndex + 1} of ${totalMissions}: ${mission.title}, ${STATUS_WORDS[status]}${isCurrent ? ", up next" : ""}. Open mission.`}
+      aria-current={isCurrent ? "step" : undefined}
       onMouseEnter={() => isInteractive && onHover(mission)}
       onMouseLeave={() => onHover(null)}
+      onFocus={(e) => {
+        if (!isInteractive) return;
+        const box = e.currentTarget.getBoundingClientRect();
+        onHover(mission, { x: box.right, y: box.top });
+      }}
+      onBlur={() => onHover(null)}
       onClick={() => isInteractive && onClick(mission)}
+      onKeyDown={(e) => {
+        if (isInteractive && e.key === "Enter") {
+          e.preventDefault();
+          onClick(mission);
+        }
+      }}
       style={{
         ["--sector-color" as string]: colors.stroke,
         ...(colors.glow !== "none" ? { filter: `drop-shadow(0 0 10px ${colors.glow})` } : {}),
@@ -108,6 +133,15 @@ export default function MissionNode({
         strokeWidth={orbitWidth} opacity={orbitOpacity}
         strokeDasharray={orbitDash}
       />
+
+      {/* Keyboard focus ring (see .map-node in globals.css) */}
+      {isInteractive && (
+        <circle
+          className="map-focus-ring"
+          cx={cx} cy={cy} r={size + 9}
+          fill="none" stroke="#22f5ee" strokeWidth={2}
+        />
+      )}
 
       {/* Hover affordance — pulsing target ring around the planet */}
       {showHoverAffordance && (

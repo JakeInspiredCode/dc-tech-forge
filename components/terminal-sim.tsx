@@ -156,7 +156,7 @@ export default function TerminalSim({ height = 240, onCommand, fillHeight }: Ter
         {/* Input line — inline with output, pushed down as output grows */}
         <div className="flex items-center gap-1.5 mt-0.5">
           <span className="text-green-400 shrink-0">$</span>
-          <input
+          <input aria-label="Terminal command"
             ref={inputRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}

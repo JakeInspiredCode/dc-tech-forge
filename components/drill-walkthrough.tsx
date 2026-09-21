@@ -249,7 +249,7 @@ export default function DrillWalkthrough({
       {/* Input / Response */}
       {!showAnswer && (
         <>
-          <textarea
+          <textarea aria-label="Describe your approach"
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
             placeholder="Describe your approach..."

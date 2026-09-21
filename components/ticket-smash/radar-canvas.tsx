@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useCallback, useState } from "react";
 import { V2 } from "@/lib/design/forge-v2-tokens";
+import { useReducedMotion } from "@/lib/use-reduced-motion";
 
 // ── Types ──
 
@@ -56,6 +57,10 @@ export default function RadarCanvas({
   const frameRef = useRef(0);
   const flashTimesRef = useRef<Record<string, number>>({});
   const [canvasSize, setCanvasSize] = useState(380);
+  // Which category's fallback <button> has keyboard focus. Those buttons live
+  // inside the <canvas>, so they are never painted: the wedge is drawn instead.
+  const [focusIdx, setFocusIdx] = useState<number | null>(null);
+  const reducedMotion = useReducedMotion();
 
   // Observe container size and pick the smaller dimension
   useEffect(() => {
@@ -192,6 +197,15 @@ export default function RadarCanvas({
           });
         }
 
+        // Keyboard focus — outline the whole wedge
+        if (ci === focusIdx) {
+          ctx!.beginPath();
+          ctx!.arc(cx, cy, maxR + 3 * S, startA + 0.01, endA - 0.01);
+          ctx!.arc(cx, cy, hubR + 2 * S, endA - 0.01, startA + 0.01, true);
+          ctx!.closePath();
+          ctx!.strokeStyle = V2.cyan.bright; ctx!.lineWidth = 2; ctx!.stroke();
+        }
+
         // Threat density horizon
         if (overflowCount > 0 && overflowUndone > 0) {
           const hInner = maxR - 18 * S, hOuter = maxR - 3 * S;
@@ -325,12 +339,18 @@ export default function RadarCanvas({
       ctx!.strokeStyle = "rgba(6,214,214,0.03)"; ctx!.lineWidth = 0.5;
       ctx!.setLineDash([2, 5]); ctx!.stroke(); ctx!.setLineDash([]);
 
-      frameRef.current = requestAnimationFrame(draw);
+      // Reduced motion: no sweep. The effect re-runs on every state change,
+      // so one frame per change keeps the radar current without animating it.
+      if (!reducedMotion) frameRef.current = requestAnimationFrame(draw);
     }
 
+    if (reducedMotion) {
+      draw(0);
+      return;
+    }
     frameRef.current = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(frameRef.current);
-  }, [activeIdx, hoveredSector, categories, totalDone, totalItems, canvasSize]);
+  }, [activeIdx, hoveredSector, focusIdx, reducedMotion, categories, totalDone, totalItems, canvasSize]);
 
   const toLocal = useCallback(
     (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -367,13 +387,32 @@ export default function RadarCanvas({
 
   return (
     <div ref={containerRef} className="w-full h-full flex items-center justify-center">
+      {/* The buttons are canvas fallback content: not painted, but focusable
+          and read by screen readers. Focus is drawn on the canvas (focusIdx). */}
       <canvas
         ref={canvasRef}
         onClick={handleClick}
         onMouseMove={handleMove}
         onMouseLeave={() => onHoverSector(null)}
         style={{ cursor: "pointer" }}
-      />
+      >
+        <div role="group" aria-label="Ticket categories">
+          {categories.map((cat, i) => (
+            <button
+              key={cat.id}
+              type="button"
+              aria-pressed={i === activeIdx}
+              // Stop here: the canvas's own click handler picks a category from
+              // pointer coordinates, and a keyboard "click" has none.
+              onClick={(e) => { e.stopPropagation(); onSelectSector(i); }}
+              onFocus={() => { setFocusIdx(i); onHoverSector(i); }}
+              onBlur={() => { setFocusIdx(null); onHoverSector(null); }}
+            >
+              {cat.label}: {cat.done} of {cat.total} resolved
+            </button>
+          ))}
+        </div>
+      </canvas>
     </div>
   );
 }
