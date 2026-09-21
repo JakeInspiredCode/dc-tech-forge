@@ -39,7 +39,7 @@ export default function SpeedRunFeedback({
     correct: {
       bg: "bg-v2-success/10 border-v2-success/30",
       text: "text-v2-success",
-      glow: "forge-glow-success",
+      glow: "glow-success",
       label: "✓ Correct",
       timeColor: "text-v2-success",
     },
@@ -53,7 +53,7 @@ export default function SpeedRunFeedback({
     wrong: {
       bg: "bg-v2-danger/10 border-v2-danger/30",
       text: "text-v2-danger",
-      glow: "forge-glow-danger",
+      glow: "glow-danger",
       label: "✗ Wrong",
       timeColor: "text-v2-danger",
     },

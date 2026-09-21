@@ -4,7 +4,8 @@ import { useState, useMemo } from "react";
 import commands, { COMMAND_CATEGORIES, Command, searchCommands } from "@/lib/seeds/commands";
 
 interface Props {
-  onBack: () => void;
+  /** Omit on a page that already has a title and a breadcrumb: the heading row is then just the count. */
+  onBack?: () => void;
 }
 
 // Auto-parse a usage string into typed parts for hover display
@@ -139,10 +140,14 @@ export default function CommandDissector({ onBack }: Props) {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-semibold text-sm">Command Dissector — {commands.length} commands</h3>
-        <button onClick={onBack} className="text-xs text-forge-text-muted hover:text-forge-text">
-          Back
-        </button>
+        <h3 className="font-semibold text-sm">
+          {onBack ? `Command Dissector — ${commands.length} commands` : `${commands.length} commands`}
+        </h3>
+        {onBack && (
+          <button onClick={onBack} className="text-xs text-v2-text-muted hover:text-v2-text">
+            Back
+          </button>
+        )}
       </div>
 
       {/* Search */}
@@ -151,7 +156,7 @@ export default function CommandDissector({ onBack }: Props) {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         placeholder="Search commands..."
-        className="w-full bg-forge-surface border border-forge-border rounded-lg px-3 py-1.5 text-sm mono outline-none focus:border-forge-accent/50 placeholder:text-forge-text-muted mb-3"
+        className="w-full bg-v2-bg-surface border border-v2-border rounded-lg px-3 py-1.5 text-sm mono outline-none focus:border-v2-cyan/50 placeholder:text-v2-text-muted mb-3"
       />
 
       {/* Category chips */}
@@ -160,8 +165,8 @@ export default function CommandDissector({ onBack }: Props) {
           onClick={() => setCategory("all")}
           className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
             category === "all"
-              ? "bg-forge-accent/15 text-forge-accent-text border border-forge-accent/30"
-              : "bg-forge-surface border border-forge-border text-forge-text-dim hover:text-forge-text"
+              ? "bg-v2-cyan/15 text-v2-cyan border border-v2-cyan/30"
+              : "bg-v2-bg-surface border border-v2-border text-v2-text-dim hover:text-v2-text"
           }`}
         >
           All ({commands.length})
@@ -174,8 +179,8 @@ export default function CommandDissector({ onBack }: Props) {
               onClick={() => setCategory(cat.id)}
               className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
                 category === cat.id
-                  ? "bg-forge-accent/15 text-forge-accent-text border border-forge-accent/30"
-                  : "bg-forge-surface border border-forge-border text-forge-text-dim hover:text-forge-text"
+                  ? "bg-v2-cyan/15 text-v2-cyan border border-v2-cyan/30"
+                  : "bg-v2-bg-surface border border-v2-border text-v2-text-dim hover:text-v2-text"
               }`}
             >
               {cat.label} ({count})
@@ -186,15 +191,15 @@ export default function CommandDissector({ onBack }: Props) {
 
       {/* Selected command dissector */}
       {selectedCmd && (
-        <div className="mb-4 bg-forge-surface border border-forge-accent/20 rounded-xl p-4">
+        <div className="mb-4 bg-v2-bg-surface border border-v2-cyan/20 rounded-xl p-4">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3">
-              <span className="mono text-forge-accent-text font-bold">{selectedCmd.command}</span>
-              <span className="text-xs text-forge-text-dim">{selectedCmd.description}</span>
+              <span className="mono text-v2-cyan font-bold">{selectedCmd.command}</span>
+              <span className="text-xs text-v2-text-dim">{selectedCmd.description}</span>
             </div>
             <button
               onClick={() => setSelectedCmd(null)}
-              className="text-xs text-forge-text-muted hover:text-forge-text"
+              className="text-xs text-v2-text-muted hover:text-v2-text"
             >
               Close
             </button>
@@ -203,13 +208,13 @@ export default function CommandDissector({ onBack }: Props) {
 
           {/* Flags reference */}
           {selectedCmd.flags.length > 0 && (
-            <div className="mt-4 pt-3 border-t border-forge-border">
-              <span className="text-[10px] uppercase text-forge-text-muted font-semibold tracking-wider">Flags</span>
+            <div className="mt-4 pt-3 border-t border-v2-border">
+              <span className="text-[10px] uppercase text-v2-text-muted font-semibold tracking-wider">Flags</span>
               <div className="mt-1 space-y-1">
                 {selectedCmd.flags.map((f, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <span className="mono text-xs text-forge-accent-text shrink-0 w-24">{f.flag}</span>
-                    <span className="text-xs text-forge-text-dim">{f.description}</span>
+                    <span className="mono text-xs text-v2-cyan shrink-0 w-24">{f.flag}</span>
+                    <span className="text-xs text-v2-text-dim">{f.description}</span>
                   </div>
                 ))}
               </div>
@@ -221,7 +226,7 @@ export default function CommandDissector({ onBack }: Props) {
       {/* Command grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 max-h-[55vh] overflow-y-auto">
         {filtered.length === 0 && (
-          <p className="col-span-full text-center text-sm text-forge-text-muted py-8">No commands match.</p>
+          <p className="col-span-full text-center text-sm text-v2-text-muted py-8">No commands match.</p>
         )}
         {filtered.map((cmd) => (
           <button
@@ -229,25 +234,25 @@ export default function CommandDissector({ onBack }: Props) {
             onClick={() => setSelectedCmd(cmd)}
             className={`text-left px-3 py-2 rounded-lg border transition-colors ${
               selectedCmd?.id === cmd.id
-                ? "bg-forge-accent/10 border-forge-accent/30 text-forge-accent-text"
-                : "bg-forge-surface border-forge-border hover:border-forge-border-hover text-forge-text"
+                ? "bg-v2-cyan/10 border-v2-cyan/30 text-v2-cyan"
+                : "bg-v2-bg-surface border-v2-border hover:border-v2-cyan/30 text-v2-text"
             }`}
           >
             <span className="mono text-sm font-bold block">{cmd.command}</span>
-            <span className="text-[11px] text-forge-text-dim line-clamp-1">{cmd.description}</span>
+            <span className="text-[11px] text-v2-text-dim line-clamp-1">{cmd.description}</span>
           </button>
         ))}
       </div>
 
       {/* Color legend */}
-      <div className="flex gap-4 mt-3 pt-3 border-t border-forge-border">
+      <div className="flex gap-4 mt-3 pt-3 border-t border-v2-border">
         {[
           { label: "Command", color: "#FF6B6B" },
           { label: "Option", color: "#FFA832" },
           { label: "Argument", color: "#7AE87A" },
           { label: "Operator", color: "#C8A0FF" },
         ].map((item) => (
-          <span key={item.label} className="flex items-center gap-1.5 text-[11px] text-forge-text-dim">
+          <span key={item.label} className="flex items-center gap-1.5 text-[11px] text-v2-text-dim">
             <span style={{ width: 8, height: 8, borderRadius: 2, background: item.color, display: "inline-block" }} />
             {item.label}
           </span>

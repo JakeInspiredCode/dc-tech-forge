@@ -108,7 +108,7 @@ export default function Flashcard({ card, onRate, index, total }: FlashcardProps
 
           {/* Back */}
           <div className="card-back" style={{ height: "100%" }} aria-hidden={!flipped}>
-            <div className="bg-v2-bg-surface border border-v2-cyan/30 rounded-xl p-6 h-full flex flex-col forge-glow">
+            <div className="bg-v2-bg-surface border border-v2-cyan/30 rounded-xl p-6 h-full flex flex-col glow-accent">
               <div className="flex items-center justify-between mb-2">
                 <span className={`text-xs mono ${tierColor}`}>{tierLabel}</span>
                 <span className="text-xs text-v2-cyan mono">ANSWER</span>

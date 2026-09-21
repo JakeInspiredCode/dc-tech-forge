@@ -81,23 +81,23 @@ function L1Pipeline({ onBack, onAdvance }: { onBack: () => void; onAdvance: () =
       <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <button onClick={onBack} className="text-xs text-forge-text-muted hover:text-forge-text transition-colors">&larr; Back to L0</button>
-            <span className="text-xs text-forge-text-muted">/</span>
-            <span className="text-xs text-forge-accent-text mono font-semibold">L1 — Boot Sequence</span>
+            <button onClick={onBack} className="text-xs text-v2-text-muted hover:text-v2-text transition-colors">&larr; Back to L0</button>
+            <span className="text-xs text-v2-text-muted">/</span>
+            <span className="text-xs text-v2-cyan mono font-semibold">L1 — Boot Sequence</span>
           </div>
-          <p className="text-xs text-forge-text-dim">Click each stage to learn, then pass the recall check to unlock it.</p>
+          <p className="text-xs text-v2-text-dim">Click each stage to learn, then pass the recall check to unlock it.</p>
         </div>
         <div className="text-right">
-          <div className="mono text-xs text-forge-text-muted">{completedCount}/{BOOT_STAGES.length} PASSED</div>
-          <div className="h-1.5 w-24 bg-forge-surface-2 rounded-full overflow-hidden mt-1">
-            <div className="h-full bg-forge-success rounded-full transition-all duration-500" style={{ width: `${(completedCount / BOOT_STAGES.length) * 100}%` }} />
+          <div className="mono text-xs text-v2-text-muted">{completedCount}/{BOOT_STAGES.length} PASSED</div>
+          <div className="h-1.5 w-24 bg-v2-bg-elevated rounded-full overflow-hidden mt-1">
+            <div className="h-full bg-v2-success rounded-full transition-all duration-500" style={{ width: `${(completedCount / BOOT_STAGES.length) * 100}%` }} />
           </div>
         </div>
       </div>
 
       {/* Key insight banner */}
-      <div className="bg-forge-surface border border-forge-border rounded-lg px-4 py-3 mb-6">
-        <p className="text-xs text-forge-text-dim italic">
+      <div className="bg-v2-bg-surface border border-v2-border rounded-lg px-4 py-3 mb-6">
+        <p className="text-xs text-v2-text-dim italic">
           "The earlier the failure, the more likely it's hardware. The later the failure, the more likely it's configuration."
         </p>
       </div>
@@ -114,7 +114,7 @@ function L1Pipeline({ onBack, onAdvance }: { onBack: () => void; onAdvance: () =
               {/* Connector line */}
               {i > 0 && (
                 <div className="flex justify-center">
-                  <div className={`w-px h-6 transition-colors duration-300 ${state.recallCorrect ? "bg-forge-success/40" : "bg-forge-border"}`} />
+                  <div className={`w-px h-6 transition-colors duration-300 ${state.recallCorrect ? "bg-v2-success/40" : "bg-v2-border"}`} />
                 </div>
               )}
 
@@ -122,8 +122,8 @@ function L1Pipeline({ onBack, onAdvance }: { onBack: () => void; onAdvance: () =
               <div
                 className={`border rounded-xl transition-all duration-200 overflow-hidden ${
                   state.recallCorrect
-                    ? "border-forge-success/30 bg-forge-success/5"
-                    : "border-forge-border bg-forge-surface hover:border-forge-border-hover"
+                    ? "border-v2-success/30 bg-v2-success/5"
+                    : "border-v2-border bg-v2-bg-surface hover:border-v2-cyan/30"
                 }`}
               >
                 {/* Stage header — clickable */}
@@ -139,31 +139,31 @@ function L1Pipeline({ onBack, onAdvance }: { onBack: () => void; onAdvance: () =
                       </span>
                       <span className="text-sm font-semibold truncate">{stage.name}</span>
                     </div>
-                    <p className="text-xs text-forge-text-dim mt-0.5">{stage.summary}</p>
+                    <p className="text-xs text-v2-text-dim mt-0.5">{stage.summary}</p>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
-                    {state.recallCorrect && <span className="text-forge-success text-sm">&#10003;</span>}
-                    <span className={`text-xs text-forge-text-muted transition-transform ${state.expanded ? "rotate-180" : ""}`}>&#9662;</span>
+                    {state.recallCorrect && <span className="text-v2-success text-sm">&#10003;</span>}
+                    <span className={`text-xs text-v2-text-muted transition-transform ${state.expanded ? "rotate-180" : ""}`}>&#9662;</span>
                   </div>
                 </button>
 
                 {/* Expanded detail */}
                 {state.expanded && (
-                  <div className="px-5 pb-4 border-t border-forge-border/50">
-                    <p className="text-sm text-forge-text leading-relaxed mt-3 mb-4">{stage.detail}</p>
+                  <div className="px-5 pb-4 border-t border-v2-border/50">
+                    <p className="text-sm text-v2-text leading-relaxed mt-3 mb-4">{stage.detail}</p>
 
                     {/* Recall section */}
                     {!state.recallCorrect && !isRecallActive && (
                       <button
                         onClick={() => startRecall(stage.id)}
-                        className="w-full py-2.5 bg-forge-accent/10 border border-forge-accent/30 rounded-lg text-sm mono text-forge-accent-text hover:bg-forge-accent/15 transition-colors"
+                        className="w-full py-2.5 bg-v2-cyan/10 border border-v2-cyan/30 rounded-lg text-sm mono text-v2-cyan hover:bg-v2-cyan/15 transition-colors"
                       >
                         Test Your Recall &#8594;
                       </button>
                     )}
 
                     {isRecallActive && (
-                      <div className="bg-forge-surface-2 rounded-lg p-4 mt-1">
+                      <div className="bg-v2-bg-elevated rounded-lg p-4 mt-1">
                         <p className="text-sm font-medium mb-3">{stage.recallQuestion}</p>
                         <div className="grid grid-cols-1 gap-2">
                           {allChoices.map((choice) => {
@@ -171,13 +171,13 @@ function L1Pipeline({ onBack, onAdvance }: { onBack: () => void; onAdvance: () =
                             const isCorrect = choice === stage.recallAnswer;
                             let btnClass = "p-3 border rounded-lg text-sm mono text-left transition-colors ";
                             if (showResult && isSelected && isCorrect) {
-                              btnClass += "border-forge-success/50 bg-forge-success/10 text-forge-success";
+                              btnClass += "border-v2-success/50 bg-v2-success/10 text-v2-success";
                             } else if (showResult && isSelected && !isCorrect) {
-                              btnClass += "border-forge-danger/50 bg-forge-danger/10 text-forge-danger";
+                              btnClass += "border-v2-danger/50 bg-v2-danger/10 text-v2-danger";
                             } else if (showResult && isCorrect) {
-                              btnClass += "border-forge-success/30 bg-forge-success/5 text-forge-success";
+                              btnClass += "border-v2-success/30 bg-v2-success/5 text-v2-success";
                             } else {
-                              btnClass += "border-forge-border bg-forge-bg hover:border-forge-accent/40 text-forge-text";
+                              btnClass += "border-v2-border bg-v2-bg-deep hover:border-v2-cyan/40 text-v2-text";
                             }
                             return (
                               <button
@@ -194,18 +194,18 @@ function L1Pipeline({ onBack, onAdvance }: { onBack: () => void; onAdvance: () =
                         {showResult && (
                           <div className="mt-3">
                             {selectedAnswer === stage.recallAnswer ? (
-                              <div className="bg-forge-success/10 border border-forge-success/30 rounded-lg p-3">
-                                <p className="text-sm text-forge-success font-medium">Correct — stage unlocked.</p>
+                              <div className="bg-v2-success/10 border border-v2-success/30 rounded-lg p-3">
+                                <p className="text-sm text-v2-success font-medium">Correct — stage unlocked.</p>
                               </div>
                             ) : (
-                              <div className="bg-forge-danger/10 border border-forge-danger/30 rounded-lg p-3">
-                                <p className="text-sm text-forge-danger font-medium mb-1">Not quite.</p>
-                                <p className="text-xs text-forge-text-dim">The answer is: <span className="text-forge-text mono">{stage.recallAnswer}</span></p>
+                              <div className="bg-v2-danger/10 border border-v2-danger/30 rounded-lg p-3">
+                                <p className="text-sm text-v2-danger font-medium mb-1">Not quite.</p>
+                                <p className="text-xs text-v2-text-dim">The answer is: <span className="text-v2-text mono">{stage.recallAnswer}</span></p>
                               </div>
                             )}
                             <button
                               onClick={closeRecall}
-                              className="w-full mt-2 py-2 bg-forge-surface border border-forge-border rounded-lg text-xs hover:border-forge-border-hover transition-colors"
+                              className="w-full mt-2 py-2 bg-v2-bg-surface border border-v2-border rounded-lg text-xs hover:border-v2-cyan/30 transition-colors"
                             >
                               {selectedAnswer === stage.recallAnswer ? "Continue" : "Re-read & Try Again"}
                             </button>
@@ -215,7 +215,7 @@ function L1Pipeline({ onBack, onAdvance }: { onBack: () => void; onAdvance: () =
                     )}
 
                     {state.recallCorrect && (
-                      <div className="mt-2 flex items-center gap-2 text-xs text-forge-success">
+                      <div className="mt-2 flex items-center gap-2 text-xs text-v2-success">
                         <span>&#10003;</span>
                         <span>Recall passed</span>
                       </div>
@@ -231,13 +231,13 @@ function L1Pipeline({ onBack, onAdvance }: { onBack: () => void; onAdvance: () =
       {/* Advance to L2 */}
       {allComplete && (
         <div className="mt-6 text-center">
-          <div className="bg-forge-success/10 border border-forge-success/30 rounded-xl p-6 mb-4">
-            <p className="text-lg font-bold text-forge-success mb-1">L1 Complete</p>
-            <p className="text-sm text-forge-text-dim">You know the boot sequence. Ready for senior-level depth?</p>
+          <div className="bg-v2-success/10 border border-v2-success/30 rounded-xl p-6 mb-4">
+            <p className="text-lg font-bold text-v2-success mb-1">L1 Complete</p>
+            <p className="text-sm text-v2-text-dim">You know the boot sequence. Ready for senior-level depth?</p>
           </div>
           <button
             onClick={onAdvance}
-            className="px-8 py-3 bg-forge-accent text-white rounded-xl font-semibold hover:bg-forge-accent/90 transition-colors"
+            className="px-8 py-3 bg-v2-cyan text-v2-bg-deep rounded-xl font-semibold hover:bg-v2-cyan-bright transition-colors"
           >
             Enter L2 — Deep Dive &#8594;
           </button>
@@ -290,36 +290,36 @@ function L2DeepDive({ onBack }: { onBack: () => void }) {
     return (
       <div>
         <div className="flex items-center gap-2 mb-6">
-          <button onClick={onBack} className="text-xs text-forge-text-muted hover:text-forge-text transition-colors">&larr; Back to L1</button>
-          <span className="text-xs text-forge-text-muted">/</span>
+          <button onClick={onBack} className="text-xs text-v2-text-muted hover:text-v2-text transition-colors">&larr; Back to L1</button>
+          <span className="text-xs text-v2-text-muted">/</span>
           <span className="text-xs text-purple-400 mono font-semibold">L2 — Deep Dive</span>
         </div>
-        <p className="text-xs text-forge-text-dim mb-6">Senior tech depth — tools, failure modes, recovery, and concepts. Flip each card to test recall, then self-grade.</p>
+        <p className="text-xs text-v2-text-dim mb-6">Senior tech depth — tools, failure modes, recovery, and concepts. Flip each card to test recall, then self-grade.</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {stageProgress.map(({ stage, total, graded, knew }) => (
             <button
               key={stage.id}
               onClick={() => setActiveStage(stage.id)}
-              className="rounded-xl p-5 border border-forge-border bg-forge-surface hover:border-forge-border-hover transition-all text-left"
+              className="rounded-xl p-5 border border-v2-border bg-v2-bg-surface hover:border-v2-cyan/30 transition-all text-left"
             >
               <div className="flex items-center gap-3 mb-2">
                 <span className="text-lg" style={{ color: stage.color }}>{stage.icon}</span>
                 <span className="font-semibold text-sm" style={{ color: stage.color }}>{stage.name}</span>
               </div>
-              <div className="flex items-center gap-3 text-xs text-forge-text-muted">
+              <div className="flex items-center gap-3 text-xs text-v2-text-muted">
                 <span>{total} cards</span>
                 {graded > 0 && (
                   <>
-                    <span className="text-forge-text-muted">|</span>
-                    <span className="text-forge-success">{knew} knew</span>
-                    <span className="text-forge-danger">{graded - knew} missed</span>
+                    <span className="text-v2-text-muted">|</span>
+                    <span className="text-v2-success">{knew} knew</span>
+                    <span className="text-v2-danger">{graded - knew} missed</span>
                   </>
                 )}
               </div>
               {graded > 0 && (
-                <div className="h-1 bg-forge-surface-2 rounded-full overflow-hidden mt-2">
-                  <div className="h-full bg-forge-success rounded-full transition-all" style={{ width: `${(knew / total) * 100}%` }} />
+                <div className="h-1 bg-v2-bg-elevated rounded-full overflow-hidden mt-2">
+                  <div className="h-full bg-v2-success rounded-full transition-all" style={{ width: `${(knew / total) * 100}%` }} />
                 </div>
               )}
             </button>
@@ -336,11 +336,11 @@ function L2DeepDive({ onBack }: { onBack: () => void }) {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
-          <button onClick={() => setActiveStage(null)} className="text-xs text-forge-text-muted hover:text-forge-text transition-colors">&larr; Stages</button>
-          <span className="text-xs text-forge-text-muted">/</span>
+          <button onClick={() => setActiveStage(null)} className="text-xs text-v2-text-muted hover:text-v2-text transition-colors">&larr; Stages</button>
+          <span className="text-xs text-v2-text-muted">/</span>
           <span className="text-xs mono font-semibold" style={{ color: stageInfo?.color }}>{stageInfo?.name}</span>
         </div>
-        <span className="mono text-xs text-forge-text-muted">{gradedCount}/{stageCards.length} graded</span>
+        <span className="mono text-xs text-v2-text-muted">{gradedCount}/{stageCards.length} graded</span>
       </div>
 
       <div className="space-y-4">
@@ -351,13 +351,13 @@ function L2DeepDive({ onBack }: { onBack: () => void }) {
 
           return (
             <div key={card.id} className={`border rounded-xl overflow-hidden transition-colors ${
-              grade === "knew" ? "border-forge-success/30 bg-forge-success/5"
-              : grade === "missed" ? "border-forge-danger/30 bg-forge-danger/5"
-              : "border-forge-border bg-forge-surface"
+              grade === "knew" ? "border-v2-success/30 bg-v2-success/5"
+              : grade === "missed" ? "border-v2-danger/30 bg-v2-danger/5"
+              : "border-v2-border bg-v2-bg-surface"
             }`}>
               {/* Card header */}
-              <div className="px-5 py-3 flex items-center justify-between border-b border-forge-border/50">
-                <span className="text-xs font-medium text-forge-text-dim">{card.topic}</span>
+              <div className="px-5 py-3 flex items-center justify-between border-b border-v2-border/50">
+                <span className="text-xs font-medium text-v2-text-dim">{card.topic}</span>
                 <span className="mono text-[9px] font-bold px-1.5 py-0.5 rounded" style={{ color: cat.color, background: `${cat.color}15`, border: `1px solid ${cat.color}30` }}>
                   {cat.label}
                 </span>
@@ -373,34 +373,34 @@ function L2DeepDive({ onBack }: { onBack: () => void }) {
                 <div className="px-5 pb-4">
                   <button
                     onClick={() => toggleFlip(card.id)}
-                    className="w-full py-2.5 bg-forge-surface-2 border border-forge-border rounded-lg text-sm mono hover:border-forge-accent/40 transition-colors"
+                    className="w-full py-2.5 bg-v2-bg-elevated border border-v2-border rounded-lg text-sm mono hover:border-v2-cyan/40 transition-colors"
                   >
                     Reveal Answer
                   </button>
                 </div>
               ) : (
                 <div className="px-5 pb-4 space-y-3">
-                  <div className="bg-forge-bg border border-forge-border rounded-lg p-4">
-                    <p className="text-sm text-forge-text leading-relaxed">{card.back}</p>
+                  <div className="bg-v2-bg-deep border border-v2-border rounded-lg p-4">
+                    <p className="text-sm text-v2-text leading-relaxed">{card.back}</p>
                   </div>
                   {!grade && (
                     <div className="flex gap-2">
                       <button
                         onClick={() => gradeCard(card.id, "knew")}
-                        className="flex-1 py-2 bg-forge-success/10 border border-forge-success/30 rounded-lg text-sm text-forge-success font-medium hover:bg-forge-success/15 transition-colors"
+                        className="flex-1 py-2 bg-v2-success/10 border border-v2-success/30 rounded-lg text-sm text-v2-success font-medium hover:bg-v2-success/15 transition-colors"
                       >
                         Knew It
                       </button>
                       <button
                         onClick={() => gradeCard(card.id, "missed")}
-                        className="flex-1 py-2 bg-forge-danger/10 border border-forge-danger/30 rounded-lg text-sm text-forge-danger font-medium hover:bg-forge-danger/15 transition-colors"
+                        className="flex-1 py-2 bg-v2-danger/10 border border-v2-danger/30 rounded-lg text-sm text-v2-danger font-medium hover:bg-v2-danger/15 transition-colors"
                       >
                         Missed It
                       </button>
                     </div>
                   )}
                   {grade && (
-                    <div className={`text-xs mono ${grade === "knew" ? "text-forge-success" : "text-forge-danger"}`}>
+                    <div className={`text-xs mono ${grade === "knew" ? "text-v2-success" : "text-v2-danger"}`}>
                       {grade === "knew" ? "&#10003; Marked as known" : "&#10007; Marked for review"}
                     </div>
                   )}

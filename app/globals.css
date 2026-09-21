@@ -1,24 +1,6 @@
 @import "tailwindcss";
 
 @theme {
-  --color-forge-bg: #0a0a0a;
-  --color-forge-surface: #111111;
-  --color-forge-surface-2: #1a1a1a;
-  --color-forge-border: #222222;
-  --color-forge-border-hover: #333333;
-  --color-forge-accent: #2563eb;
-  /* The accent is a button colour: as TEXT on dark it is only 3.4:1. Text uses this. */
-  --color-forge-accent-text: #60a5fa;
-  --color-forge-accent-dim: #1e3a5f;
-  --color-forge-success: #22c55e;
-  --color-forge-warning: #f59e0b;
-  --color-forge-danger: #ef4444;
-  --color-forge-text: #e5e5e5;
-  /* Same values as the v2 text scale below — one scale, two sets of names
-     until the legacy forge-* pages are ported. */
-  --color-forge-text-dim: #b4c2d8;
-  --color-forge-text-muted: #93a5c1;
-
   /* ── Phase 4: Starship Design System ── */
   --color-v2-bg-deep: #050508;
   --color-v2-bg: #0a0b10;
@@ -506,9 +488,9 @@ code, pre, .mono {
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* The highlight around a revealed or earned item. Cyan, like every other v2 accent — it was the legacy blue. */
-.forge-glow { box-shadow: 0 0 20px rgba(6, 214, 214, 0.22); }
-.forge-glow-success { box-shadow: 0 0 20px rgba(34, 197, 94, 0.3); }
-.forge-glow-danger { box-shadow: 0 0 20px rgba(239, 68, 68, 0.3); }
+.glow-accent { box-shadow: 0 0 20px rgba(6, 214, 214, 0.22); }
+.glow-success { box-shadow: 0 0 20px rgba(34, 197, 94, 0.3); }
+.glow-danger { box-shadow: 0 0 20px rgba(239, 68, 68, 0.3); }
 
 /* ═══════════════════════════════════════════════════════════════════════════
    Keyframe animations

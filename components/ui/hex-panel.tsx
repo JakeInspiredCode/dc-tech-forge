@@ -14,8 +14,8 @@ interface HexPanelProps {
 const glowMap = {
   cyan: "territory-glow-claimed",
   warning: "territory-glow-decaying",
-  danger: "forge-glow-danger",
-  success: "forge-glow-success",
+  danger: "glow-danger",
+  success: "glow-success",
 };
 
 export default function HexPanel({

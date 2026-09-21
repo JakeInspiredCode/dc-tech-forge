@@ -18,15 +18,8 @@ function cssToken(name: string): string {
   return m[1].toLowerCase();
 }
 
-const SURFACES = [
-  "color-v2-bg-deep", "color-v2-bg", "color-v2-bg-surface", "color-v2-bg-elevated", "color-v2-bg-overlay",
-  "color-forge-bg", "color-forge-surface", "color-forge-surface-2",
-];
-const TEXT_TOKENS = [
-  "color-v2-text", "color-v2-text-dim", "color-v2-text-muted",
-  "color-forge-text", "color-forge-text-dim", "color-forge-text-muted",
-  "color-forge-accent-text",
-];
+const SURFACES = ["color-v2-bg-deep", "color-v2-bg", "color-v2-bg-surface", "color-v2-bg-elevated", "color-v2-bg-overlay"];
+const TEXT_TOKENS = ["color-v2-text", "color-v2-text-dim", "color-v2-text-muted"];
 
 describe("text tokens", () => {
   it.each(TEXT_TOKENS)("--%s clears 4.5:1 on every surface", (token) => {
@@ -41,11 +34,6 @@ describe("text tokens", () => {
     const [text, dim, muted] = ["color-v2-text", "color-v2-text-dim", "color-v2-text-muted"].map((t) => contrastRatio(cssToken(t), bg));
     expect(text).toBeGreaterThan(dim + 1);
     expect(dim).toBeGreaterThan(muted + 1);
-  });
-
-  it("uses one scale under both sets of names", () => {
-    expect(cssToken("color-forge-text-dim")).toBe(cssToken("color-v2-text-dim"));
-    expect(cssToken("color-forge-text-muted")).toBe(cssToken("color-v2-text-muted"));
   });
 
   it("keeps the TypeScript mirror equal to the CSS", () => {
@@ -106,15 +94,34 @@ describe("no gray text on dark", () => {
     expect(offenders).toEqual([]);
   });
 
-  // --color-forge-accent (#2563eb) is a button colour — 3.4:1 as text on dark.
-  it("never uses the blue button accent as a text colour", () => {
+  // There was a second, older palette ("forge-*": neutral grays and a blue
+  // accent) used ~1,300 times across 34 files. It was ported to the v2 palette
+  // and the tokens deleted; a class that names one now would silently render
+  // with no colour at all.
+  it("has no trace of the retired forge-* palette", () => {
     const offenders: string[] = [];
+    const legacy = /\b(?:[a-z-]+:)*(?:bg|text|border|ring|from|to|via|shadow|divide|outline|fill|stroke|decoration|placeholder)-forge-[a-z]|--color-forge-/;
     for (const file of [...sourceFiles(join(ROOT, "app")), ...sourceFiles(join(ROOT, "components"))]) {
       readFileSync(file, "utf8").split("\n").forEach((line, i) => {
-        if (/\btext-forge-accent(?![-\w])/.test(line)) offenders.push(`${relative(ROOT, file)}:${i + 1}`);
+        if (legacy.test(line)) offenders.push(`${relative(ROOT, file)}:${i + 1}`);
       });
     }
-    // Use text-forge-accent-text.
+    expect(offenders).toEqual([]);
+    expect(css).not.toMatch(/--color-forge-/);
+  });
+
+  // The accent, solid, is a bright fill: text on it must be dark. White on
+  // cyan is 1.7:1, on green 2.3:1, on amber 2.1:1 (and was failing on the
+  // last two long before the port).
+  it("never puts white text on a solid accent or status fill", () => {
+    const offenders: string[] = [];
+    const solidFill = /\bbg-v2-(?:cyan|cyan-bright|green|success|amber|warning|danger)(?![\w/-])/;
+    for (const file of [...sourceFiles(join(ROOT, "app")), ...sourceFiles(join(ROOT, "components"))]) {
+      readFileSync(file, "utf8").split("\n").forEach((line, i) => {
+        if (solidFill.test(line) && /\btext-white\b(?!\/)/.test(line)) offenders.push(`${relative(ROOT, file)}:${i + 1}`);
+      });
+    }
+    // Use text-v2-bg-deep.
     expect(offenders).toEqual([]);
   });
 
