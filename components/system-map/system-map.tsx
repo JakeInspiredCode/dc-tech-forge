@@ -295,7 +295,7 @@ export default function SystemMap() {
           <div className="flex items-center gap-3">
             <div className="header-diamond" />
             <h1 className="galaxy-title">
-              {activeCampaign ? `Campaign: ${activeCampaign.title.replace(/^Operation\s+/, '')}` : 'Campaign View'}
+              {activeCampaign ? `Campaign: ${activeCampaign.title}` : 'Campaign View'}
             </h1>
             <div className="header-diamond" />
           </div>
@@ -308,13 +308,16 @@ export default function SystemMap() {
         {/* Solar system SVG — glass panel framed */}
         <div className="flex-1 relative flex flex-col min-w-0 min-h-0">
           <div className="glass-panel-header">
-            <span>{activeCampaign ? `System Map — ${activeCampaign.title.replace(/^Operation\s+/, '')}` : 'System Map'}</span>
+            <span>
+              Campaign Map
+              {activeCampaign?.codename ? ` — ${activeCampaign.codename}` : ''}
+            </span>
           </div>
           <div className="flex-1 glass-panel rounded-b-lg overflow-hidden relative">
             {isLoading ? (
               <div className="flex items-center justify-center h-full">
                 <div className="text-[#8eafc8] text-sm telemetry-font animate-pulse">
-                  Scanning star system...
+                  Loading campaign…
                 </div>
               </div>
             ) : hasNoCampaign ? (
@@ -421,13 +424,13 @@ export default function SystemMap() {
           </div>
         </div>
 
-        {/* Right sidebar — Mission Briefing (default) or Mission Preview (sticky) */}
+        {/* Right sidebar — Campaign Status (default) or Mission Preview (sticky) */}
         <div className="md:w-[280px] lg:w-[320px] xl:w-[340px] shrink-0 flex flex-col min-h-0 max-h-[40vh] md:max-h-none">
           <div className="glass-panel-header">
             <span>
               {pinnedMission
                 ? `Mission ${pinnedMissionNumber}`
-                : "Mission Briefing"}
+                : "Campaign Status"}
             </span>
           </div>
           <div className="flex-1 glass-panel rounded-b-lg overflow-hidden">

@@ -63,7 +63,7 @@ export const LINUX_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 8 of 10 on the multiple choice exam",
+      description: "Score 8 of 10 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "m01-q01" },
@@ -145,7 +145,7 @@ export const LINUX_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 8 of 10 on the multiple choice exam",
+      description: "Score 8 of 10 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "m02-q01" },
@@ -203,7 +203,7 @@ export const LINUX_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 7 of 9 on the multiple choice exam",
+      description: "Score 7 of 9 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "m03-q01" },
@@ -260,7 +260,7 @@ export const LINUX_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 8 of 10 on the multiple choice exam",
+      description: "Score 8 of 10 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "m04-q01" },
@@ -318,7 +318,7 @@ export const LINUX_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "m05-q01" },
@@ -374,7 +374,7 @@ export const LINUX_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 7 of 9 on the multiple choice exam",
+      description: "Score 7 of 9 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "m06-q01" },
@@ -422,7 +422,7 @@ export const LINUX_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "m07-q01" },
@@ -487,7 +487,7 @@ export const LINUX_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 8 of 10 on the multiple choice exam",
+      description: "Score 8 of 10 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "m08-q01" },
@@ -545,7 +545,7 @@ export const LINUX_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "m09-q01" },
@@ -592,7 +592,7 @@ export const LINUX_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "m10-q01" },
@@ -648,7 +648,7 @@ export const LINUX_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "m11-q01" },
@@ -692,7 +692,7 @@ export const LINUX_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "m12-q01" },
@@ -778,7 +778,7 @@ export const LINUX_ADVANCED_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 8 of 10 on the multiple choice exam",
+      description: "Score 8 of 10 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "linux-m13-q01" },
@@ -841,7 +841,7 @@ export const LINUX_ADVANCED_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 8 of 10 on the multiple choice exam",
+      description: "Score 8 of 10 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "linux-m14-q01" },
@@ -904,7 +904,7 @@ export const LINUX_ADVANCED_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 8 of 10 on the multiple choice exam",
+      description: "Score 8 of 10 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "linux-m15-q01" },
@@ -967,7 +967,7 @@ export const LINUX_ADVANCED_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 8 of 10 on the multiple choice exam",
+      description: "Score 8 of 10 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "linux-m16-q01" },
@@ -1030,7 +1030,7 @@ export const LINUX_ADVANCED_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 8 of 10 on the multiple choice exam",
+      description: "Score 8 of 10 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "linux-m17-q01" },
@@ -1093,7 +1093,7 @@ export const LINUX_ADVANCED_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 8 of 10 on the multiple choice exam",
+      description: "Score 8 of 10 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "linux-m18-q01" },
@@ -1156,7 +1156,7 @@ export const LINUX_ADVANCED_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 8 of 10 on the multiple choice exam",
+      description: "Score 8 of 10 on the knowledge check",
       passThreshold: 0.75,
       items: [
         { type: "multiple-choice", contentRef: "linux-m19-q01" },
@@ -1178,7 +1178,7 @@ export const LINUX_ADVANCED_MISSIONS: Mission[] = [
     id: "linux-m20",
     campaignId: "linux-advanced",
     title: "Final Assessment",
-    description: "Operator checklists and career on-ramp. 15-question comprehensive exam spanning all advanced missions.",
+    description: "Operator checklists and career on-ramp. 15-question comprehensive knowledge check spanning all advanced missions.",
     estimatedMinutes: 40,
     defaultLoadout: [
       {
@@ -1226,7 +1226,7 @@ export const LINUX_ADVANCED_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 12 of 15 on the comprehensive multiple choice exam",
+      description: "Score 12 of 15 on the comprehensive knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "linux-m20-q01" },

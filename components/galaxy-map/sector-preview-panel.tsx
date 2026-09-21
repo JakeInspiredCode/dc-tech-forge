@@ -84,16 +84,20 @@ export default function SectorPreviewPanel({
 
       {campaign && (
         <>
-          {/* Campaign title */}
-          <div className="flex items-center gap-2 mb-1.5">
-            <div
-              className="w-1 h-3.5 rounded-full"
-              style={{ backgroundColor: sector.color }}
-            />
-            <span className="display-font text-[11px] tracking-wider uppercase text-[#e0e4ec] truncate">
-              {campaign.title}
-            </span>
-          </div>
+          {/* The campaign shares the sector's name (shown above), so repeating
+              it here would say the same thing twice. Show its codename, if it
+              has one, as flavour. */}
+          {campaign.codename && (
+            <div className="flex items-center gap-2 mb-1.5">
+              <div
+                className="w-1 h-3.5 rounded-full"
+                style={{ backgroundColor: sector.color }}
+              />
+              <span className="display-font text-[11px] tracking-wider uppercase text-[#e0e4ec] truncate">
+                {campaign.codename}
+              </span>
+            </div>
+          )}
 
           {/* Campaign meta + progress */}
           <div className="flex items-center gap-3 mb-1.5 text-[10px] telemetry-font text-[#8eafc8]">
@@ -175,11 +179,7 @@ export default function SectorPreviewPanel({
             <div className="text-[10px] telemetry-font uppercase tracking-wider opacity-90"
               style={{ color: sector.color }}
             >
-              {progress.isComplete
-                ? "Sector Secured ✓"
-                : progress.hasVolunteered
-                  ? "Click to enter system →"
-                  : "Click to start campaign →"}
+              {progress.isComplete ? "Sector Secured ✓" : "Select the star to open this campaign →"}
             </div>
           </div>
         </>

@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// DOWNTIME SMASH — Ticket Scenarios
+// BATTLESTATION — Ticket Scenarios
 // Simulated datacenter support tickets at 6 difficulty levels
 // All answers derived from TERMINAL_COMMANDS in terminal-data.ts
 // ═══════════════════════════════════════════════════════════════

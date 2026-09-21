@@ -142,6 +142,7 @@ export default function ProfilePage() {
             <h1 className="galaxy-title" style={{ textShadow: `0 0 20px ${accentGlow}, 0 0 40px rgba(224,228,236,0.08)` }}>
               Operator Profile
             </h1>
+            <span className="galaxy-subtitle">Progress &amp; settings</span>
             <div className="header-diamond" style={{ background: `${accentColor}40`, boxShadow: `0 0 8px ${accentGlow}` }} />
           </div>
           <div className="header-accent-line" />

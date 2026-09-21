@@ -99,7 +99,7 @@ export default function MissionBriefing({
           Deploy Mission
         </ActionButton>
         <ActionButton variant="ghost" size="md" onClick={onSkipToCheck}>
-          Skip to Check
+          Skip to Knowledge Check
         </ActionButton>
       </div>
     </div>

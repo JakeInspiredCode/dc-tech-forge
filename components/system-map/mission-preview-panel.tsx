@@ -145,7 +145,7 @@ export default function MissionPreviewPanel({
           Pass: {Math.round(mission.knowledgeCheck.passThreshold * 100)}%
         </span>
 
-        {/* Final Boss shortcut — skip the loadout, go straight to the assessment.
+        {/* Shortcut — skip the loadout, go straight to the knowledge check.
             Red styling makes it clear this is the challenge path. */}
         {!isAccomplished && (
           <button
@@ -173,7 +173,7 @@ export default function MissionPreviewPanel({
                 "0 0 12px rgba(220, 38, 38, 0.35), inset 0 0 8px rgba(254, 202, 202, 0.1)";
             }}
           >
-            ▶▶ Jump to Mission Final Boss
+            ▶▶ Skip to the Knowledge Check
           </button>
         )}
       </div>
