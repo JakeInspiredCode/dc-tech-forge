@@ -27,7 +27,7 @@ CI runs the same steps plus `npm audit` on every PR. Lint has zero errors; the r
 - **Fonts come from `@fontsource`, not `next/font`.** The three families are referenced by their literal names in 100+ inline styles; `next/font` hashes family names and would silently break them. Self-hosting also keeps the CSP at `font-src 'self'`.
 - **`package.json` overrides Next's pinned `postcss`.** Next 15 pins an old PostCSS with open advisories, and npm's only offered fix was a major bump to Next 16. The override's output was verified byte-identical. Remove it when moving to Next 16.
 - **`docs/unused-assets/viewport-frame.png` is kept on purpose** (see its README). It lives outside `public/` because everything in `public/` gets deployed.
-- **`Prose` takes a prop called `html` but never renders HTML** — it tokenizes a tiny markdown subset into React text nodes. The codebase has no `dangerouslySetInnerHTML` / `innerHTML` / `eval`, and the CSP leans on that. Keep it that way.
+- **Chapter blocks have a field called `html`, but nothing renders HTML.** `Prose` tokenizes a tiny markdown subset into React text nodes (its prop is `text`; the data field kept its old name). The codebase has no `dangerouslySetInnerHTML` / `innerHTML` / `eval`, and the CSP leans on that. Keep it that way.
 
 ## Rules for the data layer
 
@@ -42,5 +42,6 @@ Progress lives only in the user's browser, so mistakes here destroy real data.
 ## Conventions
 
 - The product name comes from [`lib/brand.ts`](lib/brand.ts). Don't hard-code it.
+- **One name per domain.** A sector's `title` is THE name; its campaign shares it; a campaign `codename` ("Operation Rack & Stack") is flavour and only ever a subtitle. `lib/seeds/vocabulary.test.ts` enforces this. Themed names stay, but pair them with plain words (see the `hint`s in `components/nav.tsx`). The quiz is always a "Knowledge Check".
 - **No gray text on dark backgrounds** — use white or blue-tinted text. (Large parts of the older UI still violate this; don't add more.)
 - Full-height screens size themselves with `h-[calc(100vh-var(--chrome-h))]`, not a hard-coded nav height. `--chrome-h` grows when the sample-data banner is showing.

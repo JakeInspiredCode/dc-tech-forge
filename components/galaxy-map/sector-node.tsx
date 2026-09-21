@@ -12,17 +12,6 @@ interface SectorNodeProps {
 const SIZE_SCALE = { sm: 32, md: 42, lg: 56 };
 const GLOW_SCALE = { sm: 60, md: 80, lg: 110 };
 
-const SECTOR_GREEK: Record<string, string> = {
-  "sector-linux": "Sector Alpha",
-  "sector-hardware": "Sector Theta",
-  "sector-networking": "Sector Gamma",
-  "sector-fiber": "Sector Delta",
-  "sector-power": "Sector Epsilon",
-  "sector-ops": "Sector Zeta",
-  "sector-scale": "Sector Eta",
-  "sector-linux-advanced": "Sector Beta",
-};
-
 // Each sector gets a unique planet system — deterministic from sector id
 interface Planet {
   orbitRadius: number;  // relative to core radius
@@ -93,7 +82,6 @@ export default function SectorNode({ sector, progress, onHover, onClick }: Secto
   const circumference = 2 * Math.PI * ringR;
   const dashOffset = circumference * (1 - completionPct);
 
-  const greekName = SECTOR_GREEK[sector.id] ?? "";
   const planets = SECTOR_PLANETS[sector.id] ?? [];
 
   // Unique animation delay per sector
@@ -310,27 +298,10 @@ export default function SectorNode({ sector, progress, onHover, onClick }: Secto
         {sector.title}
       </text>
 
-      {/* Greek sub-label */}
-      <text
-        x={cx}
-        y={cy + r + 38}
-        textAnchor="middle"
-        dominantBaseline="hanging"
-        fill="#b8d4e8"
-        fontSize={12}
-        fontFamily="'Chakra Petch', sans-serif"
-        fontWeight={600}
-        letterSpacing="0.1em"
-        className="pointer-events-none select-none"
-        style={{ textShadow: "0 0 4px rgba(0,0,0,0.6)" }}
-      >
-        ({greekName})
-      </text>
-
       {/* Mission count */}
       <text
         x={cx}
-        y={cy + r + 56}
+        y={cy + r + 38}
         textAnchor="middle"
         dominantBaseline="hanging"
         fill="#b8d4e8"

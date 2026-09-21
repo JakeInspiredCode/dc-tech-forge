@@ -44,7 +44,7 @@ const ACTIVITIES: Activity[] = [
   { id: "qd-flag-sniper", title: "Quick Draw: Flag Sniper", description: "100+ flags — given a flag, name what it does", category: "practice", difficulty: "Hard", topics: ["linux"], estimatedMinutes: 8, route: "/train/quick-draw" },
   { id: "fs-label-quiz", title: "Filesystem Label Quiz", description: "Given a description, type the correct Linux path", category: "practice", difficulty: "Medium", topics: ["linux"], estimatedMinutes: 8, route: "/filesystem-navigator?mode=label" },
   { id: "terminal", title: "Terminal Simulator", description: "Practice Linux commands in a simulated environment", category: "practice", topics: ["linux"], estimatedMinutes: 15, route: "/terminal" },
-  { id: "downtime-smash", title: "Downtime Smash", description: "Solve simulated datacenter tickets at 6 difficulty levels", category: "practice", difficulty: "Mixed", topics: ["linux", "hardware", "networking"], estimatedMinutes: 15, route: "/battle-station" },
+  { id: "downtime-smash", title: "Battlestation", description: "Live ticket simulator — solve data center tickets at 6 difficulty levels", category: "practice", difficulty: "Mixed", topics: ["linux", "hardware", "networking"], estimatedMinutes: 15, route: "/battle-station" },
   // TEST
   { id: "diagnosis", title: "Diagnosis Lab", description: "Multi-step troubleshooting scenarios by difficulty", category: "test", difficulty: "Mixed", topics: ["linux", "hardware", "networking"], estimatedMinutes: 10, route: "/train/diagnosis" },
   { id: "drills", title: "Incident Drills", description: "Live incident response scenarios with key-term scoring", category: "test", difficulty: "Hard", topics: ["linux", "hardware", "networking"], estimatedMinutes: 10, route: "/drill" },
@@ -206,6 +206,7 @@ export default function Arsenal() {
             <h1 className="galaxy-title" style={{ textShadow: `0 0 20px ${accentColor}40, 0 0 40px ${accentColor}15` }}>
               Arsenal
             </h1>
+            <span className="galaxy-subtitle">Practice drills &amp; tools</span>
             <div className="header-diamond" style={{ background: `${accentColor}66`, boxShadow: `0 0 8px ${accentColor}50` }} />
           </div>
           <div className="header-accent-line" />

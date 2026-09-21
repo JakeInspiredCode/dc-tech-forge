@@ -34,7 +34,7 @@ function renderBlock(block: Block, idx: number) {
         />
       );
     case "prose":
-      return <Prose key={idx} html={block.html} />;
+      return <Prose key={idx} text={block.html} />;
     case "code":
       return (
         <CodeBlock

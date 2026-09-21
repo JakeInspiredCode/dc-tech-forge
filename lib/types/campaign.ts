@@ -8,7 +8,10 @@ import type { TopicId } from "../types";
 
 export interface Campaign {
   id: string;
-  title: string;                // "Linux Operations"
+  /** The plain name. Matches the sector it belongs to — one name per domain. */
+  title: string;                // "Hardware Systems"
+  /** Flavour only, shown as a subtitle. Never the primary label. */
+  codename?: string;            // "Operation Rack & Stack"
   description: string;
   topicId: TopicId;
   tier: number;                 // which tier(s) this campaign covers

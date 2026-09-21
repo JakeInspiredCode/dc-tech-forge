@@ -116,7 +116,7 @@ export function CodeBlock({
 
 function renderCell(cell: TableCell, key: string): ReactNode {
   if (typeof cell === "string") {
-    return <Prose html={cell} key={key} />;
+    return <Prose text={cell} key={key} />;
   }
   return (
     <code
@@ -227,7 +227,7 @@ export function Bullets({ items }: { items: string[] }) {
           >
             ›
           </span>
-          <Prose html={item} />
+          <Prose text={item} />
         </div>
       ))}
     </div>
@@ -296,7 +296,7 @@ export function Callout({
         <span>{s.icon}</span>
         {title ? title.toUpperCase() : s.label}
       </div>
-      <Prose html={body} />
+      <Prose text={body} />
     </div>
   );
 }
@@ -342,7 +342,7 @@ export function ThinkAboutIt({
         <span style={{ fontSize: 12 }}>⚡</span> THINK ABOUT IT
       </div>
       <div style={{ color: "#E0D8CF" }}>
-        <Prose html={scenario} />
+        <Prose text={scenario} />
       </div>
       {hint && (
         <p
@@ -416,7 +416,7 @@ export function ThinkAboutIt({
               INSIGHT
             </div>
             <div style={{ color: "#E8E0D8" }}>
-              <Prose html={answer} />
+              <Prose text={answer} />
             </div>
           </div>
           <button
@@ -484,7 +484,7 @@ export function KnowledgeCheck({
         <span style={{ fontSize: 12 }}>◇</span> KNOWLEDGE CHECK
       </div>
       <div style={{ color: "#E0E4E8", fontWeight: 500 }}>
-        <Prose html={question} />
+        <Prose text={question} />
       </div>
       {!revealed && (
         <>
@@ -612,7 +612,7 @@ export function KnowledgeCheck({
               )}
             </div>
             <div style={{ color: "#E8E8F0" }}>
-              <Prose html={answer} />
+              <Prose text={answer} />
             </div>
           </div>
           <button
@@ -671,7 +671,7 @@ export function WhyThisMatters({ body }: { body: string }) {
       >
         <span style={{ fontSize: 11 }}>✦</span> Why this matters
       </div>
-      <Prose html={body} />
+      <Prose text={body} />
     </div>
   );
 }
@@ -701,7 +701,7 @@ export function Collapsible({
     <div style={{ margin: "12px 0 14px" }}>
       {intro && (
         <div style={{ marginBottom: 6 }}>
-          <Prose html={intro} />
+          <Prose text={intro} />
         </div>
       )}
       <div style={{ display: "grid", gap: 8 }}>
@@ -759,7 +759,7 @@ export function Collapsible({
               </div>
               {isOpen && (
                 <div style={{ marginTop: 10 }}>
-                  <Prose html={item.body} />
+                  <Prose text={item.body} />
                 </div>
               )}
             </div>
@@ -851,7 +851,7 @@ export function FillBlank({
         <span style={{ fontSize: 11 }}>▣</span> FILL IN THE BLANK
       </div>
       <div style={{ color: "#D8E8D8", marginBottom: 12 }}>
-        <Prose html={prompt} />
+        <Prose text={prompt} />
       </div>
       <div
         style={{
@@ -976,7 +976,7 @@ export function FillBlank({
               ANSWER
             </div>
             <div style={{ color: "#E8F0E8" }}>
-              <Prose html={reveal} />
+              <Prose text={reveal} />
             </div>
           </div>
           <button
@@ -1075,7 +1075,7 @@ function FlipCard({ card, index }: { card: FlipCardItem; index: number }) {
           marginTop: 12,
         }}
       >
-        <Prose html={flipped ? card.back : card.front} />
+        <Prose text={flipped ? card.back : card.front} />
       </div>
     </div>
   );
@@ -1106,7 +1106,7 @@ export function FlipCards({
       </div>
       {intro && (
         <div style={{ marginBottom: 10 }}>
-          <Prose html={intro} />
+          <Prose text={intro} />
         </div>
       )}
       <div
@@ -1173,7 +1173,7 @@ export function MCQInline({
         <span style={{ fontSize: 11 }}>◈</span> QUICK CHECK
       </div>
       <div style={{ color: "#E0E4E8", fontWeight: 500, marginBottom: 12 }}>
-        <Prose html={question} />
+        <Prose text={question} />
       </div>
       <div style={{ display: "grid", gap: 8, marginBottom: 12 }}>
         {choices.map((c) => {
@@ -1228,7 +1228,7 @@ export function MCQInline({
                 {c.label}
               </span>
               <span>
-                <Prose html={c.text} />
+                <Prose text={c.text} />
               </span>
             </button>
           );
@@ -1278,7 +1278,7 @@ export function MCQInline({
               {correct ? "CORRECT" : `ANSWER: ${correctAnswer}`}
             </div>
             <div style={{ color: "#E8ECF0" }}>
-              <Prose html={explanation} />
+              <Prose text={explanation} />
             </div>
           </div>
           <button

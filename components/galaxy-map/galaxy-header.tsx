@@ -12,7 +12,7 @@ export default function GalaxyHeader() {
         <h1 className="galaxy-title">
           Galaxy Map
         </h1>
-        <span className="galaxy-subtitle">Sector View</span>
+        <span className="galaxy-subtitle">Your curriculum</span>
         <div className="header-diamond" />
       </div>
 

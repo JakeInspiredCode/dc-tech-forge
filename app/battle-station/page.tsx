@@ -377,10 +377,10 @@ export default function BattleStationPage() {
             className="display-font text-sm 2xl:text-xl tracking-[0.08em]"
             style={{ color: "#e0e4ec" }}
           >
-            BATTLESTATION: DOWNTIME SMASH
+            BATTLESTATION
           </div>
-          <div className="text-[11px] 2xl:text-[12px] mt-0.5" style={{ color: "#6a7a94" }}>
-            Resolve threats before they take down the fleet
+          <div className="text-[11px] 2xl:text-[12px] mt-0.5" style={{ color: "#b8c8e0" }}>
+            Live ticket simulator — resolve tickets before they take down the fleet
           </div>
         </div>
         <div className="flex gap-3 2xl:gap-6">

@@ -5,12 +5,14 @@ import { usePathname, useRouter } from "next/navigation";
 import { BRAND } from "@/lib/brand";
 import { requestTour } from "@/lib/tour/request";
 
+// `hint` says in plain words what each themed name is for. It is the tooltip
+// and part of the accessible name.
 const NAV_ITEMS = [
-  { href: "/", label: "Galaxy Map", icon: "✦", color: "var(--color-v2-cyan)" },
-  { href: "/missions", label: "Missions", icon: "◆", color: "var(--color-v2-amber)" },
-  { href: "/arsenal", label: "Arsenal", icon: "⬡", color: "var(--color-v2-green)" },
-  { href: "/battle-station", label: "Battlestation", icon: "⚡", color: "var(--color-v2-danger)" },
-  { href: "/profile", label: "Profile", icon: "▲", color: "var(--color-v2-silver)" },
+  { href: "/", label: "Galaxy Map", hint: "your curriculum", icon: "✦", color: "var(--color-v2-cyan)" },
+  { href: "/missions", label: "Missions", hint: "guided lessons", icon: "◆", color: "var(--color-v2-amber)" },
+  { href: "/arsenal", label: "Arsenal", hint: "practice drills and tools", icon: "⬡", color: "var(--color-v2-green)" },
+  { href: "/battle-station", label: "Battlestation", hint: "live ticket simulator", icon: "⚡", color: "var(--color-v2-danger)" },
+  { href: "/profile", label: "Profile", hint: "progress and settings", icon: "▲", color: "var(--color-v2-silver)" },
 ];
 
 // Sub-routes that should highlight each hub
@@ -60,7 +62,8 @@ export default function Nav() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  aria-label={item.label}
+                  aria-label={`${item.label} — ${item.hint}`}
+                  title={`${item.label} — ${item.hint}`}
                   aria-current={active ? "page" : undefined}
                   className="nav-tab relative px-3 sm:px-4 py-2 rounded text-sm transition-all duration-150 flex items-center gap-2"
                   style={{

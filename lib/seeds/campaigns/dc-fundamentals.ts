@@ -9,7 +9,8 @@ import type { Campaign, Mission } from "@/lib/types/campaign";
 
 export const HARDWARE_CAMPAIGN: Campaign = {
   id: "hardware-core",
-  title: "Operation Rack & Stack",
+  title: "Hardware Systems",
+  codename: "Operation Rack & Stack",
   description: "Data center hardware fundamentals — GPUs, CPUs, memory, storage, BIOS/UEFI, and rack infrastructure.",
   topicId: "hardware",
   tier: 1,
@@ -24,7 +25,8 @@ export const HARDWARE_CAMPAIGN: Campaign = {
 
 export const NETWORKING_CAMPAIGN: Campaign = {
   id: "networking-core",
-  title: "Operation Net Sweep",
+  title: "Networking",
+  codename: "Operation Net Sweep",
   description: "Networking essentials — TCP/IP, DNS, switching, routing, load balancing, and troubleshooting.",
   topicId: "networking",
   tier: 1,
@@ -39,7 +41,8 @@ export const NETWORKING_CAMPAIGN: Campaign = {
 
 export const FIBER_CAMPAIGN: Campaign = {
   id: "fiber-core",
-  title: "Operation Light Path",
+  title: "Fiber Optics",
+  codename: "Operation Light Path",
   description: "Fiber optics — transceivers, cable types, connectors, cleaning, and cable management.",
   topicId: "fiber",
   tier: 1,
@@ -54,7 +57,8 @@ export const FIBER_CAMPAIGN: Campaign = {
 
 export const POWER_CAMPAIGN: Campaign = {
   id: "power-core",
-  title: "Operation Power Grid",
+  title: "Power & Cooling",
+  codename: "Operation Power Grid",
   description: "Power and cooling — PDUs, UPS, generators, cooling architectures, PUE, and thermal incident response.",
   topicId: "power-cooling",
   tier: 1,
@@ -69,7 +73,8 @@ export const POWER_CAMPAIGN: Campaign = {
 
 export const OPS_CAMPAIGN: Campaign = {
   id: "ops-core",
-  title: "Operation Run Book",
+  title: "Operations",
+  codename: "Operation Run Book",
   description: "Operational processes — incident response, change management, monitoring, and escalation procedures.",
   topicId: "ops-processes",
   tier: 1,
@@ -84,7 +89,8 @@ export const OPS_CAMPAIGN: Campaign = {
 
 export const SCALE_CAMPAIGN: Campaign = {
   id: "scale-core",
-  title: "Operation Horizon",
+  title: "Scale & Architecture",
+  codename: "Operation Horizon",
   description: "Scale & Architecture — vocabulary, rack design, datacenter tiers, and the four operating models (hyperscale, colo, enterprise, edge).",
   topicId: "scale",
   tier: 1,
@@ -144,7 +150,7 @@ const HARDWARE_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 8 of 10 on the multiple choice exam",
+      description: "Score 8 of 10 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "hw-m01-q01" },
@@ -207,7 +213,7 @@ const HARDWARE_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.75,
       items: [
         { type: "multiple-choice", contentRef: "hw-m02-q01" },
@@ -268,7 +274,7 @@ const HARDWARE_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.75,
       items: [
         { type: "multiple-choice", contentRef: "hw-m03-q01" },
@@ -329,7 +335,7 @@ const HARDWARE_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.75,
       items: [
         { type: "multiple-choice", contentRef: "hw-m04-q01" },
@@ -396,7 +402,7 @@ const NETWORKING_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 8 of 10 on the multiple choice exam",
+      description: "Score 8 of 10 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "net-m01-q01" },
@@ -459,7 +465,7 @@ const NETWORKING_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.75,
       items: [
         { type: "multiple-choice", contentRef: "net-m02-q01" },
@@ -520,7 +526,7 @@ const NETWORKING_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.75,
       items: [
         { type: "multiple-choice", contentRef: "net-m03-q01" },
@@ -581,7 +587,7 @@ const NETWORKING_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.75,
       items: [
         { type: "multiple-choice", contentRef: "net-m04-q01" },
@@ -648,7 +654,7 @@ const OPS_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 8 of 10 on the multiple choice exam",
+      description: "Score 8 of 10 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "ops-m01-q01" },
@@ -711,7 +717,7 @@ const OPS_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.75,
       items: [
         { type: "multiple-choice", contentRef: "ops-m02-q01" },
@@ -772,7 +778,7 @@ const OPS_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.75,
       items: [
         { type: "multiple-choice", contentRef: "ops-m03-q01" },
@@ -833,7 +839,7 @@ const OPS_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.75,
       items: [
         { type: "multiple-choice", contentRef: "ops-m04-q01" },
@@ -900,7 +906,7 @@ const POWER_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 8 of 10 on the multiple choice exam",
+      description: "Score 8 of 10 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "pwr-m01-q01" },
@@ -963,7 +969,7 @@ const POWER_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.75,
       items: [
         { type: "multiple-choice", contentRef: "pwr-m02-q01" },
@@ -1024,7 +1030,7 @@ const POWER_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.75,
       items: [
         { type: "multiple-choice", contentRef: "pwr-m03-q01" },
@@ -1085,7 +1091,7 @@ const POWER_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.75,
       items: [
         { type: "multiple-choice", contentRef: "pwr-m04-q01" },
@@ -1152,7 +1158,7 @@ const FIBER_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 8 of 10 on the multiple choice exam",
+      description: "Score 8 of 10 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "fib-m01-q01" },
@@ -1215,7 +1221,7 @@ const FIBER_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.75,
       items: [
         { type: "multiple-choice", contentRef: "fib-m02-q01" },
@@ -1276,7 +1282,7 @@ const FIBER_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.75,
       items: [
         { type: "multiple-choice", contentRef: "fib-m03-q01" },
@@ -1337,7 +1343,7 @@ const FIBER_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.75,
       items: [
         { type: "multiple-choice", contentRef: "fib-m04-q01" },
@@ -1404,7 +1410,7 @@ const SCALE_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 8 of 10 on the multiple choice exam",
+      description: "Score 8 of 10 on the knowledge check",
       passThreshold: 0.8,
       items: [
         { type: "multiple-choice", contentRef: "scl-m01-q01" },
@@ -1467,7 +1473,7 @@ const SCALE_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.75,
       items: [
         { type: "multiple-choice", contentRef: "scl-m02-q01" },
@@ -1528,7 +1534,7 @@ const SCALE_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.75,
       items: [
         { type: "multiple-choice", contentRef: "scl-m03-q01" },
@@ -1589,7 +1595,7 @@ const SCALE_MISSIONS: Mission[] = [
     ],
     knowledgeCheck: {
       type: "mixed",
-      description: "Score 6 of 8 on the multiple choice exam",
+      description: "Score 6 of 8 on the knowledge check",
       passThreshold: 0.75,
       items: [
         { type: "multiple-choice", contentRef: "scl-m04-q01" },

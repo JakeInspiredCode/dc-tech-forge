@@ -87,7 +87,9 @@ function render(tokens: Token[], keyPrefix = ""): ReactNode[] {
   });
 }
 
-export function Prose({ html }: { html: string }) {
+// `text` is a tiny markdown subset (`code`, **bold**, *em*). It is tokenized
+// into React text nodes — never parsed or injected as HTML.
+export function Prose({ text }: { text: string }) {
   return (
     <p
       style={{
@@ -97,7 +99,7 @@ export function Prose({ html }: { html: string }) {
         margin: "10px 0",
       }}
     >
-      {render(tokenize(html))}
+      {render(tokenize(text))}
     </p>
   );
 }

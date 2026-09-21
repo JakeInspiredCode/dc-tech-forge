@@ -1,77 +1,53 @@
 # DC-Tech-Forge — Vision
 
-## The Goal
+## The goal
 
-Transform DC-Tech-Forge from a single-role study tool into a **universal interview preparation engine** that can target any job role from a single input: the job posting.
+Get someone **floor-ready for a data center technician role** — and be the best free tool for doing it.
 
-## How It Would Work
+Floor-ready means more than recognising terms. It means you can sit down at a node you have never seen, work out what is wrong with it, fix it or escalate it cleanly, and explain what you did. DC-Tech-Forge trains for that: the knowledge, the hands-on reflexes, and the judgement.
 
-```
-Job Requisition URL or Text
-        │
-        ▼
-┌──────────────────────┐
-│  Agentic Job Parser  │  Extracts the top 8 technical requirements
-└──────────┬───────────┘
-           │
-           ▼
-┌──────────────────────┐
-│  Content Researcher  │  For each requirement, researches and generates
-│                      │  tiered flashcard content (Tier 1–4)
-└──────────┬───────────┘
-           │
-           ▼
-┌──────────────────────┐
-│  Forge Populator     │  Structures content into topics, cards, and
-│                      │  seed data — then loads it into the app
-└──────────┬───────────┘
-           │
-           ▼
-┌──────────────────────┐
-│  Ready to Study      │  The full study experience: SM-2 scheduling,
-│                      │  missions, drills, progress tracking
-└──────────────────────┘
-```
+This is deliberately narrow. The app is not a general interview-prep engine and is not trying to become one. Everything in it should make a person better at data center work.
 
-## Agentic Pipeline (Future Development)
+## Who it is for
 
-### 1. Job Requisition Parser
-- Accept a URL, pasted text, or uploaded PDF of a job posting
-- Use an LLM agent to extract and rank the **top 8 technical competency areas**
-- Identify the role level (junior / mid / senior) to calibrate card difficulty
-- Detect company-specific context (tech stack, products, culture keywords)
+- **People breaking into data center operations** — career changers, new grads, and IT generalists who have never worked a hall.
+- **Working technicians levelling up** — a hardware tech who needs Linux, a Linux admin who needs fiber and power.
+- **Anyone preparing for a DC technician interview**, where the questions are practical: *a GPU fell off the bus — walk me through it.*
 
-### 2. Content Research Agent
-- For each of the 8 competency areas, research and generate:
-  - **Tier 1** — Foundational recall cards (definitions, concepts, "what is X?")
-  - **Tier 2** — Intermediate application cards (troubleshooting, explain-how, compare/contrast)
-  - **Tier 3** — Scenario-based cards (walk through a real situation, multi-step reasoning)
-  - **Tier 4** — Branching scenario cards (decision trees, tradeoff analysis)
-- Generate company-specific behavioral prompts based on the posting's language
-- Include STAR story templates tailored to the role
+## What "ready" covers
 
-### 3. Content Quality Gate
-- Validate generated cards for technical accuracy
-- Ensure difficulty progression across tiers is consistent
-- De-duplicate and merge overlapping content
-- Flag cards that need human review
+| Domain | You can… |
+|---|---|
+| **Linux operations** | navigate, read logs, manage services, storage and permissions, and troubleshoot a node from the shell |
+| **Server hardware** | identify components, read BMC/SEL data, triage GPU, memory and disk faults, and swap parts safely |
+| **Networking** | reason about L2/L3, VLANs, routing and DNS, and isolate a connectivity fault |
+| **Fiber & cabling** | tell connector and transceiver types apart, check polarity and light levels, and keep a cable plant sane |
+| **Power & cooling** | understand A/B feeds, PDUs, UPS behaviour and thermal limits — and what not to touch |
+| **Operations** | work a ticket, follow and improve a runbook, handle an incident, and hand off cleanly |
+| **Scale & architecture** | understand how racks, rows and clusters fit together, so a local fix makes sense in context |
 
-### 4. Forge Population
-- Map the 8 competency areas to Forge topics
-- Assign card IDs, difficulty ratings, and tier placements
-- Load it into the app's data store
-- Initialize progress tracking for the new topic set
+## Principles
 
-## Example
+1. **Do, don't just read.** Every topic should end in something hands-on — a terminal, a triage, a ticket — not only a quiz.
+2. **Honest progress.** Mastery is computed from what you have actually reviewed, never hand-set. Quitting a drill does not count as finishing it. Sample data is always labelled as sample data.
+3. **One obvious next step.** A learner should never have to wonder what to do next.
+4. **Open access.** Nothing is locked. The app recommends an order; it does not enforce one.
+5. **Plain words alongside the theme.** The space theme is the app's identity, but every themed name is paired with what it means.
+6. **Local-first and private.** No account, no backend, no tracking. Your progress lives in your browser and leaves only when you export it.
+7. **Secure by construction.** Shipped as static files with a strict content-security policy. Anything imported from a file is treated as hostile.
 
-**Input:** A job posting for "Site Reliability Engineer at Acme Corp" mentioning Kubernetes, observability, incident response, Linux, networking, CI/CD, cloud infrastructure, and distributed systems.
+## Where it is going
 
-**Output:** 8 fully-populated study topics with 15–30 tiered flashcards each, and behavioral interview prep tailored to SRE culture.
+**Depth beyond Linux.** The missions cover every domain, but the Arsenal's practice tools are still almost all Linux. Hardware, fiber, power and networking deserve their own drills and simulators — a BMC/SEL log reader, a fiber polarity and light-level trainer, a PDU and A/B-feed scenario, a cabling-plan exercise.
 
-## Current State
+**A broader Battlestation.** More ticket families (hardware RMA flows, network isolation, power events), multi-step incidents that span domains, and debriefs that show the path an experienced tech would have taken.
 
-The app currently ships with hardcoded seed data for a specific technical role. The architecture (topic-based organization, tiered cards, SM-2 scheduling) is already role-agnostic — the content pipeline is the piece that needs to become dynamic.
+**Usable by everyone, everywhere.** Full keyboard and screen-reader support, a real mobile layout, and reduced-motion handling.
 
-## Status
+**Content that stays current.** Data center practice moves — new GPU platforms, new fabrics, new cooling. One possible direction is an assisted authoring pipeline *for data center content only*: take real DC technician job postings and vendor documentation, find the gaps against the current curriculum, and draft tiered cards and scenarios for a human to review. It would exist to keep this curriculum sharp, not to generalise the app to other roles. An earlier, broader prototype of this idea was removed; nothing like it runs today, and all content is hand-written.
 
-This is a possible future direction, not current work. An earlier agent prototype was removed, and today the app is fully client-side with hand-written content for one role — data center technician — which is also what its name now says. Pursuing this vision would mean generalizing both.
+## Not goals
+
+- A general-purpose interview-prep or flashcard platform for arbitrary roles.
+- Accounts, leaderboards, or anything else that needs a backend — unless a feature that genuinely serves the goal cannot be built without one.
+- Gamification for its own sake. XP, streaks and badges are there to support a study habit, and should never reward anything other than real practice.
