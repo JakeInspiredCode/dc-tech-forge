@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useMemo, useEffect } from "react";
+import Hint from "@/components/ui/hint";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useQuery } from "@/lib/convex-shim";
 import { api } from "@/convex/_generated/api";
@@ -288,6 +289,7 @@ export default function SystemMap() {
 
   return (
     <div className="h-below-chrome w-full relative overflow-hidden" onMouseMove={handleMouseMove}>
+      <Hint id="campaign" />
       <StarfieldCanvas />
       <ScanOverlay />
 

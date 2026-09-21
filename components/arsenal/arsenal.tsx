@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import Hint from "@/components/ui/hint";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation } from "@/lib/convex-shim";
 import { api } from "@/convex/_generated/api";
@@ -134,6 +135,7 @@ export default function Arsenal() {
 
   return (
     <div className="h-below-chrome w-full relative overflow-hidden">
+      <Hint id="arsenal" />
       <StarfieldCanvas />
       <ScanOverlay />
       <div className="viewport-vignette fixed inset-0 z-[8] pointer-events-none" aria-hidden="true" />

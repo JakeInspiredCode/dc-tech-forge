@@ -18,6 +18,8 @@ export const STORAGE_KEYS = {
   lessonScale: `${NS}:lesson-scale`,
   /** "1" while the account is pre-filled with sample progress. */
   sampleData: `${NS}:sample-data`,
+  /** JSON array of the first-visit hints this browser has dismissed. */
+  hintsSeen: `${NS}:hints-seen`,
 } as const;
 
 export const SESSION_KEYS = {
