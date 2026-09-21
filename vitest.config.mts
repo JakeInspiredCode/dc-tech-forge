@@ -8,6 +8,9 @@ export default defineConfig({
     // Mirrors the "@/*" path alias in tsconfig.json.
     alias: [{ find: /^@\//, replacement: root }],
   },
+  // tsconfig says `"jsx": "preserve"` (Next compiles JSX itself), which would
+  // leave JSX untransformed here. Component tests need the automatic runtime.
+  oxc: { jsx: { runtime: "automatic" } },
   test: {
     // The data layer talks to window.localStorage.
     environment: "jsdom",

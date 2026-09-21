@@ -205,7 +205,7 @@ export default function SpeedRunResults({
           className="flex-1 py-2.5 rounded-lg border text-sm font-medium transition-colors
             bg-forge-surface text-forge-text-dim border-forge-border hover:bg-forge-surface-2"
         >
-          Dashboard
+          Back to Arsenal
         </button>
       </div>
 
