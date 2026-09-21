@@ -6,6 +6,7 @@ import Link from "next/link";
 import { SECTIONS, QUICK_REF } from "@/lib/seeds/foundations-content";
 import FoundationsNav from "@/components/foundations/foundations-nav";
 import { useLessonScale, scaleLabel } from "@/lib/use-lesson-scale";
+import { onActivate } from "@/lib/a11y";
 
 // ─── REUSABLE COMPONENTS ────────────────────────────────────────────────────
 
@@ -34,7 +35,7 @@ function ThinkAboutIt({ scenario, hint, answer, onComplete }) {
       {hint && <p style={{ color: "#A09080", fontSize: 11, fontStyle: "italic", margin: "0 0 12px 0" }}>Hint: {hint}</p>}
       {!revealed && (
         <>
-          <textarea
+          <textarea aria-label="Your answer"
             value={userAnswer}
             onChange={(e) => setUserAnswer(e.target.value)}
             placeholder="Try to answer before revealing — or reveal when ready..."
@@ -103,7 +104,7 @@ function KnowledgeCheck({ question, correctAnswer, onComplete }) {
       <p style={{ color: "#E0E4E8", lineHeight: 1.6, margin: "0 0 12px 0", fontWeight: 500 }}>{question}</p>
       {!revealed && (
         <>
-          <textarea
+          <textarea aria-label="Your answer"
             value={userAnswer}
             onChange={(e) => setUserAnswer(e.target.value)}
             placeholder="Try to answer before checking — or check when ready..."
@@ -248,7 +249,11 @@ function OsFunctionCards() {
           padding: "14px 18px", borderRadius: 8, background: "rgba(255,255,255,0.02)",
           borderLeft: `3px solid ${item.color}`, cursor: "pointer", transition: "all 0.2s",
         }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div
+            role="button" tabIndex={0} aria-expanded={expanded.has(i)}
+            onKeyDown={onActivate(() => toggle(i))}
+            style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
+          >
             <strong style={{ color: item.color }}>{item.title}</strong>
             <span style={{ color: "var(--color-v2-text-muted)", fontSize: 10, flexShrink: 0, marginLeft: 12, transition: "transform 0.2s", transform: expanded.has(i) ? "rotate(90deg)" : "none" }}>▸</span>
             {!expanded.has(i) && <span style={{ color: "var(--color-v2-text-muted)", fontSize: 10, marginLeft: 6, fontStyle: "italic" }}>click to expand</span>}
@@ -284,7 +289,11 @@ function CliTermsCards() {
           padding: "14px 18px", borderRadius: 8, background: "rgba(255,255,255,0.02)",
           borderLeft: `3px solid ${item.color}`, cursor: "pointer", transition: "all 0.2s",
         }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div
+            role="button" tabIndex={0} aria-expanded={expanded.has(i)}
+            onKeyDown={onActivate(() => toggle(i))}
+            style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
+          >
             <strong style={{ color: item.color }}>{item.term}</strong>
             <span style={{ color: "var(--color-v2-text-muted)", fontSize: 10, flexShrink: 0, marginLeft: 12, transition: "transform 0.2s", transform: expanded.has(i) ? "rotate(90deg)" : "none" }}>▸</span>
             {!expanded.has(i) && <span style={{ color: "var(--color-v2-text-muted)", fontSize: 10, marginLeft: 6, fontStyle: "italic" }}>click to expand</span>}
@@ -898,7 +907,9 @@ Swap:         8.0Gi       0B     8.0Gi`,
             }}>
               {/* Header */}
               <div
+                role="button" tabIndex={0}
                 onClick={() => investigate(name)}
+                onKeyDown={onActivate(() => investigate(name))}
                 style={{
                   display: "flex", alignItems: "center", gap: 12, padding: "12px 16px", cursor: "pointer",
                 }}
@@ -1025,7 +1036,7 @@ Swap:         8.0Gi       0B     8.0Gi`,
           {allInvestigated && (
             <>
               <span style={{ color: "#AAB4BE", fontSize: 10, fontWeight: 600 }}>Diagnosis:</span>
-              <select
+              <select aria-label="Which resource is the problem?"
                 value={diagnosis || ""}
                 onChange={(e) => setDiagnosis(e.target.value)}
                 style={{
@@ -1131,7 +1142,7 @@ function PathResolver({ onComplete }) {
         You are in <Code>{ch.cwd}</Code>. Where does <Code>{ch.path}</Code> resolve to?
       </p>
       <div style={{ display: "flex", gap: 8, alignItems: "center", marginTop: 12, flexWrap: "wrap" }}>
-        <input
+        <input aria-label="Type the absolute path"
           value={userAnswer}
           onChange={(e) => setUserAnswer(e.target.value)}
           placeholder="Type the absolute path..."
@@ -1377,7 +1388,10 @@ function PermissionBuilder({ onComplete }) {
               {bits.map((b, i) => (
                 <span
                   key={i}
+                  role="button" tabIndex={0} aria-pressed={b}
+                  aria-label={`${["owner", "group", "others"][Math.floor(i / 3)]} ${["read", "write", "execute"][i % 3]}`}
                   onClick={() => { const n = [...bits]; n[i] = !n[i]; setBits(n); }}
+                  onKeyDown={onActivate(() => { const n = [...bits]; n[i] = !n[i]; setBits(n); })}
                   style={{
                     color: b ? groupColors[Math.floor(i / 3)] : "var(--color-v2-text-muted)",
                     cursor: "pointer", padding: "2px 1px",
@@ -1426,7 +1440,7 @@ function PermissionBuilder({ onComplete }) {
           <p style={{ color: "var(--color-v2-text-muted)", fontSize: 11, margin: "0 0 6px 0" }}>Write the 9-character permission string for this description:</p>
           <p style={{ color: "#E8ECF0", fontSize: 11, margin: "0 0 14px 0", lineHeight: 1.6 }}>{challenge.desc}</p>
           <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-            <input
+            <input aria-label="Your answer"
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
               placeholder={placeholder}
@@ -1475,7 +1489,7 @@ function PermissionBuilder({ onComplete }) {
           <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
               <span style={{ color: "var(--color-v2-text-muted)", fontFamily: "'JetBrains Mono', monospace", fontSize: 12 }}>chmod</span>
-              <input
+              <input aria-label="Octal permissions, three digits"
                 value={userInput}
                 onChange={(e) => setUserInput(e.target.value.replace(/[^0-7]/g, ""))}
                 placeholder="755"
@@ -1762,7 +1776,7 @@ function FlashcardRapidFire() {
         <div style={{ color: "var(--color-v2-text-muted)", fontSize: 11, marginBottom: 12 }}>What is this?</div>
         {!flipped ? (
           <>
-            <textarea
+            <textarea aria-label="Type your definition"
               ref={inputRef}
               value={userAnswer}
               onChange={(e) => setUserAnswer(e.target.value)}
@@ -1900,7 +1914,10 @@ function FilesystemTree() {
     return (
       <div key={fullPath}>
         <div
+          role="button" tabIndex={0}
+          aria-expanded={hasChildren ? expanded.has(fullPath) : undefined}
           onClick={() => { if (hasChildren) toggle(fullPath); setSelectedDesc({ name: fullPath || "/", desc: node.desc }); }}
+          onKeyDown={onActivate(() => { if (hasChildren) toggle(fullPath); setSelectedDesc({ name: fullPath || "/", desc: node.desc }); })}
           style={{
             display: "flex", alignItems: "center", gap: 0, padding: "2px 0",
             cursor: "pointer", fontSize: 10, whiteSpace: "pre",
@@ -2007,7 +2024,7 @@ function FilesystemTree() {
               <span style={{ color: "var(--color-v2-text-muted)" }}>:</span>
               <span style={{ color: "#50C8FF" }}>~</span>
               <span style={{ color: "var(--color-v2-text-muted)" }}>$ </span>
-              <input
+              <input aria-label="type a command"
                 ref={inputRef}
                 value={cmdInput}
                 onChange={(e) => setCmdInput(e.target.value)}
@@ -2414,7 +2431,7 @@ function NetworkAddressBuilder() {
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 16 }}>
         <div>
           <div style={{ color: "#FF6B6B", fontSize: 10, fontWeight: 700, marginBottom: 4 }}>IP ADDRESS (the building)</div>
-          <select value={ip} onChange={e => setIp(e.target.value)} style={{
+          <select aria-label="IP address" value={ip} onChange={e => setIp(e.target.value)} style={{
             padding: "8px 12px", background: "rgba(0,0,0,0.4)", border: "1px solid rgba(255,107,107,0.3)",
             borderRadius: 6, color: "#FF6B6B", fontSize: 11, fontFamily: "'JetBrains Mono', monospace",
           }}>
@@ -2425,7 +2442,7 @@ function NetworkAddressBuilder() {
         </div>
         <div>
           <div style={{ color: "#FFA832", fontSize: 10, fontWeight: 700, marginBottom: 4 }}>PORT (the apartment)</div>
-          <select value={port} onChange={e => setPort(e.target.value)} style={{
+          <select aria-label="Port" value={port} onChange={e => setPort(e.target.value)} style={{
             padding: "8px 12px", background: "rgba(0,0,0,0.4)", border: "1px solid rgba(255,168,50,0.3)",
             borderRadius: 6, color: "#FFA832", fontSize: 11, fontFamily: "'JetBrains Mono', monospace",
           }}>
@@ -2434,7 +2451,7 @@ function NetworkAddressBuilder() {
         </div>
         <div>
           <div style={{ color: "#7AE87A", fontSize: 10, fontWeight: 700, marginBottom: 4 }}>PROTOCOL (the language)</div>
-          <select value={protocol} onChange={e => setProtocol(e.target.value)} style={{
+          <select aria-label="Protocol" value={protocol} onChange={e => setProtocol(e.target.value)} style={{
             padding: "8px 12px", background: "rgba(0,0,0,0.4)", border: "1px solid rgba(122,232,122,0.3)",
             borderRadius: 6, color: "#7AE87A", fontSize: 11, fontFamily: "'JetBrains Mono', monospace",
           }}>
@@ -2533,7 +2550,7 @@ export default function LinuxFoundations({ initialSection, missionMode, onMissio
             <span aria-hidden="true" style={{ color: "rgba(255,255,255,0.25)", fontSize: 13 }}>|</span>
           </>
         )}
-        <button onClick={() => setSidebarOpen(!sidebarOpen)} style={{
+        <button onClick={() => setSidebarOpen(!sidebarOpen)} aria-label="Sections" aria-expanded={sidebarOpen} style={{
           background: "none", border: "none", color: "#AAB4BE", fontSize: 15, cursor: "pointer",
           padding: "4px 8px", display: "flex", alignItems: "center",
         }}>☰</button>

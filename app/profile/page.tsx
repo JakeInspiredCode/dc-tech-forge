@@ -132,7 +132,7 @@ export default function ProfilePage() {
     <div className="h-[calc(100vh-var(--chrome-h))] w-full relative overflow-hidden">
       <StarfieldCanvas />
       <ScanOverlay />
-      <div className="viewport-vignette fixed inset-0 z-[8] pointer-events-none" />
+      <div className="viewport-vignette fixed inset-0 z-[8] pointer-events-none" aria-hidden="true" />
 
       {/* Header */}
       <div className="absolute top-0 left-0 right-0 z-10 pointer-events-none">
@@ -363,7 +363,7 @@ export default function ProfilePage() {
                         >
                           Type <span style={{ color: dangerColor }}>{RESET_PHRASE}</span> to confirm
                         </label>
-                        <input
+                        <input aria-label="Type the confirmation phrase to enable reset"
                           type="text"
                           autoFocus
                           value={resetPhrase}

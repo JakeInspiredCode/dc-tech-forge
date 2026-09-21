@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { onActivate } from "@/lib/a11y";
 
 type EdgeKind = "requires" | "wants" | "after";
 
@@ -152,7 +153,12 @@ export default function SystemdUnitGraph({
           return (
             <g
               key={n.id}
+              role="button"
+              tabIndex={0}
+              aria-pressed={isSelected}
+              aria-label={`${n.id} (${n.kind})`}
               onClick={() => setSelected(n.id)}
+              onKeyDown={onActivate(() => setSelected(n.id))}
               style={{ cursor: "pointer" }}
             >
               <rect

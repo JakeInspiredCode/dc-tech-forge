@@ -87,18 +87,43 @@ export default function SectorNode({ sector, progress, onHover, onClick }: Secto
   // Unique animation delay per sector
   const breatheDelay = `${(cx * 7 + cy * 13) % 4000}ms`;
 
+  // A sector opens its campaign, so it is a link: focusable, Enter opens it,
+  // and focus shows the same preview panel that hover does.
+  const label = isComplete
+    ? `${sector.title}: complete, all ${progress.totalMissions} missions done. Open campaign.`
+    : `${sector.title}: ${progress.completedMissions} of ${progress.totalMissions} missions complete. Open campaign.`;
+
   return (
     <g
-      className="sector-node cursor-pointer"
+      className="sector-node map-node cursor-pointer"
       data-sector-id={sector.id}
+      role="link"
+      tabIndex={0}
+      aria-label={label}
       onMouseEnter={() => onHover(sector)}
       onMouseLeave={() => onHover(null)}
+      onFocus={() => onHover(sector)}
+      onBlur={() => onHover(null)}
       onClick={() => onClick(sector)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          onClick(sector);
+        }
+      }}
       style={{
         ["--sector-color" as string]: sector.color,
         filter: `drop-shadow(0 0 ${isActive ? 12 : 6}px ${sector.color}50)`,
       }}
     >
+      {/* Keyboard focus ring — drawn, because CSS outlines on SVG groups are
+          unreliable across browsers. Shown by .map-node:focus-visible. */}
+      <circle
+        className="map-focus-ring"
+        cx={cx} cy={cy} r={r + 12}
+        fill="none" stroke="#22f5ee" strokeWidth={2.5}
+      />
+
       {/* Outer nebula glow */}
       <circle
         cx={cx} cy={cy} r={glowR}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { onActivate } from "@/lib/a11y";
 
 interface Layer {
   id: string;
@@ -166,7 +167,13 @@ export default function PacketStack({
                 transform: isTravelingHere ? "translateX(6px)" : "none",
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+              <div
+                role="button"
+                tabIndex={0}
+                aria-expanded={isExpanded}
+                onKeyDown={onActivate(() => setExpanded(isExpanded ? null : layer.id))}
+                style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}
+              >
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div
                     style={{

@@ -54,6 +54,8 @@ function Toggle({
       ]).map((o, i) => (
         <button
           key={o.val}
+          type="button"
+          aria-pressed={value === o.val}
           onClick={() => onChange(o.val)}
           className="relative mono transition-all duration-200"
           style={{

@@ -5,6 +5,7 @@ import type { MissionStep } from "@/lib/types/campaign";
 import { STEP_TYPE_ICONS } from "@/lib/constants/mission";
 import HexPanel from "@/components/ui/hex-panel";
 import ActionButton from "@/components/ui/action-button";
+import { useModalDialog } from "@/lib/use-modal-dialog";
 
 interface LoadoutEditorProps {
   steps: MissionStep[];
@@ -26,6 +27,7 @@ export default function LoadoutEditor({ steps, onConfirm, onCancel }: LoadoutEdi
     setEnabled((prev) => ({ ...prev, [stepId]: !prev[stepId] }));
   };
 
+  const dialogRef = useModalDialog(onCancel);
   const activeSteps = steps.filter((s) => enabled[s.id]);
   const totalMinutes = activeSteps.reduce((sum, s) => sum + s.estimatedMinutes, 0);
 
@@ -35,9 +37,16 @@ export default function LoadoutEditor({ steps, onConfirm, onCancel }: LoadoutEdi
 
   return (
     <div className="fixed inset-0 bg-v2-bg-deep/90 z-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-lg">
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="loadout-title"
+        tabIndex={-1}
+        className="w-full max-w-lg"
+      >
         <HexPanel size="lg">
-          <h2 className="display-font text-lg text-v2-cyan tracking-wider mb-4">
+          <h2 id="loadout-title" className="display-font text-lg text-v2-cyan tracking-wider mb-4">
             Customize Loadout
           </h2>
 
@@ -45,6 +54,9 @@ export default function LoadoutEditor({ steps, onConfirm, onCancel }: LoadoutEdi
             {steps.map((step) => (
               <button
                 key={step.id}
+                type="button"
+                aria-pressed={!!enabled[step.id]}
+                aria-disabled={step.required || undefined}
                 onClick={() => toggle(step.id, step.required)}
                 className={`w-full flex items-center gap-3 p-3 rounded transition-colors text-left ${
                   enabled[step.id]

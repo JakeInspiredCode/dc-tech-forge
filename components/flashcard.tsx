@@ -89,7 +89,7 @@ export default function Flashcard({ card, onRate, index, total }: FlashcardProps
       <div className="card-flip cursor-pointer" onClick={handleFlip} style={{ height: 240 }}>
         <div className={`card-flip-inner ${flipped ? "flipped" : ""}`} style={{ height: "100%" }}>
           {/* Front */}
-          <div className="card-front" style={{ height: "100%" }}>
+          <div className="card-front" style={{ height: "100%" }} aria-hidden={flipped}>
             <div className="bg-forge-surface border border-forge-border rounded-xl p-6 h-full flex flex-col hover:border-forge-border-hover transition-colors">
               <div className="flex items-center justify-between mb-3">
                 <span className={`text-xs mono ${tierColor}`}>{tierLabel}</span>
@@ -107,7 +107,7 @@ export default function Flashcard({ card, onRate, index, total }: FlashcardProps
           </div>
 
           {/* Back */}
-          <div className="card-back" style={{ height: "100%" }}>
+          <div className="card-back" style={{ height: "100%" }} aria-hidden={!flipped}>
             <div className="bg-forge-surface border border-forge-accent/30 rounded-xl p-6 h-full flex flex-col forge-glow">
               <div className="flex items-center justify-between mb-2">
                 <span className={`text-xs mono ${tierColor}`}>{tierLabel}</span>

@@ -196,7 +196,7 @@ export default function Arsenal() {
     <div className="h-[calc(100vh-var(--chrome-h))] w-full relative overflow-hidden">
       <StarfieldCanvas />
       <ScanOverlay />
-      <div className="viewport-vignette fixed inset-0 z-[8] pointer-events-none" />
+      <div className="viewport-vignette fixed inset-0 z-[8] pointer-events-none" aria-hidden="true" />
 
       {/* Header bar */}
       <div className="absolute top-0 left-0 right-0 z-10 pointer-events-none">
@@ -253,7 +253,7 @@ export default function Arsenal() {
           <div className="glass-panel-header">
             <span>{catLabel} Activities</span>
             <div className="flex-1" />
-            <input
+            <input aria-label="Filter activities"
               type="text"
               placeholder="Filter..."
               value={filter}

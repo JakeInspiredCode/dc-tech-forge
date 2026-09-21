@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useMutation } from "@/lib/convex-shim";
 import { api } from "../convex/_generated/api";
 import { TOPICS, TopicId } from "@/lib/types";
+import { useModalDialog } from "@/lib/use-modal-dialog";
 
 interface CardEditorProps {
   onClose: () => void;
@@ -20,6 +21,7 @@ export default function CardEditor({ onClose, onCreated }: CardEditorProps) {
   const [tier, setTier] = useState(1);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const dialogRef = useModalDialog(onClose);
 
   const handleSubmit = async () => {
     if (!front.trim() || !back.trim()) { setError("Front and back are required."); return; }
@@ -35,24 +37,31 @@ export default function CardEditor({ onClose, onCreated }: CardEditorProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-      <div className="bg-forge-surface border border-forge-border rounded-xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="card-editor-title"
+        tabIndex={-1}
+        className="bg-forge-surface border border-forge-border rounded-xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto"
+      >
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold mono">Create Card</h2>
-          <button onClick={onClose} className="text-forge-text-muted hover:text-forge-text text-lg">&times;</button>
+          <h2 id="card-editor-title" className="text-lg font-semibold mono">Create Card</h2>
+          <button onClick={onClose} aria-label="Close" className="text-forge-text-muted hover:text-forge-text text-lg">&times;</button>
         </div>
 
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-xs text-forge-text-dim mb-1">Topic</label>
-              <select value={topicId} onChange={(e) => setTopicId(e.target.value as TopicId)}
+              <select aria-label="Topic" data-autofocus value={topicId} onChange={(e) => setTopicId(e.target.value as TopicId)}
                 className="w-full bg-forge-surface-2 border border-forge-border rounded-lg px-2 py-1.5 text-sm outline-none focus:border-forge-accent/50">
                 {TOPICS.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
               </select>
             </div>
             <div>
               <label className="block text-xs text-forge-text-dim mb-1">Type</label>
-              <select value={type} onChange={(e) => setType(e.target.value as typeof type)}
+              <select aria-label="Type" value={type} onChange={(e) => setType(e.target.value as typeof type)}
                 className="w-full bg-forge-surface-2 border border-forge-border rounded-lg px-2 py-1.5 text-sm outline-none focus:border-forge-accent/50">
                 <option value="easy">Easy</option>
                 <option value="intermediate">Intermediate</option>
@@ -64,7 +73,7 @@ export default function CardEditor({ onClose, onCreated }: CardEditorProps) {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-xs text-forge-text-dim mb-1">Difficulty (1-3)</label>
-              <select value={difficulty} onChange={(e) => setDifficulty(Number(e.target.value))}
+              <select aria-label="Difficulty (1-3)" value={difficulty} onChange={(e) => setDifficulty(Number(e.target.value))}
                 className="w-full bg-forge-surface-2 border border-forge-border rounded-lg px-2 py-1.5 text-sm outline-none focus:border-forge-accent/50">
                 <option value={1}>1 - Easy</option>
                 <option value={2}>2 - Medium</option>
@@ -73,7 +82,7 @@ export default function CardEditor({ onClose, onCreated }: CardEditorProps) {
             </div>
             <div>
               <label className="block text-xs text-forge-text-dim mb-1">Tier (1-4)</label>
-              <select value={tier} onChange={(e) => setTier(Number(e.target.value))}
+              <select aria-label="Tier (1-4)" value={tier} onChange={(e) => setTier(Number(e.target.value))}
                 className="w-full bg-forge-surface-2 border border-forge-border rounded-lg px-2 py-1.5 text-sm outline-none focus:border-forge-accent/50">
                 <option value={1}>Tier 1</option>
                 <option value={2}>Tier 2</option>
@@ -85,14 +94,14 @@ export default function CardEditor({ onClose, onCreated }: CardEditorProps) {
 
           <div>
             <label className="block text-xs text-forge-text-dim mb-1">Front (Question)</label>
-            <textarea value={front} onChange={(e) => setFront(e.target.value)}
+            <textarea aria-label="Front (Question)" value={front} onChange={(e) => setFront(e.target.value)}
               placeholder="Enter the question..."
               className="w-full h-24 bg-forge-surface-2 border border-forge-border rounded-lg p-3 text-sm resize-none outline-none focus:border-forge-accent/50" />
           </div>
 
           <div>
             <label className="block text-xs text-forge-text-dim mb-1">Back (Answer)</label>
-            <textarea value={back} onChange={(e) => setBack(e.target.value)}
+            <textarea aria-label="Back (Answer)" value={back} onChange={(e) => setBack(e.target.value)}
               placeholder="Enter the answer (supports markdown)..."
               className="w-full h-32 bg-forge-surface-2 border border-forge-border rounded-lg p-3 text-sm resize-none outline-none focus:border-forge-accent/50" />
           </div>

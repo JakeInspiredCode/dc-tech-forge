@@ -177,7 +177,7 @@ function LabelGame({ onBack }: { onBack: () => void }) {
 
       {!feedback && (
         <form onSubmit={handleSubmit}>
-          <input
+          <input aria-label="Type the path"
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}

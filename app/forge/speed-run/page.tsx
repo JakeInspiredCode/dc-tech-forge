@@ -291,7 +291,7 @@ export default function SpeedRunPage() {
 
         {/* Topic */}
         <Section label="Topic">
-          <select
+          <select aria-label="Topic"
             value={topicId}
             onChange={(e) => setTopicId(e.target.value)}
             className="w-full bg-forge-surface border border-forge-border rounded-lg px-3 py-2 text-sm text-forge-text mono outline-none focus:border-forge-accent/50"

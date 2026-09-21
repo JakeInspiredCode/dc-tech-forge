@@ -719,6 +719,20 @@ code, pre, .mono {
   transition: opacity 0.3s ease;
 }
 
+/* Keyboard focus on a map node: the same lift as hover, plus a drawn ring
+   (outlines on SVG groups are unreliable, so the ring is a <circle>). */
+.map-node:focus-visible {
+  outline: none;
+  filter: drop-shadow(0 0 20px var(--sector-color)) drop-shadow(0 0 40px var(--sector-color)) !important;
+}
+.map-focus-ring {
+  opacity: 0;
+  pointer-events: none;
+}
+.map-node:focus-visible .map-focus-ring {
+  opacity: 1;
+}
+
 /* Breathing pulse for sector nodes */
 @keyframes sectorBreathe {
   0%, 100% { opacity: 0.15; transform: scale(1); }
