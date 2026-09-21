@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import ToolPage from "@/components/ui/tool-page";
 import { useRouter } from "next/navigation";
 import SpeedRunGame, { SpeedRunSummary, CardResult } from "@/components/forge/speed-run/speed-run-game";
 import SpeedRunResults from "@/components/forge/speed-run/speed-run-results";
@@ -242,11 +243,11 @@ export default function SpeedRunPage() {
           <div className="mb-6 flex items-center justify-between">
             <div>
               <h2 className="text-lg font-semibold mono">Miss Review</h2>
-              <p className="text-sm text-forge-text-dim">{reviewCards.length} cards — no time limit</p>
+              <p className="text-sm text-v2-text-dim">{reviewCards.length} cards — no time limit</p>
             </div>
             <button
               onClick={() => setScreen("results")}
-              className="text-sm text-forge-text-dim hover:text-forge-text mono transition-colors"
+              className="text-sm text-v2-text-dim hover:text-v2-text mono transition-colors"
             >
               ← back to results
             </button>
@@ -280,21 +281,18 @@ export default function SpeedRunPage() {
 
   // Setup screen
   return (
-    <div className="min-h-screen bg-v2-bg-deep">
-      <div className="max-w-lg mx-auto px-4 sm:px-6 py-8 space-y-6">
-        <div>
-          <h1 className="text-xl font-bold mono mb-1">⚡ Speed Run</h1>
-          <p className="text-sm text-forge-text-dim">
-            Type your answers against the clock. Every card counts toward your SM-2 progress.
-          </p>
-        </div>
+    <ToolPage
+      title="Speed Run"
+      subtitle="Type your answers against the clock. Every card counts toward your spaced-repetition progress."
+    >
+      <div className="max-w-lg space-y-6">
 
         {/* Topic */}
         <Section label="Topic">
           <select aria-label="Topic"
             value={topicId}
             onChange={(e) => setTopicId(e.target.value)}
-            className="w-full bg-forge-surface border border-forge-border rounded-lg px-3 py-2 text-sm text-forge-text mono outline-none focus:border-forge-accent/50"
+            className="w-full bg-v2-bg-surface border border-v2-border rounded-lg px-3 py-2 text-sm text-v2-text mono outline-none focus:border-v2-cyan/50"
           >
             <option value="mixed">Mixed — All Topics</option>
             {TOPICS.map((t) => (
@@ -312,8 +310,8 @@ export default function SpeedRunPage() {
                 onClick={() => toggleType(t)}
                 className={`flex-1 py-2 rounded-lg border text-xs font-medium mono transition-colors capitalize ${
                   typeFilter.includes(t)
-                    ? "bg-forge-accent/20 text-forge-accent-text border-forge-accent/40"
-                    : "bg-forge-surface text-forge-text-dim border-forge-border hover:border-forge-border-hover"
+                    ? "bg-v2-cyan/20 text-v2-cyan border-v2-cyan/40"
+                    : "bg-v2-bg-surface text-v2-text-dim border-v2-border hover:border-v2-cyan/30"
                 }`}
               >
                 {t}
@@ -321,7 +319,7 @@ export default function SpeedRunPage() {
             ))}
           </div>
           {eligibleCount < 10 && typeFilter.length > 0 && (
-            <p className="text-xs text-forge-warning mt-2 mono">
+            <p className="text-xs text-v2-warning mt-2 mono">
               ⚠ Only {eligibleCount} cards match these filters. Broaden your selection.
             </p>
           )}
@@ -336,8 +334,8 @@ export default function SpeedRunPage() {
                 onClick={() => setTimerOption(t)}
                 className={`flex-1 py-2 rounded-lg border text-sm font-medium mono transition-colors ${
                   timerOption === t
-                    ? "bg-forge-accent/20 text-forge-accent-text border-forge-accent/40"
-                    : "bg-forge-surface text-forge-text-dim border-forge-border hover:border-forge-border-hover"
+                    ? "bg-v2-cyan/20 text-v2-cyan border-v2-cyan/40"
+                    : "bg-v2-bg-surface text-v2-text-dim border-v2-border hover:border-v2-cyan/30"
                 }`}
               >
                 {t}s
@@ -354,24 +352,24 @@ export default function SpeedRunPage() {
           onClick={handleStart}
           disabled={eligibleCount < 3 || typeFilter.length === 0}
           className="w-full py-3 rounded-xl text-sm font-bold mono transition-colors
-            bg-forge-accent text-white hover:bg-forge-accent/90
+            bg-v2-cyan text-v2-bg-deep hover:bg-v2-cyan-bright
             disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Start Speed Run →
         </button>
 
-        <p className="text-xs text-forge-text-muted text-center mono">
+        <p className="text-xs text-v2-text-muted text-center mono">
           {eligibleCount} eligible cards loaded
         </p>
       </div>
-    </div>
+    </ToolPage>
   );
 }
 
 function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <p className="text-xs mono text-forge-text-dim mb-2 uppercase tracking-widest">{label}</p>
+      <p className="text-xs mono text-v2-text-dim mb-2 uppercase tracking-widest">{label}</p>
       {children}
     </div>
   );

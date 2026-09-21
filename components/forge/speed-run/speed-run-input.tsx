@@ -40,7 +40,7 @@ export default function SpeedRunInput({ card, onSubmit, disabled }: SpeedRunInpu
   return (
     <div className="space-y-4">
       {/* Card question */}
-      <div className="bg-forge-surface border border-forge-border rounded-xl p-6 min-h-[140px] flex items-center justify-center">
+      <div className="bg-v2-bg-surface border border-v2-border rounded-xl p-6 min-h-[140px] flex items-center justify-center">
         <div className="markdown-content text-center text-base leading-relaxed">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{card.front}</ReactMarkdown>
         </div>
@@ -48,10 +48,10 @@ export default function SpeedRunInput({ card, onSubmit, disabled }: SpeedRunInpu
 
       {/* Terminal input */}
       <div className="relative">
-        <div className="bg-forge-surface border border-forge-border rounded-xl overflow-hidden focus-within:border-forge-accent/50 transition-colors">
-          <div className="flex items-center gap-2 px-4 pt-3 pb-1 border-b border-forge-border/50">
-            <span className="text-forge-accent-text mono text-sm">›</span>
-            <span className="text-xs text-forge-text-muted mono">
+        <div className="bg-v2-bg-surface border border-v2-border rounded-xl overflow-hidden focus-within:border-v2-cyan/50 transition-colors">
+          <div className="flex items-center gap-2 px-4 pt-3 pb-1 border-b border-v2-border/50">
+            <span className="text-v2-cyan mono text-sm">›</span>
+            <span className="text-xs text-v2-text-muted mono">
               {isCommand ? "command" : "answer"} — Enter to submit
             </span>
           </div>
@@ -68,8 +68,8 @@ export default function SpeedRunInput({ card, onSubmit, disabled }: SpeedRunInpu
             autoCapitalize="off"
             spellCheck={false}
             className={`
-              w-full bg-transparent px-4 py-3 mono text-sm text-forge-text
-              placeholder:text-forge-text-muted resize-none outline-none
+              w-full bg-transparent px-4 py-3 mono text-sm text-v2-text
+              placeholder:text-v2-text-muted resize-none outline-none
               ${disabled ? "opacity-50" : ""}
             `}
           />
@@ -80,8 +80,8 @@ export default function SpeedRunInput({ card, onSubmit, disabled }: SpeedRunInpu
           onClick={handleSubmit}
           disabled={disabled}
           className="absolute right-3 bottom-3 px-3 py-1 rounded text-xs mono
-            bg-forge-accent/20 text-forge-accent-text border border-forge-accent/30
-            hover:bg-forge-accent/30 transition-colors disabled:opacity-50"
+            bg-v2-cyan/20 text-v2-cyan border border-v2-cyan/30
+            hover:bg-v2-cyan/30 transition-colors disabled:opacity-50"
         >
           Submit
         </button>

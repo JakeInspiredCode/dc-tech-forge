@@ -6,6 +6,7 @@ import { api } from "@/convex/_generated/api";
 import DiagnosisGame, { DiagnosisResult } from "@/components/forge/diagnosis/diagnosis-game";
 import DiagnosisResults from "@/components/forge/diagnosis/diagnosis-results";
 import scenarios, { DiagnosisScenario, DiagnosisDifficulty } from "@/lib/seeds/diagnosis-scenarios";
+import ToolPage from "@/components/ui/tool-page";
 
 type Screen = "browse" | "playing" | "results";
 
@@ -89,12 +90,11 @@ export default function DiagnosisLabPage() {
 
   // Browse scenarios
   return (
-    <div className="min-h-screen bg-v2-bg-deep">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
-        <h1 className="text-2xl font-bold mono mb-1">Diagnosis Lab</h1>
-        <p className="text-sm text-forge-text-dim mb-6">
-          Step-by-step troubleshooting — {scenarios.length} scenarios across 4 difficulty levels
-        </p>
+    <ToolPage
+      title="Diagnosis Lab"
+      subtitle={`Step-by-step troubleshooting — ${scenarios.length} scenarios across 4 difficulty levels.`}
+      width="wide"
+    >
 
         {/* Difficulty filter */}
         <div className="flex gap-2 mb-6 flex-wrap">
@@ -102,8 +102,8 @@ export default function DiagnosisLabPage() {
             onClick={() => setDifficultyFilter("all")}
             className={`px-3 py-1.5 rounded-lg text-xs mono border transition-colors ${
               difficultyFilter === "all"
-                ? "bg-forge-accent/20 text-forge-accent-text border-forge-accent/40"
-                : "border-forge-border text-forge-text-dim hover:text-forge-text"
+                ? "bg-v2-cyan/20 text-v2-cyan border-v2-cyan/40"
+                : "border-v2-border text-v2-text-dim hover:text-v2-text"
             }`}
           >
             All ({scenarios.length})
@@ -117,8 +117,8 @@ export default function DiagnosisLabPage() {
                 onClick={() => setDifficultyFilter(d)}
                 className={`px-3 py-1.5 rounded-lg text-xs mono border transition-colors ${
                   difficultyFilter === d
-                    ? "bg-forge-accent/20 text-forge-accent-text border-forge-accent/40"
-                    : "border-forge-border text-forge-text-dim hover:text-forge-text"
+                    ? "bg-v2-cyan/20 text-v2-cyan border-v2-cyan/40"
+                    : "border-v2-border text-v2-text-dim hover:text-v2-text"
                 }`}
               >
                 {info.label} ({count})
@@ -135,24 +135,23 @@ export default function DiagnosisLabPage() {
               <button
                 key={s.id}
                 onClick={() => startScenario(s)}
-                className="w-full bg-forge-surface border border-forge-border rounded-xl p-5 text-left hover:border-forge-accent/30 transition-colors"
+                className="w-full bg-v2-bg-surface border border-v2-border rounded-xl p-5 text-left hover:border-v2-cyan/30 transition-colors"
               >
                 <div className="flex items-center gap-3 mb-2">
                   <span className={`text-xs mono font-semibold ${info.color}`}>
                     {info.label.toUpperCase()}
                   </span>
                   <span className="font-semibold text-sm">{s.title}</span>
-                  <span className="text-[10px] mono text-forge-text-muted bg-forge-surface-2 px-1.5 py-0.5 rounded">
+                  <span className="text-[10px] mono text-v2-text-muted bg-v2-bg-elevated px-1.5 py-0.5 rounded">
                     {s.steps.length} steps
                   </span>
-                  <span className="text-[10px] mono text-forge-text-muted">{s.category}</span>
+                  <span className="text-[10px] mono text-v2-text-muted">{s.category}</span>
                 </div>
-                <p className="text-xs text-forge-text-dim">{s.description}</p>
+                <p className="text-xs text-v2-text-dim">{s.description}</p>
               </button>
             );
           })}
         </div>
-      </div>
-    </div>
+    </ToolPage>
   );
 }

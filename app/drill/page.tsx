@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { topicName } from "@/lib/types";
 import { useQuery } from "@/lib/convex-shim";
 import { api } from "@/convex/_generated/api";
 import DrillWalkthrough from "@/components/drill-walkthrough";
 import { SCENARIOS, type Scenario } from "@/lib/scenarios";
+import ToolPage from "@/components/ui/tool-page";
 
 const DIFFICULTY_COLORS = {
   intermediate: "#f59e0b",
@@ -34,14 +36,14 @@ function ScenarioCard({
   return (
     <button
       onClick={onSelect}
-      className="text-left bg-forge-surface border border-forge-border rounded-lg p-5 hover:border-forge-border-hover transition-all group"
+      className="text-left bg-v2-bg-surface border border-v2-border rounded-lg p-5 hover:border-v2-cyan/30 transition-all group"
     >
       <div className="flex items-start justify-between mb-3">
         <div className="flex-1">
-          <h3 className="text-sm font-bold text-forge-text group-hover:text-white transition-colors">
+          <h3 className="text-sm font-bold text-v2-text group-hover:text-white transition-colors">
             {scenario.title}
           </h3>
-          <p className="text-xs text-forge-text-muted mt-1 leading-relaxed">
+          <p className="text-xs text-v2-text-muted mt-1 leading-relaxed">
             {scenario.description}
           </p>
         </div>
@@ -69,19 +71,19 @@ function ScenarioCard({
         >
           {DIFFICULTY_LABELS[scenario.difficulty]}
         </span>
-        <span className="mono text-[9px] text-forge-text-muted">
+        <span className="mono text-[9px] text-v2-text-muted">
           {scenario.steps.length} steps
         </span>
         {scenario.topicTags.map((tag) => (
           <span
-            key={tag}
-            className="mono text-[9px] px-1.5 py-0.5 bg-forge-surface-2 text-forge-text-muted rounded"
+            key={topicName(tag)}
+            className="mono text-[9px] px-1.5 py-0.5 bg-v2-bg-elevated text-v2-text-muted rounded"
           >
-            {tag}
+            {topicName(tag)}
           </span>
         ))}
         {attempts > 0 && (
-          <span className="mono text-[9px] text-forge-accent-text">
+          <span className="mono text-[9px] text-v2-cyan">
             {attempts} attempt{attempts !== 1 ? "s" : ""}
           </span>
         )}
@@ -108,37 +110,30 @@ export default function DrillPage() {
   }
 
   return (
-    <>
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
-        <div className="mb-8">
-          <h1 className="mono text-xl font-bold text-forge-danger mb-1">
-            Incident Drills
-          </h1>
-          <p className="text-sm text-forge-text-dim">
-            Walk through real DC ops incident scenarios step by step. Type your
-            response at each step, then compare against the expected approach.
-            Key terms are tracked to measure your coverage.
-          </p>
-        </div>
+    <ToolPage
+      title="Incident Drills"
+      subtitle="Walk through real data center incidents step by step. Type your response at each step, then compare it with the expected approach. Key terms are tracked to measure your coverage."
+      width="wide"
+    >
 
         {/* Stats bar */}
         {drillHistory.length > 0 && (
-          <div className="flex gap-4 mb-6 p-4 bg-forge-surface rounded-lg border border-forge-border">
+          <div className="flex gap-4 mb-6 p-4 bg-v2-bg-surface rounded-lg border border-v2-border">
             <div>
-              <div className="mono text-[10px] text-forge-text-muted font-bold">DRILLS COMPLETED</div>
-              <div className="mono text-lg font-extrabold text-forge-text">
+              <div className="mono text-[10px] text-v2-text-muted font-bold">DRILLS COMPLETED</div>
+              <div className="mono text-lg font-extrabold text-v2-text">
                 {drillHistory.length}
               </div>
             </div>
             <div>
-              <div className="mono text-[10px] text-forge-text-muted font-bold">BEST SCORE</div>
+              <div className="mono text-[10px] text-v2-text-muted font-bold">BEST SCORE</div>
               <div className="mono text-lg font-extrabold text-green-400">
                 {Math.max(...drillHistory.map((d) => d.overallTermHitRate))}%
               </div>
             </div>
             <div>
-              <div className="mono text-[10px] text-forge-text-muted font-bold">AVG SCORE</div>
-              <div className="mono text-lg font-extrabold text-forge-warning">
+              <div className="mono text-[10px] text-v2-text-muted font-bold">AVG SCORE</div>
+              <div className="mono text-lg font-extrabold text-v2-warning">
                 {Math.round(
                   drillHistory.reduce((s, d) => s + d.overallTermHitRate, 0) /
                     drillHistory.length
@@ -170,7 +165,6 @@ export default function DrillPage() {
             );
           })}
         </div>
-      </div>
-    </>
+    </ToolPage>
   );
 }

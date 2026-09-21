@@ -162,33 +162,33 @@ export default function QuickDrawGame({ items, mode, onComplete, onQuit }: Props
     <div className="max-w-2xl mx-auto">
       {/* Progress bar */}
       <div className="flex items-center justify-between mb-4">
-        <span className="text-xs mono text-forge-text-dim">{answered}/{total}</span>
-        <button onClick={onQuit} className="text-xs text-forge-text-muted hover:text-forge-danger transition-colors">
+        <span className="text-xs mono text-v2-text-dim">{answered}/{total}</span>
+        <button onClick={onQuit} className="text-xs text-v2-text-muted hover:text-v2-danger transition-colors">
           Quit
         </button>
       </div>
-      <div className="h-1.5 bg-forge-surface-2 rounded-full overflow-hidden mb-8">
+      <div className="h-1.5 bg-v2-bg-elevated rounded-full overflow-hidden mb-8">
         <div
-          className="h-full bg-forge-accent rounded-full transition-all duration-300"
+          className="h-full bg-v2-cyan rounded-full transition-all duration-300"
           style={{ width: `${progress}%` }}
         />
       </div>
 
       {/* Question */}
-      <div className={`bg-forge-surface border rounded-xl p-8 text-center mb-6 transition-colors duration-200 ${
-        showFeedback === "correct" ? "border-forge-success/50 bg-forge-success/5" :
-        showFeedback === "wrong" ? "border-forge-danger/50 bg-forge-danger/5" :
-        "border-forge-border"
+      <div className={`bg-v2-bg-surface border rounded-xl p-8 text-center mb-6 transition-colors duration-200 ${
+        showFeedback === "correct" ? "border-v2-success/50 bg-v2-success/5" :
+        showFeedback === "wrong" ? "border-v2-danger/50 bg-v2-danger/5" :
+        "border-v2-border"
       }`}>
         <p className="text-xl font-semibold mono leading-relaxed">{current.prompt}</p>
 
         {showFeedback === "wrong" && (
-          <p className="mt-4 text-sm text-forge-danger">
-            Correct: <span className="mono font-bold text-forge-text">{lastCorrectAnswer}</span>
+          <p className="mt-4 text-sm text-v2-danger">
+            Correct: <span className="mono font-bold text-v2-text">{lastCorrectAnswer}</span>
           </p>
         )}
         {showFeedback === "correct" && (
-          <p className="mt-4 text-sm text-forge-success font-medium">Correct</p>
+          <p className="mt-4 text-sm text-v2-success font-medium">Correct</p>
         )}
       </div>
 
@@ -202,12 +202,12 @@ export default function QuickDrawGame({ items, mode, onComplete, onQuit }: Props
             onChange={(e) => setUserInput(e.target.value)}
             placeholder="Type your answer..."
             autoComplete="off"
-            className="w-full bg-forge-surface-2 border border-forge-border rounded-xl px-4 py-3 text-center mono text-lg outline-none focus:border-forge-accent/50 placeholder:text-forge-text-muted"
+            className="w-full bg-v2-bg-elevated border border-v2-border rounded-xl px-4 py-3 text-center mono text-lg outline-none focus:border-v2-cyan/50 placeholder:text-v2-text-muted"
           />
           <button
             type="submit"
             disabled={!userInput.trim()}
-            className="mt-3 w-full py-3 bg-forge-accent text-white rounded-xl font-medium disabled:opacity-50 hover:bg-forge-accent/90 transition-colors"
+            className="mt-3 w-full py-3 bg-v2-cyan text-v2-bg-deep rounded-xl font-medium disabled:opacity-50 hover:bg-v2-cyan-bright transition-colors"
           >
             Submit
           </button>
@@ -221,7 +221,7 @@ export default function QuickDrawGame({ items, mode, onComplete, onQuit }: Props
             <button
               key={i}
               onClick={() => handleChoice(choice)}
-              className="p-4 bg-forge-surface border border-forge-border rounded-xl text-sm mono hover:border-forge-accent/50 hover:bg-forge-accent/5 transition-colors text-center"
+              className="p-4 bg-v2-bg-surface border border-v2-border rounded-xl text-sm mono hover:border-v2-cyan/50 hover:bg-v2-cyan/5 transition-colors text-center"
             >
               {choice}
             </button>
@@ -231,7 +231,7 @@ export default function QuickDrawGame({ items, mode, onComplete, onQuit }: Props
 
       {/* Miss count */}
       {missQueue.length > 0 && !showFeedback && (
-        <p className="text-center text-xs text-forge-text-muted mt-4">
+        <p className="text-center text-xs text-v2-text-muted mt-4">
           {missQueue.length} missed item{missQueue.length !== 1 ? "s" : ""} queued for re-drill
         </p>
       )}
