@@ -60,10 +60,6 @@ export function useSeedCards(): (args: { cards: any[] }) => Promise<unknown> {
   return useMutation(api.forgeCards.seedCards);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useReseedCards(): (args: { cards: any[] }) => Promise<unknown> {
-  return useMutation(api.forgeCards.reseedCards);
-}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useUpdateCard(): (args: any) => Promise<unknown> {

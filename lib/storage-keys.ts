@@ -12,7 +12,11 @@ export const STORAGE_KEYS = {
   dataPrefix: `${NS}:data:`,
   schemaVersion: `${NS}:schema-version`,
   onboardingDone: `${NS}:onboarding-done`,
-  /** Highest card-content reseed this browser has applied. */
+  /**
+   * No longer read. It counted manual "reseeds" of card content; content is now
+   * topped up on every load (lib/data/seed.ts). Still declared because older
+   * builds wrote it and the L1NX migration below still carries it over.
+   */
   reseedVersion: `${NS}:reseed-version`,
   lastCampaign: `${NS}:last-campaign`,
   lessonScale: `${NS}:lesson-scale`,

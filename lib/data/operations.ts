@@ -309,32 +309,6 @@ export const mutations: Record<string, MutationFn> = {
     return inserted;
   },
 
-  "forgeCards:reseedCards": async ({ cards }) => {
-    let inserted = 0;
-    let updated = 0;
-    mutate("forgeCards", (prev) => {
-      const byId = new Map(prev.map((c) => [c.cardId, c]));
-      for (const card of cards as CardFields[]) {
-        const existing = byId.get(card.cardId);
-        if (existing) {
-          byId.set(card.cardId, {
-            ...existing,
-            front: card.front, back: card.back, topicId: card.topicId,
-            type: card.type, difficulty: card.difficulty, tier: card.tier,
-            steps: card.steps, sortOrder: card.sortOrder,
-          });
-          updated++;
-        } else {
-          const doc = newDoc<CardFields>(card);
-          byId.set(card.cardId, doc);
-          inserted++;
-        }
-      }
-      return Array.from(byId.values());
-    });
-    return { inserted, updated };
-  },
-
   "forgeCards:dedup": async () => {
     let deleted = 0;
     mutate("forgeCards", (prev) => {
