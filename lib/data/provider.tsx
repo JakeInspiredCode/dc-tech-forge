@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, type ReactNode } from "react";
+import { TOPICS } from "@/lib/types";
+import { mutations } from "./operations";
 import { installPersistence } from "./persistence";
-import { seedIfEmpty } from "./seed";
-import { goLive } from "./store";
+import { seedIfEmpty, topUpSeedContent } from "./seed";
+import { getState, goLive } from "./store";
 
 const DEMO_PARAM = "demo";
 
@@ -24,6 +26,16 @@ export default function DataProvider({ children }: { children: ReactNode }) {
       try {
         installPersistence();
         seedIfEmpty();
+
+        // Saved data may come from an older build: add what has shipped since.
+        // Then rebuild the derived topic progress wherever it is stale or was
+        // never built. This runs on EVERY page, before the app goes live — it
+        // used to be a version counter someone had to remember to bump, and it
+        // only ran if you happened to open the home page.
+        const { topicsTouched } = topUpSeedContent();
+        const built = new Set(getState().forgeProgress.map((p) => p.topicId));
+        const stale = new Set<string>([...topicsTouched, ...TOPICS.map((t) => t.id).filter((id) => !built.has(id))]);
+        for (const topicId of stale) await mutations["forgeProgressRecompute:recompute"]({ topicId });
         if (consumeDemoParam()) {
           // Loaded on demand so the generator stays out of every page's bundle.
           // It declines on its own if this browser already has real progress.
