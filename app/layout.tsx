@@ -14,6 +14,12 @@ import "@fontsource/space-grotesk/400.css";
 import "@fontsource/space-grotesk/500.css";
 import "@fontsource/space-grotesk/600.css";
 import "@fontsource/space-grotesk/700.css";
+// Referenced by ~two dozen headings since early on but never actually loaded,
+// so they had always fallen back to a generic sans.
+import "@fontsource/chakra-petch/400.css";
+import "@fontsource/chakra-petch/500.css";
+import "@fontsource/chakra-petch/600.css";
+import "@fontsource/chakra-petch/700.css";
 import "./globals.css";
 import DataProvider from "@/lib/data/provider";
 import BadgeBanner from "@/components/badge-banner";
