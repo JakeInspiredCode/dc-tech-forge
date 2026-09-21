@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useCallback } from "react";
+import Hint from "@/components/ui/hint";
 import { useMutation, useQuery } from "@/lib/convex-shim";
 import { api } from "@/convex/_generated/api";
 import type { Doc, TicketHistoryFields } from "@/lib/data/schema";
@@ -375,6 +376,7 @@ export default function BattleStationPage() {
       className="w-full md:h-below-chrome md:overflow-hidden max-md:min-h-[calc(100dvh-var(--chrome-h))] flex flex-col"
       style={{ background: "#03040a", fontFamily: "'IBM Plex Sans', sans-serif", color: "#e0e4ec" }}
     >
+      <Hint id="battlestation" />
       {/* Header — compact on small windows */}
       <div className="flex justify-between items-center px-4 2xl:px-7 pt-3 2xl:pt-5 shrink-0">
         <div>

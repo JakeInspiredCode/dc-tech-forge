@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
+import { usePathname } from "next/navigation";
+import GuideDialog from "@/components/guide-dialog";
 import { BRAND } from "@/lib/brand";
-import { requestTour } from "@/lib/tour/request";
 
 // `hint` says in plain words what each themed name is for. It is the tooltip
 // and part of the accessible name. `short` is what fits under the icon on a
@@ -32,9 +33,10 @@ function isActive(pathname: string, href: string): boolean {
 
 export default function Nav() {
   const pathname = usePathname();
-  const router = useRouter();
+  const [guideOpen, setGuideOpen] = useState(false);
 
   return (
+    <>
     <nav
       aria-label="Main navigation"
       className="sticky top-0 z-50 backdrop-blur-md"
@@ -98,12 +100,10 @@ export default function Nav() {
             })}
           </div>
           <button
-            onClick={() => {
-              // The tour points at the Galaxy Map, so it runs there.
-              requestTour();
-              if (pathname !== "/") router.push("/");
-            }}
-            title="Replay the tour"
+            type="button"
+            onClick={() => setGuideOpen(true)}
+            aria-haspopup="dialog"
+            title="The tour, and what the words mean"
             className="ml-1 md:ml-2 px-2 md:px-2.5 min-h-[44px] min-w-[44px] md:min-h-0 md:min-w-0 md:h-8 flex flex-col md:flex-row items-center justify-center gap-1 rounded transition-colors text-xs shrink-0"
             style={{
               color: "var(--color-v2-text-muted)",
@@ -116,5 +116,10 @@ export default function Nav() {
         </div>
       </div>
     </nav>
+    {/* A sibling of <nav>, not a child: the nav's backdrop-filter makes it the
+        containing block for position:fixed descendants, which would trap the
+        dialog inside the 56px bar. */}
+    {guideOpen && <GuideDialog onClose={() => setGuideOpen(false)} />}
+    </>
   );
 }

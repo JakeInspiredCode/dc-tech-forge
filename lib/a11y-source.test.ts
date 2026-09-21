@@ -85,6 +85,11 @@ describe("click targets", () => {
       for (const tag of openingTags(src, /^(div|span|li|tr|td|p|section|article|g|img|label|h[1-6])$/)) {
         if (!/\bonClick=/.test(tag.text)) continue;
         if (/onClick=\{\(e\)\s*=>\s*e\.stopPropagation\(\)\}/.test(tag.text)) continue; // swallowing clicks, not a control
+        // A modal's backdrop: clicking outside closes it. That duplicates the
+        // dialog's own Close button and Escape, which a keyboard does reach —
+        // but only if what it wraps really is a dialog.
+        const afterTag = src.slice(tag.index + tag.text.length, tag.index + tag.text.length + 500);
+        if (/onClick=\{onClose\}/.test(tag.text) && /role="dialog"/.test(afterTag)) continue;
         const operable = /\brole=/.test(tag.text) && /\btabIndex=/.test(tag.text) && /\bonKeyDown=/.test(tag.text);
         // An accordion card may keep a whole-card onClick for the mouse as long as
         // a keyboard-operable header sits inside it (see lib/a11y.ts).
