@@ -43,7 +43,7 @@ function LearnCard({ fs }: { fs: FilesystemType }) {
             <p className="text-[10px] uppercase text-forge-text-muted font-semibold tracking-wider mb-1">Use Cases</p>
             <ul className="space-y-0.5">
               {fs.useCases.map((u, i) => (
-                <li key={i} className="text-forge-text-dim pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-forge-accent">{u}</li>
+                <li key={i} className="text-forge-text-dim pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-forge-accent-text">{u}</li>
               ))}
             </ul>
           </div>
@@ -93,7 +93,7 @@ function LearnMode() {
           onClick={() => setFilter("all")}
           className={`px-3 py-1.5 rounded-lg text-xs mono border transition-colors ${
             filter === "all"
-              ? "bg-forge-accent/20 text-forge-accent border-forge-accent/40"
+              ? "bg-forge-accent/20 text-forge-accent-text border-forge-accent/40"
               : "border-forge-border text-forge-text-dim hover:border-forge-accent/20"
           }`}
         >
@@ -319,7 +319,7 @@ export default function FilesystemTypes({ defaultMode = "learn" }: { defaultMode
             onClick={() => setMode(m)}
             className={`px-4 py-2 rounded-lg text-sm mono border transition-colors ${
               mode === m
-                ? "bg-forge-accent/20 text-forge-accent border-forge-accent/40"
+                ? "bg-forge-accent/20 text-forge-accent-text border-forge-accent/40"
                 : "border-forge-border text-forge-text-dim hover:border-forge-accent/20"
             }`}
           >

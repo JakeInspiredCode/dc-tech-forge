@@ -45,14 +45,14 @@ export default function ProgressPage() {
     : 0;
 
   return (
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
         <h1 className="text-2xl font-bold mb-6 mono">Progress</h1>
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-8">
           {[
-            { label: "Mastery", value: `${overallMastery}%`, color: overallMastery >= 85 ? "text-forge-success" : "text-forge-accent" },
+            { label: "Mastery", value: `${overallMastery}%`, color: overallMastery >= 85 ? "text-forge-success" : "text-forge-accent-text" },
             { label: "Reviews", value: totalReviews.toString(), color: "text-forge-text" },
             { label: "Streak", value: profile?.streak.toString() ?? "0", color: "text-forge-warning" },
-            { label: "Points", value: profile?.totalPoints.toString() ?? "0", color: "text-forge-accent" },
+            { label: "Points", value: profile?.totalPoints.toString() ?? "0", color: "text-forge-accent-text" },
             { label: "Sessions", value: sessions.length.toString(), color: "text-forge-text" },
           ].map((stat) => (
             <div key={stat.label} className="bg-forge-surface border border-forge-border rounded-xl p-4 text-center">
@@ -68,7 +68,7 @@ export default function ProgressPage() {
             const earned = profile?.badges.includes(badge.id) ?? false;
             return (
               <div key={badge.id} className={`rounded-xl p-4 text-center border transition-colors ${
-                earned ? "bg-forge-accent/10 border-forge-accent/30 forge-glow" : "bg-forge-surface border-forge-border opacity-40"}`}>
+                earned ? "bg-forge-accent/10 border-forge-accent/30 forge-glow" : "bg-forge-surface border-forge-border opacity-80"}`}>
                 <span className="text-2xl block mb-1">
                   {badge.icon === "anvil" ? "⬡" : badge.icon === "flame-silver" ? "△" :
                    badge.icon === "flame-gold" ? "▲" : badge.icon === "terminal" ? ">" :
@@ -92,7 +92,7 @@ export default function ProgressPage() {
               <div key={topic.id} className="bg-forge-surface border border-forge-border rounded-lg p-4">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
-                    <span className="mono text-forge-accent">{topic.icon}</span>
+                    <span className="mono text-forge-accent-text">{topic.icon}</span>
                     <span className="text-sm font-medium">{topic.name}</span>
                   </div>
                   <div className="flex items-center gap-3 text-xs mono">
@@ -121,7 +121,7 @@ export default function ProgressPage() {
           expanded={expanded}
           setExpanded={setExpanded}
         />
-      </main>
+      </div>
   );
 }
 
@@ -200,7 +200,7 @@ function HistorySection({
             onClick={() => setHistoryTab(t)}
             className={`px-4 py-1.5 rounded-lg text-sm mono transition-colors border ${
               historyTab === t
-                ? "bg-forge-accent/20 text-forge-accent border-forge-accent/40"
+                ? "bg-forge-accent/20 text-forge-accent-text border-forge-accent/40"
                 : "text-forge-text-dim border-forge-border hover:border-forge-border-hover"
             }`}
           >
@@ -291,7 +291,7 @@ function HistorySection({
                     <span className="text-xs bg-forge-surface-2 border border-forge-border px-2 py-0.5 rounded mono">
                       {topicName}
                     </span>
-                    <span className="text-sm font-bold mono text-forge-accent">{r.totalPoints} pts</span>
+                    <span className="text-sm font-bold mono text-forge-accent-text">{r.totalPoints} pts</span>
                     <span className="text-xs text-forge-text-dim">{accuracy}% accuracy</span>
                     <span className="text-xs text-forge-text-muted">{r.totalCards} cards</span>
                   </div>

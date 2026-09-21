@@ -131,7 +131,7 @@ export default function PacketStack({
           fontSize: 10,
           fontWeight: 700,
           background: travelPos !== null ? "rgba(80,200,255,0.15)" : "#50C8FF",
-          color: travelPos !== null ? "#7090A8" : "#1A1A2E",
+          color: travelPos !== null ? "var(--color-v2-text-muted)" : "#1A1A2E",
           border: "none",
           borderRadius: 6,
           cursor: travelPos !== null ? "not-allowed" : "pointer",
@@ -184,7 +184,7 @@ export default function PacketStack({
                 </div>
                 <span
                   style={{
-                    color: "#8899AA",
+                    color: "var(--color-v2-text-muted)",
                     fontSize: 10,
                     transition: "transform 0.2s",
                     transform: isExpanded ? "rotate(90deg)" : "none",

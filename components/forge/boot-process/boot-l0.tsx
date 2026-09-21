@@ -108,7 +108,7 @@ export default function BootL0({ onBack, onAdvance }: { onBack: () => void; onAd
         <div className="text-center">
           <button
             onClick={() => setPhase("quiz")}
-            className="px-6 py-3 bg-forge-accent/15 border border-forge-accent/40 rounded-xl text-sm mono text-forge-accent hover:bg-forge-accent/20 transition-colors"
+            className="px-6 py-3 bg-forge-accent/15 border border-forge-accent/40 rounded-xl text-sm mono text-forge-accent-text hover:bg-forge-accent/20 transition-colors"
           >
             All 6 steps explored — Take the Recall Quiz &#8594;
           </button>
@@ -134,7 +134,7 @@ export default function BootL0({ onBack, onAdvance }: { onBack: () => void; onAd
               <button
                 onClick={submitQuiz}
                 disabled={Object.keys(quizAnswers).length < L0_RECALL_QUIZ.length}
-                className="w-full py-2.5 bg-forge-accent/15 border border-forge-accent/40 rounded-lg text-sm mono text-forge-accent hover:bg-forge-accent/20 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                className="w-full py-2.5 bg-forge-accent/15 border border-forge-accent/40 rounded-lg text-sm mono text-forge-accent-text hover:bg-forge-accent/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Submit ({Object.keys(quizAnswers).length}/{L0_RECALL_QUIZ.length} answered)
               </button>
@@ -278,7 +278,7 @@ function StepCard({ step, revealed, accentHex, onReveal }: {
               </p>
             </div>
             <button onClick={() => setShowDetail(!showDetail)}
-              className="text-[10px] mono text-forge-text-muted hover:text-forge-accent transition-colors">
+              className="text-[10px] mono text-forge-text-muted hover:text-forge-accent-text transition-colors">
               {showDetail ? "Hide explanation \u25B4" : "Why? \u25BE"}
             </button>
             {showDetail && (
@@ -320,7 +320,7 @@ function QuizQuestion({ question, index, selected, submitted, onSelect }: {
           } else if (submitted && isCorrect) {
             btnClass += "border-forge-success/30 bg-forge-success/5 text-forge-success/70";
           } else if (isSelected) {
-            btnClass += "border-forge-accent/50 bg-forge-accent/10 text-forge-accent";
+            btnClass += "border-forge-accent/50 bg-forge-accent/10 text-forge-accent-text";
           } else {
             btnClass += "border-forge-border bg-forge-bg hover:border-forge-border-hover text-forge-text-dim";
           }

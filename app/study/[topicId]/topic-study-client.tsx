@@ -43,26 +43,26 @@ export default function TopicStudyClient({ topicId }: { topicId: string }) {
   };
 
   if (!topic) {
-    return (<main className="max-w-3xl mx-auto px-4 py-8"><p className="text-forge-text-dim">Topic not found.</p></main>);
+    return (<div className="max-w-3xl mx-auto px-4 py-8"><p className="text-forge-text-dim">Topic not found.</p></div>);
   }
 
   if (active && sessionCards.length > 0) {
     return (
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
           <button onClick={() => { setActive(false); setSessionCards([]); }}
             className="text-sm text-forge-text-dim hover:text-forge-text mb-6 flex items-center gap-1">← End session</button>
           <CardQueue cards={sessionCards} sessionType="topic-drill"
             onComplete={() => { setActive(false); setSessionCards([]); }} />
-        </main>
+        </div>
     );
   }
 
   return (
-      <main className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
         <button onClick={() => router.push("/study")}
           className="text-sm text-forge-text-dim hover:text-forge-text mb-6 flex items-center gap-1">← Back to study</button>
         <div className="flex items-center gap-3 mb-6">
-          <span className="mono text-forge-accent text-2xl">{topic.icon}</span>
+          <span className="mono text-forge-accent-text text-2xl">{topic.icon}</span>
           <div>
             <h1 className="text-2xl font-bold">{topic.name}</h1>
             <p className="text-forge-text-dim text-sm">{topic.description}</p>
@@ -73,7 +73,7 @@ export default function TopicStudyClient({ topicId }: { topicId: string }) {
           <div className="bg-forge-surface border border-forge-border rounded-xl p-6 mb-6">
             <div className="grid grid-cols-4 gap-4 mb-4">
               <div className="text-center">
-                <span className="text-2xl font-bold mono text-forge-accent">{tp.masteryPercent}%</span>
+                <span className="text-2xl font-bold mono text-forge-accent-text">{tp.masteryPercent}%</span>
                 <span className="block text-xs text-forge-text-dim">mastery</span>
               </div>
               <div className="text-center">
@@ -116,7 +116,7 @@ export default function TopicStudyClient({ topicId }: { topicId: string }) {
         <div className="space-y-3">
           <button onClick={startDue}
             className="w-full bg-forge-accent/10 border border-forge-accent/30 rounded-xl p-4 text-left hover:bg-forge-accent/15 transition-colors">
-            <span className="font-semibold text-forge-accent">Review Due</span>
+            <span className="font-semibold text-forge-accent-text">Review Due</span>
             <span className="text-sm text-forge-text-dim ml-2">({dueCards.length} cards)</span>
           </button>
           <button onClick={startNew}
@@ -130,6 +130,6 @@ export default function TopicStudyClient({ topicId }: { topicId: string }) {
             <span className="text-sm text-forge-text-dim ml-2">(up to 40 cards, all unlocked tiers)</span>
           </button>
         </div>
-      </main>
+      </div>
   );
 }

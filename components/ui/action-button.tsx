@@ -48,7 +48,7 @@ export default function ActionButton({
       className={`inline-flex items-center justify-center gap-2 font-medium rounded transition-all duration-200 ${
         variantStyles[variant]
       } ${sizeStyles[size]} ${
-        disabled ? "opacity-40 cursor-not-allowed" : "cursor-pointer"
+        disabled ? "opacity-60 cursor-not-allowed" : "cursor-pointer"
       } ${className}`}
     >
       {children}

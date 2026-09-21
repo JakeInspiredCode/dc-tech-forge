@@ -71,7 +71,7 @@ export default function SpeedRunFeedback({
         <span className={`mono font-bold text-sm ${config.text}`}>{config.label}</span>
         <div className="flex items-center gap-3 mono text-sm">
           {points > 0 && (
-            <span className="text-forge-accent font-bold">+{points} pts</span>
+            <span className="text-forge-accent-text font-bold">+{points} pts</span>
           )}
           <span className={`font-bold ${config.timeColor}`}>
             {timeAdjustment > 0 ? `+${timeAdjustment}s` : `${timeAdjustment}s`}

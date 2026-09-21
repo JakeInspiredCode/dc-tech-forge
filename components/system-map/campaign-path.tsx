@@ -1,5 +1,7 @@
 "use client";
 
+import { useReducedMotion } from "@/lib/use-reduced-motion";
+
 interface PathNode {
   missionId: string;
   cx: number;
@@ -24,6 +26,7 @@ function MissionStream({
   isCompleted: boolean;
   segmentIndex: number;
 }) {
+  const reducedMotion = useReducedMotion();
   const dx = x2 - x1;
   const dy = y2 - y1;
   const len = Math.sqrt(dx * dx + dy * dy);
@@ -60,8 +63,8 @@ function MissionStream({
         strokeLinecap="round"
         strokeDasharray={isCompleted ? "none" : "4 6"}
       />
-      {/* Animated particles — 3 per stream */}
-      {[0, 1, 2].map((i) => (
+      {/* Animated particles — 3 per stream. Decorative: reduced motion drops them. */}
+      {!reducedMotion && [0, 1, 2].map((i) => (
         <circle
           key={i}
           r={isCompleted ? 2 : 1.2}

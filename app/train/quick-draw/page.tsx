@@ -55,14 +55,14 @@ export default function QuickDrawPage() {
   if (screen === "playing" && selectedModule) {
     return (
       <div className="min-h-screen bg-v2-bg-deep">
-        <main className="px-4 sm:px-6 py-8">
+        <div className="px-4 sm:px-6 py-8">
           <QuickDrawGame
             items={selectedModule.items}
             mode={mode}
             onComplete={handleComplete}
             onQuit={() => setScreen("setup")}
           />
-        </main>
+        </div>
       </div>
     );
   }
@@ -70,14 +70,14 @@ export default function QuickDrawPage() {
   if (screen === "results" && summary && selectedModule) {
     return (
       <div className="min-h-screen bg-v2-bg-deep">
-        <main className="px-4 sm:px-6 py-8">
+        <div className="px-4 sm:px-6 py-8">
           <QuickDrawResults
             summary={summary}
             moduleName={selectedModule.title}
             onPlayAgain={() => startGame(selectedModule)}
             onBack={() => setScreen("setup")}
           />
-        </main>
+        </div>
       </div>
     );
   }
@@ -85,7 +85,7 @@ export default function QuickDrawPage() {
   // Setup
   return (
     <div className="min-h-screen bg-v2-bg-deep">
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
         <h1 className="text-2xl font-bold mono mb-1">Quick Draw</h1>
         <p className="text-sm text-forge-text-dim mb-6">
           Fast recall drills — pick a module and go
@@ -97,7 +97,7 @@ export default function QuickDrawPage() {
             onClick={() => setMode("type")}
             className={`px-4 py-2 rounded-lg text-sm mono border transition-colors ${
               mode === "type"
-                ? "bg-forge-accent/20 text-forge-accent border-forge-accent/40"
+                ? "bg-forge-accent/20 text-forge-accent-text border-forge-accent/40"
                 : "border-forge-border text-forge-text-dim hover:text-forge-text"
             }`}
           >
@@ -107,7 +107,7 @@ export default function QuickDrawPage() {
             onClick={() => setMode("choice")}
             className={`px-4 py-2 rounded-lg text-sm mono border transition-colors ${
               mode === "choice"
-                ? "bg-forge-accent/20 text-forge-accent border-forge-accent/40"
+                ? "bg-forge-accent/20 text-forge-accent-text border-forge-accent/40"
                 : "border-forge-border text-forge-text-dim hover:text-forge-text"
             }`}
           >
@@ -134,7 +134,7 @@ export default function QuickDrawPage() {
             </button>
           ))}
         </div>
-      </main>
+      </div>
     </div>
   );
 }

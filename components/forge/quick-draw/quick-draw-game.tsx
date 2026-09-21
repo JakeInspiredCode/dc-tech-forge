@@ -207,7 +207,7 @@ export default function QuickDrawGame({ items, mode, onComplete, onQuit }: Props
           <button
             type="submit"
             disabled={!userInput.trim()}
-            className="mt-3 w-full py-3 bg-forge-accent text-white rounded-xl font-medium disabled:opacity-30 hover:bg-forge-accent/90 transition-colors"
+            className="mt-3 w-full py-3 bg-forge-accent text-white rounded-xl font-medium disabled:opacity-50 hover:bg-forge-accent/90 transition-colors"
           >
             Submit
           </button>

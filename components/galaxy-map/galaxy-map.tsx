@@ -7,6 +7,7 @@ import { api } from "@/convex/_generated/api";
 import { ALL_CAMPAIGNS, getMissionsForCampaign, ALL_SECTORS } from "@/lib/seeds/campaigns";
 import type { Sector, SectorProgress, MissionStatus } from "@/lib/types/campaign";
 import StarfieldCanvas from "@/components/star-map/starfield-canvas";
+import { useSvgMotionRef, useReducedMotion } from "@/lib/use-reduced-motion";
 import ScanOverlay from "@/components/ui/scan-overlay";
 import GalaxyHeader from "./galaxy-header";
 import SectorNode from "./sector-node";
@@ -21,6 +22,7 @@ function EnergyStream({
   x1: number; y1: number; x2: number; y2: number;
   color: string; active: boolean;
 }) {
+  const reducedMotion = useReducedMotion();
   const midX = (x1 + x2) / 2;
   const midY = (y1 + y2) / 2;
   // Control points offset perpendicular to the line
@@ -58,9 +60,11 @@ function EnergyStream({
         opacity={active ? 0.06 : 0.02}
         strokeLinecap="round"
       />
-      {/* Animated particles — 3 particles per stream */}
-      {[0, 1, 2].map((i) => (
-        <circle key={i} r={active ? 2 : 1.2} fill={color} opacity={active ? 0.7 : 0.3}>
+      {/* Animated particles — 3 particles per stream. Purely decorative, so
+          reduced motion drops them. They start transparent: one whose `begin`
+          hasn't arrived yet would otherwise sit at the SVG origin. */}
+      {!reducedMotion && [0, 1, 2].map((i) => (
+        <circle key={i} r={active ? 2 : 1.2} fill={color} opacity={0}>
           <animateMotion
             dur={`${3 + i * 1.5}s`}
             repeatCount="indefinite"
@@ -100,6 +104,7 @@ export default function GalaxyMap({ tourSectorId = null }: GalaxyMapProps) {
   const previewSector =
     (tourSectorId ? ALL_SECTORS.find((s) => s.id === tourSectorId) : null) ?? hoveredSector;
   const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const svgMotionRef = useSvgMotionRef();
 
   const isLoading = !profile || !campaignStates || !missionStates;
 
@@ -270,6 +275,7 @@ export default function GalaxyMap({ tourSectorId = null }: GalaxyMapProps) {
               </div>
             ) : (
               <svg
+                ref={svgMotionRef}
                 viewBox="0 0 1000 800"
                 preserveAspectRatio="xMidYMid meet"
                 className="w-full h-full relative z-[1]"

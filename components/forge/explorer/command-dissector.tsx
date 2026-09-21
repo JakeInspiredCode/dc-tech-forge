@@ -64,7 +64,7 @@ function DissectorView({ cmd }: { cmd: Command }) {
               padding: "3px 10px", borderRadius: 5, fontSize: 11, fontWeight: 600, cursor: "pointer",
               background: exampleIdx === i ? "rgba(80,200,255,0.15)" : "rgba(255,255,255,0.04)",
               border: exampleIdx === i ? "1px solid rgba(80,200,255,0.4)" : "1px solid rgba(255,255,255,0.08)",
-              color: exampleIdx === i ? "#50C8FF" : "#778",
+              color: exampleIdx === i ? "#50C8FF" : "var(--color-v2-text-muted)",
               fontFamily: "'JetBrains Mono', monospace",
             }}>{ex.usage.split(" ")[0]} {i + 1}</button>
           ))}
@@ -108,13 +108,13 @@ function DissectorView({ cmd }: { cmd: Command }) {
             {parts[hovered].label}
           </span>
         ) : (
-          <span style={{ color: "#445", fontSize: 12, fontStyle: "italic" }}>Hover over any part to see what it does</span>
+          <span style={{ color: "var(--color-v2-text-muted)", fontSize: 12, fontStyle: "italic" }}>Hover over any part to see what it does</span>
         )}
       </div>
 
       {/* Example explanation */}
       {cmd.examples[exampleIdx] && (
-        <p style={{ color: "#889", fontSize: 12, margin: "6px 0 0 0", fontStyle: "italic" }}>
+        <p style={{ color: "var(--color-v2-text-muted)", fontSize: 12, margin: "6px 0 0 0", fontStyle: "italic" }}>
           {cmd.examples[exampleIdx].explanation}
         </p>
       )}
@@ -160,7 +160,7 @@ export default function CommandDissector({ onBack }: Props) {
           onClick={() => setCategory("all")}
           className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
             category === "all"
-              ? "bg-forge-accent/15 text-forge-accent border border-forge-accent/30"
+              ? "bg-forge-accent/15 text-forge-accent-text border border-forge-accent/30"
               : "bg-forge-surface border border-forge-border text-forge-text-dim hover:text-forge-text"
           }`}
         >
@@ -174,7 +174,7 @@ export default function CommandDissector({ onBack }: Props) {
               onClick={() => setCategory(cat.id)}
               className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
                 category === cat.id
-                  ? "bg-forge-accent/15 text-forge-accent border border-forge-accent/30"
+                  ? "bg-forge-accent/15 text-forge-accent-text border border-forge-accent/30"
                   : "bg-forge-surface border border-forge-border text-forge-text-dim hover:text-forge-text"
               }`}
             >
@@ -189,7 +189,7 @@ export default function CommandDissector({ onBack }: Props) {
         <div className="mb-4 bg-forge-surface border border-forge-accent/20 rounded-xl p-4">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3">
-              <span className="mono text-forge-accent font-bold">{selectedCmd.command}</span>
+              <span className="mono text-forge-accent-text font-bold">{selectedCmd.command}</span>
               <span className="text-xs text-forge-text-dim">{selectedCmd.description}</span>
             </div>
             <button
@@ -208,7 +208,7 @@ export default function CommandDissector({ onBack }: Props) {
               <div className="mt-1 space-y-1">
                 {selectedCmd.flags.map((f, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <span className="mono text-xs text-forge-accent shrink-0 w-24">{f.flag}</span>
+                    <span className="mono text-xs text-forge-accent-text shrink-0 w-24">{f.flag}</span>
                     <span className="text-xs text-forge-text-dim">{f.description}</span>
                   </div>
                 ))}
@@ -229,7 +229,7 @@ export default function CommandDissector({ onBack }: Props) {
             onClick={() => setSelectedCmd(cmd)}
             className={`text-left px-3 py-2 rounded-lg border transition-colors ${
               selectedCmd?.id === cmd.id
-                ? "bg-forge-accent/10 border-forge-accent/30 text-forge-accent"
+                ? "bg-forge-accent/10 border-forge-accent/30 text-forge-accent-text"
                 : "bg-forge-surface border-forge-border hover:border-forge-border-hover text-forge-text"
             }`}
           >

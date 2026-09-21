@@ -61,13 +61,13 @@ export default function SpeedRunHud({
           className={`mono font-bold tabular-nums transition-all ${
             streak >= 10 ? "text-forge-danger text-lg" :
             streak >= 6  ? "text-forge-warning text-base" :
-            streak >= 3  ? "text-forge-accent text-sm" :
+            streak >= 3  ? "text-forge-accent-text text-sm" :
             "text-forge-text-dim text-sm"
           }`}
         >
           {streak}
         </span>
-        <span className={`mono text-xs font-medium ${multiplier > 1 ? "text-forge-accent" : "text-forge-text-muted"}`}>
+        <span className={`mono text-xs font-medium ${multiplier > 1 ? "text-forge-accent-text" : "text-forge-text-muted"}`}>
           {multiplier > 1 ? `(${multiplier}x)` : ""}
         </span>
       </div>
@@ -75,7 +75,7 @@ export default function SpeedRunHud({
       {/* Points */}
       <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border bg-forge-surface border-forge-border">
         <span className="text-xs">⚡</span>
-        <span className="mono font-bold text-forge-accent tabular-nums">{points}</span>
+        <span className="mono font-bold text-forge-accent-text tabular-nums">{points}</span>
       </div>
 
       <div className="flex-1" />

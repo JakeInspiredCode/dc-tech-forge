@@ -118,7 +118,7 @@ export default function BootTriage({ onBack }: { onBack: () => void }) {
             <p className="text-sm">{result.scenario.resolution}</p>
           </div>
           <div className="bg-forge-accent/10 border border-forge-accent/30 rounded-lg p-4">
-            <p className="text-[10px] uppercase text-forge-accent font-bold tracking-wider mb-1">KEY TAKEAWAY</p>
+            <p className="text-[10px] uppercase text-forge-accent-text font-bold tracking-wider mb-1">KEY TAKEAWAY</p>
             <p className="text-sm">{result.scenario.keyTakeaway}</p>
           </div>
         </div>

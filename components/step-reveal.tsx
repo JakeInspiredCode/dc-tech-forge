@@ -15,7 +15,7 @@ interface StepRevealProps {
 const RATING_BUTTONS: { label: string; quality: Quality; color: string }[] = [
   { label: "Again", quality: 1 as Quality, color: "bg-forge-danger/20 text-forge-danger border-forge-danger/30" },
   { label: "Hard", quality: 3 as Quality, color: "bg-forge-warning/20 text-forge-warning border-forge-warning/30" },
-  { label: "Good", quality: 4 as Quality, color: "bg-forge-accent/20 text-forge-accent border-forge-accent/30" },
+  { label: "Good", quality: 4 as Quality, color: "bg-forge-accent/20 text-forge-accent-text border-forge-accent/30" },
   { label: "Easy", quality: 5 as Quality, color: "bg-forge-success/20 text-forge-success border-forge-success/30" },
 ];
 
@@ -66,7 +66,7 @@ export default function StepReveal({ card, onRate, index, total }: StepRevealPro
       {steps.slice(0, revealedSteps).map((step, i) => (
         <div key={i} className="bg-forge-surface border border-forge-border rounded-xl p-5 mb-3">
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-xs mono text-forge-accent bg-forge-accent/10 px-2 py-0.5 rounded">
+            <span className="text-xs mono text-forge-accent-text bg-forge-accent/10 px-2 py-0.5 rounded">
               STEP {i + 1}/{steps.length}
             </span>
           </div>
@@ -93,7 +93,7 @@ export default function StepReveal({ card, onRate, index, total }: StepRevealPro
         {!showFinal ? (
           <button
             onClick={handleNextStep}
-            className="px-6 py-2.5 bg-forge-accent/20 text-forge-accent border border-forge-accent/30 rounded-lg text-sm font-medium hover:bg-forge-accent/30 transition-colors"
+            className="px-6 py-2.5 bg-forge-accent/20 text-forge-accent-text border border-forge-accent/30 rounded-lg text-sm font-medium hover:bg-forge-accent/30 transition-colors"
           >
             {revealedSteps < steps.length ? `Next Step (${revealedSteps}/${steps.length})` : "Show Resolution"}
           </button>

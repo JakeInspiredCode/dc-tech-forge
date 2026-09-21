@@ -10,12 +10,14 @@ import { getSectorForCampaign } from "@/lib/seeds/sectors";
 import { SESSION_KEYS, STORAGE_KEYS } from "@/lib/storage-keys";
 import type { Mission, MissionStatus, MissionStep } from "@/lib/types/campaign";
 import StarfieldCanvas from "@/components/star-map/starfield-canvas";
+import { useSvgMotionRef } from "@/lib/use-reduced-motion";
 import ScanOverlay from "@/components/ui/scan-overlay";
 import CentralStar from "./central-star";
 import MissionNode from "./mission-node";
 import CampaignPath from "./campaign-path";
 import MissionPreviewPanel from "./mission-preview-panel";
 import StatsSidebar from "./stats-sidebar";
+import { V2 } from "@/lib/design/forge-v2-tokens";
 
 // ── Orbital position computation ──
 
@@ -89,6 +91,7 @@ export default function SystemMap() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const campaignIdParam = searchParams.get("campaign");
+  const svgMotionRef = useSvgMotionRef();
 
   const profile = useQuery<Doc<ProfileFields> | null>(api.forgeProfile.get);
   const campaignStates = useQuery<Doc<CampaignProgressFields>[]>(api.forgeCampaigns.getAllCampaignStates);
@@ -328,6 +331,7 @@ export default function SystemMap() {
               </div>
             ) : (
               <svg
+                ref={svgMotionRef}
                 viewBox="110 80 690 680"
                 preserveAspectRatio="xMidYMid meet"
                 className="w-full h-full relative z-[1]"
@@ -506,7 +510,7 @@ function MissionTooltip({
   };
 
   const statusColor: Record<MissionStatus, string> = {
-    locked: "#6a7288",
+    locked: V2.text.muted,
     available: "#06d6d6",
     "in-progress": "#06d6d6",
     accomplished: "#22c55e",
@@ -537,7 +541,7 @@ function MissionTooltip({
           >
             {statusLabel[status]}
           </span>
-          <span className="text-[10px] telemetry-font text-[#6a7288]">
+          <span className="text-[10px] telemetry-font text-v2-text-muted">
             Mission {missionIndex + 1}
           </span>
         </div>
@@ -549,7 +553,7 @@ function MissionTooltip({
         </div>
         <div className="flex items-center gap-2 text-[11px] telemetry-font text-[#8eafc8]">
           <span>{mission.estimatedMinutes} min</span>
-          <span className="text-[#444b5c]">|</span>
+          <span className="text-v2-text-muted">|</span>
           <span>{mission.defaultLoadout.length} steps</span>
         </div>
       </div>

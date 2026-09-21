@@ -222,7 +222,7 @@ export default function SpeedRunPage() {
   if (screen === "playing") {
     return (
       <div className="min-h-screen bg-v2-bg-deep">
-        <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
           <SpeedRunGame
             cards={gameCards}
             startingTime={timerOption}
@@ -230,7 +230,7 @@ export default function SpeedRunPage() {
             onExit={() => setScreen("setup")}
             onReviewCard={handleReviewCard}
           />
-        </main>
+        </div>
       </div>
     );
   }
@@ -238,7 +238,7 @@ export default function SpeedRunPage() {
   if (screen === "review-misses" && reviewCards.length > 0) {
     return (
       <div className="min-h-screen bg-v2-bg-deep">
-        <main className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
           <div className="mb-6 flex items-center justify-between">
             <div>
               <h2 className="text-lg font-semibold mono">Miss Review</h2>
@@ -256,7 +256,7 @@ export default function SpeedRunPage() {
             sessionType="topic-drill"
             onComplete={() => setScreen("results")}
           />
-        </main>
+        </div>
       </div>
     );
   }
@@ -264,7 +264,7 @@ export default function SpeedRunPage() {
   if (screen === "results" && summary) {
     return (
       <div className="min-h-screen bg-v2-bg-deep">
-        <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
           <SpeedRunResults
             summary={summary}
             cards={gameCards}
@@ -273,7 +273,7 @@ export default function SpeedRunPage() {
             onPlayAgain={() => { handleStart(); }}
             onDashboard={() => router.push("/")}
           />
-        </main>
+        </div>
       </div>
     );
   }
@@ -281,7 +281,7 @@ export default function SpeedRunPage() {
   // Setup screen
   return (
     <div className="min-h-screen bg-v2-bg-deep">
-      <main className="max-w-lg mx-auto px-4 sm:px-6 py-8 space-y-6">
+      <div className="max-w-lg mx-auto px-4 sm:px-6 py-8 space-y-6">
         <div>
           <h1 className="text-xl font-bold mono mb-1">⚡ Speed Run</h1>
           <p className="text-sm text-forge-text-dim">
@@ -312,7 +312,7 @@ export default function SpeedRunPage() {
                 onClick={() => toggleType(t)}
                 className={`flex-1 py-2 rounded-lg border text-xs font-medium mono transition-colors capitalize ${
                   typeFilter.includes(t)
-                    ? "bg-forge-accent/20 text-forge-accent border-forge-accent/40"
+                    ? "bg-forge-accent/20 text-forge-accent-text border-forge-accent/40"
                     : "bg-forge-surface text-forge-text-dim border-forge-border hover:border-forge-border-hover"
                 }`}
               >
@@ -336,12 +336,12 @@ export default function SpeedRunPage() {
                 onClick={() => setTimerOption(t)}
                 className={`flex-1 py-2 rounded-lg border text-sm font-medium mono transition-colors ${
                   timerOption === t
-                    ? "bg-forge-accent/20 text-forge-accent border-forge-accent/40"
+                    ? "bg-forge-accent/20 text-forge-accent-text border-forge-accent/40"
                     : "bg-forge-surface text-forge-text-dim border-forge-border hover:border-forge-border-hover"
                 }`}
               >
                 {t}s
-                <span className="block text-[10px] opacity-60">
+                <span className="block text-[10px] opacity-80">
                   {t === 45 ? "hard" : t === 60 ? "default" : "practice"}
                 </span>
               </button>
@@ -355,7 +355,7 @@ export default function SpeedRunPage() {
           disabled={eligibleCount < 3 || typeFilter.length === 0}
           className="w-full py-3 rounded-xl text-sm font-bold mono transition-colors
             bg-forge-accent text-white hover:bg-forge-accent/90
-            disabled:opacity-40 disabled:cursor-not-allowed"
+            disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Start Speed Run →
         </button>
@@ -363,7 +363,7 @@ export default function SpeedRunPage() {
         <p className="text-xs text-forge-text-muted text-center mono">
           {eligibleCount} eligible cards loaded
         </p>
-      </main>
+      </div>
     </div>
   );
 }

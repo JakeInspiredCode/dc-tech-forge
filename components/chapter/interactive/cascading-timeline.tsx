@@ -323,7 +323,7 @@ function stepBtnStyle(disabled: boolean): React.CSSProperties {
     background: disabled ? "rgba(255,255,255,0.03)" : "rgba(255,107,107,0.15)",
     border: `1px solid ${disabled ? "rgba(255,255,255,0.08)" : "rgba(255,107,107,0.35)"}`,
     borderRadius: 4,
-    color: disabled ? "#556" : "#FFB0B0",
+    color: disabled ? "var(--color-v2-text-muted)" : "#FFB0B0",
     cursor: disabled ? "not-allowed" : "pointer",
     fontFamily: "inherit",
   };

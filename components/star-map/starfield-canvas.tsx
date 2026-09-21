@@ -1,6 +1,7 @@
 "use client";
 
 import { memo, useEffect, useRef, useCallback } from "react";
+import { useReducedMotion } from "@/lib/use-reduced-motion";
 
 interface Star {
   x: number;
@@ -135,6 +136,7 @@ function StarfieldCanvasImpl() {
   const animRef = useRef<number>(0);
   const timeRef = useRef<number>(0);
   const mouseRef = useRef({ x: 0, y: 0 });
+  const reducedMotion = useReducedMotion();
 
   const draw = useCallback((ctx: CanvasRenderingContext2D, w: number, h: number) => {
     const time = timeRef.current;
@@ -276,10 +278,20 @@ function StarfieldCanvasImpl() {
       nebulaeRef.current = createNebulae(w, h);
       particlesRef.current = createParticles(w, h);
       dustRef.current = createDust(w, h);
+
+      // Reduced motion: the sky is a still image, repainted only on resize.
+      if (reducedMotion) {
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        draw(ctx, w, h);
+      }
     }
 
     resize();
     window.addEventListener("resize", resize);
+
+    if (reducedMotion) {
+      return () => window.removeEventListener("resize", resize);
+    }
 
     // Mouse tracking for parallax
     const handleMouse = (e: MouseEvent) => {
@@ -311,7 +323,7 @@ function StarfieldCanvasImpl() {
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", handleMouse);
     };
-  }, [draw]);
+  }, [draw, reducedMotion]);
 
   return (
     <canvas

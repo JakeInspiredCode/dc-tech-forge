@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { TOPICS } from "@/lib/types";
+import { V2 } from "@/lib/design/forge-v2-tokens";
 
 interface ReadinessRadarProps {
   progress: { topicId: string; masteryPercent: number }[];
@@ -15,7 +16,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   "power-cooling": "#f97316",
   "ops-processes": "#22c55e",
   scale: "#a855f7",
-  behavioral: "#64748b",
+  behavioral: V2.text.muted,
 };
 
 const SHORT_LABELS: Record<string, string> = {
@@ -262,14 +263,14 @@ export default function ReadinessRadar({ progress }: ReadinessRadarProps) {
 
       // Category name
       ctx.font = `${isHov ? 500 : 400} ${labelFontSize}px 'IBM Plex Sans', sans-serif`;
-      ctx.fillStyle = isHov ? cat.color : "#4a5268";
+      ctx.fillStyle = isHov ? cat.color : V2.text.muted;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText(cat.short, lx, ly - labelFontSize * 0.4);
 
       // Percentage
       ctx.font = `${isHov ? 600 : 500} ${pctFontSize}px 'JetBrains Mono', monospace`;
-      ctx.fillStyle = isHov ? "#e0e4ec" : "#5a6278";
+      ctx.fillStyle = isHov ? "#e0e4ec" : V2.text.muted;
       ctx.fillText(`${Math.round(cat.readiness * 100)}%`, lx, ly + pctFontSize * 0.6);
 
       // Connector line
@@ -342,7 +343,7 @@ export default function ReadinessRadar({ progress }: ReadinessRadarProps) {
     <div className="flex flex-col items-center h-full">
       {/* Header */}
       <div className="flex items-baseline gap-2 mb-1">
-        <span className="text-[10px] telemetry-font tracking-[0.18em] text-v2-cyan/50 uppercase">
+        <span className="text-[10px] telemetry-font tracking-[0.18em] text-v2-cyan/80 uppercase">
           Readiness
         </span>
         <span

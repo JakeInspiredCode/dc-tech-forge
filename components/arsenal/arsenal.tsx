@@ -11,6 +11,7 @@ import ScanOverlay from "@/components/ui/scan-overlay";
 import StarfieldCanvas from "@/components/star-map/starfield-canvas";
 
 import dynamic from "next/dynamic";
+import { V2 } from "@/lib/design/forge-v2-tokens";
 const StepRenderer = dynamic(() => import("@/components/mission/step-renderer"), { ssr: false });
 
 // ── Activity data ──
@@ -70,7 +71,7 @@ const accentColor = "#22c55e";
 
 // Minimal SVG icons for categories
 function CategoryIcon({ cat, active }: { cat: string; active: boolean }) {
-  const color = active ? accentColor : "#6a7288";
+  const color = active ? accentColor : V2.text.muted;
   const common = { width: 16, height: 16, viewBox: "0 0 16 16", fill: "none", stroke: color, strokeWidth: 1.3, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
   switch (cat) {
     case "learn":
@@ -90,7 +91,7 @@ function CategoryIcon({ cat, active }: { cat: string; active: boolean }) {
 
 // Difficulty color
 const diffColor = (d?: string) =>
-  d === "Easy" ? "#22c55e" : d === "Medium" ? "#f59e0b" : d === "Hard" ? "#ef4444" : d === "Mixed" ? "#a855f7" : "#6a7288";
+  d === "Easy" ? "#22c55e" : d === "Medium" ? "#f59e0b" : d === "Hard" ? "#ef4444" : d === "Mixed" ? "#a855f7" : V2.text.muted;
 
 // ── Bounty Activity View ──
 
@@ -237,7 +238,7 @@ export default function Arsenal() {
                   className="text-[10px] tracking-widest uppercase"
                   style={{
                     fontFamily: "'Chakra Petch', sans-serif",
-                    color: activeCategory === key ? accentColor : "#6a7288",
+                    color: activeCategory === key ? accentColor : V2.text.muted,
                   }}
                 >
                   {label}
@@ -299,12 +300,12 @@ export default function Arsenal() {
 
                     {/* Meta row */}
                     <div className="flex items-center gap-2 pl-3">
-                      <span className="text-[11px] telemetry-font text-[#6a7288]">
+                      <span className="text-[11px] telemetry-font text-v2-text-muted">
                         ~{activity.estimatedMinutes}m
                       </span>
                       {activity.difficulty && (
                         <>
-                          <span className="text-[11px] text-[#333845]">|</span>
+                          <span className="text-[11px] text-v2-text-muted">|</span>
                           <span
                             className="text-[11px] telemetry-font uppercase tracking-wider"
                             style={{ color: diffColor(activity.difficulty) }}
@@ -315,8 +316,8 @@ export default function Arsenal() {
                       )}
                       {activity.topics.length > 0 && (
                         <>
-                          <span className="text-[11px] text-[#333845]">|</span>
-                          <span className="text-[11px] telemetry-font text-[#6a7288] truncate">
+                          <span className="text-[11px] text-v2-text-muted">|</span>
+                          <span className="text-[11px] telemetry-font text-v2-text-muted truncate">
                             {activity.topics.slice(0, 2).join(", ")}
                           </span>
                         </>

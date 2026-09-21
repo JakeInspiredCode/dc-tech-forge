@@ -15,7 +15,7 @@ interface FlashcardProps {
 const RATING_BUTTONS: { label: string; quality: Quality; color: string; key: string }[] = [
   { label: "Again", quality: 1 as Quality, color: "bg-forge-danger/20 text-forge-danger border-forge-danger/30 hover:bg-forge-danger/30", key: "1" },
   { label: "Hard", quality: 3 as Quality, color: "bg-forge-warning/20 text-forge-warning border-forge-warning/30 hover:bg-forge-warning/30", key: "2" },
-  { label: "Good", quality: 4 as Quality, color: "bg-forge-accent/20 text-forge-accent border-forge-accent/30 hover:bg-forge-accent/30", key: "3" },
+  { label: "Good", quality: 4 as Quality, color: "bg-forge-accent/20 text-forge-accent-text border-forge-accent/30 hover:bg-forge-accent/30", key: "3" },
   { label: "Easy", quality: 5 as Quality, color: "bg-forge-success/20 text-forge-success border-forge-success/30 hover:bg-forge-success/30", key: "4" },
 ];
 
@@ -57,7 +57,7 @@ export default function Flashcard({ card, onRate, index, total }: FlashcardProps
   }, [hasRevealed, handleFlip, handleRate]);
 
   const tierLabel = ["", "T1 Foundation", "T2 Application", "T3 Scenario", "T4 Branching"][card.tier];
-  const tierColor = ["", "text-forge-text-dim", "text-forge-accent", "text-forge-warning", "text-forge-danger"][card.tier];
+  const tierColor = ["", "text-forge-text-dim", "text-forge-accent-text", "text-forge-warning", "text-forge-danger"][card.tier];
 
   return (
     <div className="w-full max-w-2xl mx-auto">
@@ -80,7 +80,7 @@ export default function Flashcard({ card, onRate, index, total }: FlashcardProps
             onClick={() => handleRate(btn.quality)}
             className={`px-3 py-1.5 rounded border text-xs font-medium transition-all duration-150 ${btn.color}`}
           >
-            {btn.label} <span className="opacity-50 mono">[{btn.key}]</span>
+            {btn.label} <span className="opacity-80 mono">[{btn.key}]</span>
           </button>
         ))}
       </div>
@@ -111,7 +111,7 @@ export default function Flashcard({ card, onRate, index, total }: FlashcardProps
             <div className="bg-forge-surface border border-forge-accent/30 rounded-xl p-6 h-full flex flex-col forge-glow">
               <div className="flex items-center justify-between mb-2">
                 <span className={`text-xs mono ${tierColor}`}>{tierLabel}</span>
-                <span className="text-xs text-forge-accent mono">ANSWER</span>
+                <span className="text-xs text-forge-accent-text mono">ANSWER</span>
               </div>
               <div className="flex-1 overflow-y-auto">
                 <div className="markdown-content text-sm leading-relaxed">

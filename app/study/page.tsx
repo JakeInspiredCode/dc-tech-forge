@@ -99,7 +99,7 @@ export default function StudyPage() {
   if (mode && sessionCards.length > 0) {
     return (
       <div className="min-h-screen bg-v2-bg-deep">
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
           <button
             onClick={() => { setMode(null); setSessionCards([]); }}
             className="text-sm text-forge-text-dim hover:text-forge-text mb-6 flex items-center gap-1"
@@ -111,14 +111,14 @@ export default function StudyPage() {
             sessionType="daily-training"
             onComplete={() => { setMode(null); setSessionCards([]); router.push("/"); }}
           />
-        </main>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-v2-bg-deep">
-      <main className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
         <h1 className="text-2xl font-bold mb-6" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
           Study Mode
         </h1>
@@ -128,11 +128,11 @@ export default function StudyPage() {
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-lg font-semibold flex items-center gap-2">
-                  <span className="text-forge-accent">▶</span> Review Due Cards
+                  <span className="text-forge-accent-text">▶</span> Review Due Cards
                 </h2>
                 <p className="text-sm text-forge-text-dim mt-1">Cards scheduled for today across all topics and tiers</p>
               </div>
-              <span className={`text-xl mono font-bold ${dueCount > 0 ? "text-forge-accent" : "text-forge-text-muted"}`}>{dueCount}</span>
+              <span className={`text-xl mono font-bold ${dueCount > 0 ? "text-forge-accent-text" : "text-forge-text-muted"}`}>{dueCount}</span>
             </div>
           </button>
 
@@ -151,7 +151,7 @@ export default function StudyPage() {
 
           <button onClick={() => scenarioUnlocked ? startSession("drill") : undefined}
             className={`w-full text-left bg-forge-surface border rounded-xl p-6 transition-colors ${
-              scenarioUnlocked ? "border-forge-border hover:border-forge-warning/30" : "border-forge-border opacity-60 cursor-not-allowed"
+              scenarioUnlocked ? "border-forge-border hover:border-forge-warning/30" : "border-forge-border opacity-80 cursor-not-allowed"
             }`}>
             <div className="flex items-center justify-between">
               <div>
@@ -187,14 +187,14 @@ export default function StudyPage() {
             return (
               <button key={topic.id} onClick={() => router.push(`/study/${topic.id}`)}
                 className="bg-forge-surface border border-forge-border rounded-lg p-3 text-left hover:border-forge-border-hover transition-colors">
-                <span className="mono text-forge-accent">{topic.icon}</span>
+                <span className="mono text-forge-accent-text">{topic.icon}</span>
                 <span className="block text-sm mt-1">{topic.name.split(" ")[0]}</span>
                 <span className="block text-xs text-forge-text-muted mono">T{tp?.currentTier ?? 1}</span>
               </button>
             );
           })}
         </div>
-      </main>
+      </div>
     </div>
   );
 }

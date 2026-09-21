@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useCallback, useState } from "react";
+import { V2 } from "@/lib/design/forge-v2-tokens";
 
 // ── Types ──
 
@@ -279,11 +280,11 @@ export default function RadarCanvas({
         const align: CanvasTextAlign = "center";
         const fontSize = Math.max(6, 7 * S);
         ctx!.font = `${isActive ? 600 : 400} ${fontSize}px 'JetBrains Mono', monospace`;
-        ctx!.fillStyle = isActive ? cat.color : isHov ? "#8eafc8" : "#5a6a82";
+        ctx!.fillStyle = isActive ? cat.color : isHov ? "#8eafc8" : V2.text.muted;
         ctx!.textAlign = align; ctx!.textBaseline = "middle";
         ctx!.fillText(cat.label, lx, ly - 4 * S);
         ctx!.font = `400 ${Math.max(5, 6 * S)}px 'JetBrains Mono', monospace`;
-        ctx!.fillStyle = isActive ? "#8eafc8" : "#3e4e64";
+        ctx!.fillStyle = isActive ? "#8eafc8" : V2.text.muted;
         ctx!.fillText(`${cat.done}/${cat.total}`, lx, ly + 6 * S);
       });
 
@@ -319,7 +320,7 @@ export default function RadarCanvas({
       ctx!.fillStyle = "#e0e4ec"; ctx!.textAlign = "center"; ctx!.textBaseline = "middle";
       ctx!.fillText(String(totalDone), cx, cy - 3 * S);
       ctx!.font = `400 ${Math.max(4, 5.5 * S)}px 'JetBrains Mono', monospace`;
-      ctx!.fillStyle = "#4a5268"; ctx!.fillText(`OF ${totalItems}`, cx, cy + 10 * S);
+      ctx!.fillStyle = V2.text.muted; ctx!.fillText(`OF ${totalItems}`, cx, cy + 10 * S);
       ctx!.beginPath(); ctx!.arc(cx, cy, maxR + 5 * S, 0, Math.PI * 2);
       ctx!.strokeStyle = "rgba(6,214,214,0.03)"; ctx!.lineWidth = 0.5;
       ctx!.setLineDash([2, 5]); ctx!.stroke(); ctx!.setLineDash([]);

@@ -83,7 +83,7 @@ function L1Pipeline({ onBack, onAdvance }: { onBack: () => void; onAdvance: () =
           <div className="flex items-center gap-2 mb-1">
             <button onClick={onBack} className="text-xs text-forge-text-muted hover:text-forge-text transition-colors">&larr; Back to L0</button>
             <span className="text-xs text-forge-text-muted">/</span>
-            <span className="text-xs text-forge-accent mono font-semibold">L1 — Boot Sequence</span>
+            <span className="text-xs text-forge-accent-text mono font-semibold">L1 — Boot Sequence</span>
           </div>
           <p className="text-xs text-forge-text-dim">Click each stage to learn, then pass the recall check to unlock it.</p>
         </div>
@@ -156,7 +156,7 @@ function L1Pipeline({ onBack, onAdvance }: { onBack: () => void; onAdvance: () =
                     {!state.recallCorrect && !isRecallActive && (
                       <button
                         onClick={() => startRecall(stage.id)}
-                        className="w-full py-2.5 bg-forge-accent/10 border border-forge-accent/30 rounded-lg text-sm mono text-forge-accent hover:bg-forge-accent/15 transition-colors"
+                        className="w-full py-2.5 bg-forge-accent/10 border border-forge-accent/30 rounded-lg text-sm mono text-forge-accent-text hover:bg-forge-accent/15 transition-colors"
                       >
                         Test Your Recall &#8594;
                       </button>

@@ -2,6 +2,7 @@
 
 import type { Sector, SectorProgress, MissionStatus } from "@/lib/types/campaign";
 import { getCampaign, getMissionsForCampaign } from "@/lib/seeds/campaigns";
+import { V2 } from "@/lib/design/forge-v2-tokens";
 
 interface SectorPreviewPanelProps {
   sector: Sector;
@@ -36,9 +37,9 @@ function getMissionStatusColor(
     case "decaying":
       return "#f59e0b";
     case "available":
-      return "#7a8298";
+      return V2.text.dim;
     default:
-      return "#444b5c";
+      return V2.text.muted;
   }
 }
 
