@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import CardQueue from "@/components/card-queue";
 import { TOPICS, ForgeCard, TopicId, mapConvexCard } from "@/lib/types";
 import { useCardsByTopic, useDueCards, useNewCards, useAllProgress } from "@/lib/convex-hooks";
+import { isUnseen } from "@/lib/study/sessions";
 import { sortByPriority } from "@/lib/sm2";
 import { useRouter } from "next/navigation";
 
@@ -22,10 +23,12 @@ export default function TopicStudyClient({ topicId }: { topicId: string }) {
   const mapCard = mapConvexCard;
 
   const cards = useMemo(() => rawCards.map(mapCard), [rawCards]);
-  const dueCards = useMemo(() => rawDue.map(mapCard), [rawDue]);
+  // Same definitions as the study hub (lib/study/sessions.ts): new = never
+  // studied; due = studied before and scheduled. The two pages must agree.
+  const dueCards = useMemo(() => rawDue.map(mapCard).filter((c) => !isUnseen(c)), [rawDue]);
   const newCards = useMemo(() => {
     const maxTier = tp?.currentTier ?? 1;
-    return rawNew.filter((c) => c.tier <= maxTier).map(mapCard);
+    return rawNew.filter((c) => c.tier <= maxTier).map(mapCard).filter(isUnseen);
   }, [rawNew, tp]);
 
   const maxTier = tp?.currentTier ?? 1;
