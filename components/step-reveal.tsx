@@ -53,7 +53,7 @@ export default function StepReveal({ card, onRate, index, total }: StepRevealPro
       </div>
 
       {/* Incident header */}
-      <div className="bg-v2-bg-surface border border-v2-danger/30 rounded-xl p-6 mb-4 forge-glow-danger">
+      <div className="bg-v2-bg-surface border border-v2-danger/30 rounded-xl p-6 mb-4 glow-danger">
         <div className="flex items-center gap-2 mb-3">
           <span className="text-xs mono text-v2-danger bg-v2-danger/10 px-2 py-0.5 rounded">INCIDENT — T4 BRANCHING</span>
         </div>
@@ -78,7 +78,7 @@ export default function StepReveal({ card, onRate, index, total }: StepRevealPro
 
       {/* Final answer / resolution */}
       {showFinal && (
-        <div className="bg-v2-bg-surface border border-v2-success/30 rounded-xl p-5 mb-4 forge-glow-success">
+        <div className="bg-v2-bg-surface border border-v2-success/30 rounded-xl p-5 mb-4 glow-success">
           <div className="flex items-center gap-2 mb-2">
             <span className="text-xs mono text-v2-success bg-v2-success/10 px-2 py-0.5 rounded">RESOLUTION</span>
           </div>

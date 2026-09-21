@@ -46,11 +46,11 @@ export default function BootL0({ onBack, onAdvance }: { onBack: () => void; onAd
       <div className="flex items-center justify-between mb-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <button onClick={onBack} className="text-xs text-forge-text-muted hover:text-forge-text transition-colors">&larr; Back</button>
-            <span className="text-xs text-forge-text-muted">/</span>
+            <button onClick={onBack} className="text-xs text-v2-text-muted hover:text-v2-text transition-colors">&larr; Back</button>
+            <span className="text-xs text-v2-text-muted">/</span>
             <span className="text-xs text-orange-400 mono font-semibold">L0 — The Mental Model</span>
           </div>
-          <p className="text-xs text-forge-text-dim">
+          <p className="text-xs text-v2-text-dim">
             {phase === "explore"
               ? "Expand each layer. Reveal each step. Understand the question it answers."
               : phase === "quiz"
@@ -59,17 +59,17 @@ export default function BootL0({ onBack, onAdvance }: { onBack: () => void; onAd
           </p>
         </div>
         <div className="text-right">
-          <div className="mono text-xs text-forge-text-muted">{revealedSteps.size}/6 REVEALED</div>
-          <div className="h-1.5 w-24 bg-forge-surface-2 rounded-full overflow-hidden mt-1">
-            <div className="h-full bg-forge-accent rounded-full transition-all duration-500" style={{ width: `${(revealedSteps.size / 6) * 100}%` }} />
+          <div className="mono text-xs text-v2-text-muted">{revealedSteps.size}/6 REVEALED</div>
+          <div className="h-1.5 w-24 bg-v2-bg-elevated rounded-full overflow-hidden mt-1">
+            <div className="h-full bg-v2-cyan rounded-full transition-all duration-500" style={{ width: `${(revealedSteps.size / 6) * 100}%` }} />
           </div>
         </div>
       </div>
 
       {/* Key insight */}
-      <div className="bg-forge-surface border border-forge-border rounded-lg px-4 py-3 mb-6">
-        <p className="text-xs text-forge-text-dim">
-          <span className="text-forge-text font-medium">Three layers. Two steps each. Strict order.</span>{" "}
+      <div className="bg-v2-bg-surface border border-v2-border rounded-lg px-4 py-3 mb-6">
+        <p className="text-xs text-v2-text-dim">
+          <span className="text-v2-text font-medium">Three layers. Two steps each. Strict order.</span>{" "}
           Each step must answer its question before the next step can begin.
         </p>
       </div>
@@ -93,9 +93,9 @@ export default function BootL0({ onBack, onAdvance }: { onBack: () => void; onAd
 
       {/* Failure gradient callout */}
       {phase === "explore" && (
-        <div className="rounded-xl border border-forge-border bg-forge-surface overflow-hidden mb-6">
+        <div className="rounded-xl border border-v2-border bg-v2-bg-surface overflow-hidden mb-6">
           <div className="h-1.5 w-full" style={{ background: "linear-gradient(to right, #f97316, #f59e0b, #22c55e)" }} />
-          <div className="px-4 py-3 flex justify-between text-[10px] mono text-forge-text-muted">
+          <div className="px-4 py-3 flex justify-between text-[10px] mono text-v2-text-muted">
             <span>Failures early = replace parts</span>
             <span>Failures middle = fix drivers</span>
             <span>Failures late = fix config</span>
@@ -108,7 +108,7 @@ export default function BootL0({ onBack, onAdvance }: { onBack: () => void; onAd
         <div className="text-center">
           <button
             onClick={() => setPhase("quiz")}
-            className="px-6 py-3 bg-forge-accent/15 border border-forge-accent/40 rounded-xl text-sm mono text-forge-accent-text hover:bg-forge-accent/20 transition-colors"
+            className="px-6 py-3 bg-v2-cyan/15 border border-v2-cyan/40 rounded-xl text-sm mono text-v2-cyan hover:bg-v2-cyan/20 transition-colors"
           >
             All 6 steps explored — Take the Recall Quiz &#8594;
           </button>
@@ -117,49 +117,49 @@ export default function BootL0({ onBack, onAdvance }: { onBack: () => void; onAd
 
       {/* ── Recall Quiz ── */}
       {phase === "quiz" && (
-        <div className="border border-forge-border rounded-xl bg-forge-surface overflow-hidden">
-          <div className="px-5 py-4 border-b border-forge-border/50">
+        <div className="border border-v2-border rounded-xl bg-v2-bg-surface overflow-hidden">
+          <div className="px-5 py-4 border-b border-v2-border/50">
             <p className="text-sm font-semibold">Recall Quiz</p>
-            <p className="text-xs text-forge-text-dim mt-0.5">4 of 5 correct to unlock L1. No tricks — just the mental model.</p>
+            <p className="text-xs text-v2-text-dim mt-0.5">4 of 5 correct to unlock L1. No tricks — just the mental model.</p>
           </div>
 
-          <div className="divide-y divide-forge-border/30">
+          <div className="divide-y divide-v2-border/30">
             {L0_RECALL_QUIZ.map((q, qi) => (
               <QuizQuestion key={q.id} question={q} index={qi} selected={quizAnswers[q.id] || null} submitted={quizSubmitted} onSelect={selectAnswer} />
             ))}
           </div>
 
-          <div className="px-5 py-4 border-t border-forge-border/50">
+          <div className="px-5 py-4 border-t border-v2-border/50">
             {!quizSubmitted ? (
               <button
                 onClick={submitQuiz}
                 disabled={Object.keys(quizAnswers).length < L0_RECALL_QUIZ.length}
-                className="w-full py-2.5 bg-forge-accent/15 border border-forge-accent/40 rounded-lg text-sm mono text-forge-accent-text hover:bg-forge-accent/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-2.5 bg-v2-cyan/15 border border-v2-cyan/40 rounded-lg text-sm mono text-v2-cyan hover:bg-v2-cyan/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Submit ({Object.keys(quizAnswers).length}/{L0_RECALL_QUIZ.length} answered)
               </button>
             ) : quizPassed ? (
               <div className="space-y-3">
-                <div className="bg-forge-success/10 border border-forge-success/30 rounded-lg p-4 text-center">
-                  <p className="text-sm font-bold text-forge-success">{correctCount}/5 Correct — L0 Complete</p>
-                  <p className="text-xs text-forge-text-dim mt-1">You have the mental model. Time for the real thing.</p>
+                <div className="bg-v2-success/10 border border-v2-success/30 rounded-lg p-4 text-center">
+                  <p className="text-sm font-bold text-v2-success">{correctCount}/5 Correct — L0 Complete</p>
+                  <p className="text-xs text-v2-text-dim mt-1">You have the mental model. Time for the real thing.</p>
                 </div>
                 <button
                   onClick={() => { setPhase("complete"); onAdvance(); }}
-                  className="w-full py-3 bg-forge-accent text-white rounded-xl font-semibold hover:bg-forge-accent/90 transition-colors"
+                  className="w-full py-3 bg-v2-cyan text-v2-bg-deep rounded-xl font-semibold hover:bg-v2-cyan-bright transition-colors"
                 >
                   Enter L1 — Boot Sequence &#8594;
                 </button>
               </div>
             ) : (
               <div className="space-y-3">
-                <div className="bg-forge-danger/10 border border-forge-danger/30 rounded-lg p-4 text-center">
-                  <p className="text-sm font-bold text-forge-danger">{correctCount}/5 Correct — Need 4 to pass</p>
-                  <p className="text-xs text-forge-text-dim mt-1">Review the layers above, then try again.</p>
+                <div className="bg-v2-danger/10 border border-v2-danger/30 rounded-lg p-4 text-center">
+                  <p className="text-sm font-bold text-v2-danger">{correctCount}/5 Correct — Need 4 to pass</p>
+                  <p className="text-xs text-v2-text-dim mt-1">Review the layers above, then try again.</p>
                 </div>
                 <button
                   onClick={resetQuiz}
-                  className="w-full py-2.5 bg-forge-surface-2 border border-forge-border rounded-lg text-sm hover:border-forge-border-hover transition-colors"
+                  className="w-full py-2.5 bg-v2-bg-elevated border border-v2-border rounded-lg text-sm hover:border-v2-cyan/30 transition-colors"
                 >
                   Re-read &amp; Retry
                 </button>
@@ -188,7 +188,7 @@ function LayerCard({
   return (
     <>
       <div className={`rounded-xl border transition-all duration-200 overflow-hidden ${
-        bothRevealed ? "border-forge-success/30 bg-forge-success/5" : "border-forge-border bg-forge-surface"
+        bothRevealed ? "border-v2-success/30 bg-v2-success/5" : "border-v2-border bg-v2-bg-surface"
       }`}>
         {/* Layer top accent bar */}
         <div className="h-1" style={{ backgroundColor: layer.accentHex, opacity: 0.6 }} />
@@ -202,13 +202,13 @@ function LayerCard({
               }}>
                 {layer.name.toUpperCase()}
               </span>
-              <span className="text-sm font-semibold text-forge-text">{layer.subtitle}</span>
+              <span className="text-sm font-semibold text-v2-text">{layer.subtitle}</span>
             </div>
-            <p className="text-xs text-forge-text-dim mt-1">{layer.failureHint}</p>
+            <p className="text-xs text-v2-text-dim mt-1">{layer.failureHint}</p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
-            {bothRevealed && <span className="text-forge-success text-sm">&#10003;</span>}
-            <span className={`text-xs text-forge-text-muted transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}>&#9662;</span>
+            {bothRevealed && <span className="text-v2-success text-sm">&#10003;</span>}
+            <span className={`text-xs text-v2-text-muted transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}>&#9662;</span>
           </div>
         </button>
 
@@ -227,7 +227,7 @@ function LayerCard({
       {/* Connector between layers */}
       {showConnector && (
         <div className="flex justify-center">
-          <div className="w-px h-3 bg-forge-border" />
+          <div className="w-px h-3 bg-v2-border" />
         </div>
       )}
     </>
@@ -246,7 +246,7 @@ function StepCard({ step, revealed, accentHex, onReveal }: {
 
   return (
     <div className={`rounded-lg border transition-all ${
-      revealed ? "border-forge-success/20 bg-forge-bg" : "border-forge-border bg-forge-bg"
+      revealed ? "border-v2-success/20 bg-v2-bg-deep" : "border-v2-border bg-v2-bg-deep"
     }`}>
       <div className="px-4 py-3">
         {/* Step name + number */}
@@ -255,34 +255,34 @@ function StepCard({ step, revealed, accentHex, onReveal }: {
             style={{ color: accentHex, background: `${accentHex}15` }}>
             {step.number}
           </span>
-          <span className="text-xs font-semibold text-forge-text">{step.name}</span>
-          {revealed && <span className="text-forge-success text-[10px] ml-auto">&#10003;</span>}
+          <span className="text-xs font-semibold text-v2-text">{step.name}</span>
+          {revealed && <span className="text-v2-success text-[10px] ml-auto">&#10003;</span>}
         </div>
 
         {/* Question */}
-        <p className="text-xs text-forge-text-dim mb-2">
-          <span className="mono text-forge-text-muted">Q:</span> {step.question}
+        <p className="text-xs text-v2-text-dim mb-2">
+          <span className="mono text-v2-text-muted">Q:</span> {step.question}
         </p>
 
         {/* Answer — hidden until revealed */}
         {!revealed ? (
           <button onClick={onReveal}
-            className="w-full py-2 bg-forge-surface-2 border border-forge-border rounded-lg text-[11px] mono text-forge-text-muted hover:border-forge-border-hover hover:text-forge-text transition-colors">
+            className="w-full py-2 bg-v2-bg-elevated border border-v2-border rounded-lg text-[11px] mono text-v2-text-muted hover:border-v2-cyan/30 hover:text-v2-text transition-colors">
             Reveal Answer
           </button>
         ) : (
           <>
-            <div className="bg-forge-surface border border-forge-success/15 rounded-lg px-3 py-2 mb-2">
-              <p className="text-xs text-forge-text">
-                <span className="mono text-forge-success/70">&rarr;</span> {step.answer}
+            <div className="bg-v2-bg-surface border border-v2-success/15 rounded-lg px-3 py-2 mb-2">
+              <p className="text-xs text-v2-text">
+                <span className="mono text-v2-success/70">&rarr;</span> {step.answer}
               </p>
             </div>
             <button onClick={() => setShowDetail(!showDetail)}
-              className="text-[10px] mono text-forge-text-muted hover:text-forge-accent-text transition-colors">
+              className="text-[10px] mono text-v2-text-muted hover:text-v2-cyan transition-colors">
               {showDetail ? "Hide explanation \u25B4" : "Why? \u25BE"}
             </button>
             {showDetail && (
-              <p className="text-[11px] text-forge-text-dim leading-relaxed mt-2">{step.detail}</p>
+              <p className="text-[11px] text-v2-text-dim leading-relaxed mt-2">{step.detail}</p>
             )}
           </>
         )}
@@ -305,7 +305,7 @@ function QuizQuestion({ question, index, selected, submitted, onSelect }: {
   return (
     <div className="px-5 py-4">
       <p className="text-sm font-medium mb-3">
-        <span className="mono text-forge-text-muted text-xs mr-2">{index + 1}.</span>
+        <span className="mono text-v2-text-muted text-xs mr-2">{index + 1}.</span>
         {question.question}
       </p>
       <div className="grid grid-cols-1 gap-2">
@@ -314,15 +314,15 @@ function QuizQuestion({ question, index, selected, submitted, onSelect }: {
           const isCorrect = choice === question.correctAnswer;
           let btnClass = "px-3 py-2.5 border rounded-lg text-xs text-left transition-colors ";
           if (submitted && isSelected && isCorrect) {
-            btnClass += "border-forge-success/50 bg-forge-success/10 text-forge-success";
+            btnClass += "border-v2-success/50 bg-v2-success/10 text-v2-success";
           } else if (submitted && isSelected && !isCorrect) {
-            btnClass += "border-forge-danger/50 bg-forge-danger/10 text-forge-danger";
+            btnClass += "border-v2-danger/50 bg-v2-danger/10 text-v2-danger";
           } else if (submitted && isCorrect) {
-            btnClass += "border-forge-success/30 bg-forge-success/5 text-forge-success/70";
+            btnClass += "border-v2-success/30 bg-v2-success/5 text-v2-success/70";
           } else if (isSelected) {
-            btnClass += "border-forge-accent/50 bg-forge-accent/10 text-forge-accent-text";
+            btnClass += "border-v2-cyan/50 bg-v2-cyan/10 text-v2-cyan";
           } else {
-            btnClass += "border-forge-border bg-forge-bg hover:border-forge-border-hover text-forge-text-dim";
+            btnClass += "border-v2-border bg-v2-bg-deep hover:border-v2-cyan/30 text-v2-text-dim";
           }
           return (
             <button key={choice} onClick={() => onSelect(question.id, choice)} disabled={submitted} className={btnClass}>
