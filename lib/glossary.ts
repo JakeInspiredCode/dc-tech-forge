@@ -19,5 +19,6 @@ export const GLOSSARY: GlossaryEntry[] = [
   { term: "Tier", means: "How deep a topic's flashcards go, 1 to 4 — from definitions up to incident scenarios. Reviewing a tier well unlocks the next." },
   { term: "XP", means: "Points for finishing things: missions, reviews, tickets. They measure practice done, nothing else." },
   { term: "Streak", means: "How many days in a row you have studied." },
+  { term: "Fleet Log", means: "The recent-activity list on the home screen and in Profile → History: missions accomplished, badges earned, drills, tickets and study sessions, newest first." },
   { term: "Sample progress", means: "A pre-filled account for looking around. It is always labelled, and \"Start fresh\" removes it." },
 ];

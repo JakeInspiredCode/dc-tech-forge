@@ -19,6 +19,7 @@ export function hasUserActivity(state: State = getState()): boolean {
     state.forgeDiagnosisHistory.length > 0 ||
     state.forgeQuickDrawHistory.length > 0 ||
     state.forgeTicketHistory.length > 0 ||
+    state.forgeActivity.length > 0 ||
     state.forgeProfile.some((p) => p.totalPoints > 0) ||
     state.forgeMissionProgress.some((m) => m.status !== "available" || m.stepsCompleted.length > 0)
   );

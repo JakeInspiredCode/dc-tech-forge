@@ -221,7 +221,8 @@ export default function ProfilePage() {
                   textTransform: "uppercase",
                 }}
               >
-                <TabIcon tab={tab.id} active={activeTab === tab.id} />
+                {/* Labels alone fit a phone; with icons the four tabs are 401px wide in a 365px panel. */}
+                <span className="hidden sm:inline-flex"><TabIcon tab={tab.id} active={activeTab === tab.id} /></span>
                 {tab.label}
               </button>
             ))}

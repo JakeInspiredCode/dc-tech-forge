@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import ReadinessRadar from "./readiness-radar";
 import NextUpCta from "@/components/ui/next-up-cta";
 import type { NextUp } from "@/lib/mission/next-up";
@@ -15,6 +15,8 @@ interface StatsPanelProps {
   /** null while saved progress is still loading. */
   next: NextUp | null;
   topicProgress: { topicId: string; masteryPercent: number }[];
+  /** The Fleet Log: recent activity, rendered by the caller. */
+  feed?: ReactNode;
 }
 
 type PanelSize = "full" | "mid" | "compact";
@@ -165,6 +167,7 @@ export default function StatsPanel({
   totalMissions,
   next,
   topicProgress,
+  feed,
 }: StatsPanelProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const [panelSize, setPanelSize] = useState<PanelSize>("full");
@@ -204,6 +207,18 @@ export default function StatsPanel({
       <div className="mb-2 max-lg:hidden">
         <NextUpCta next={next} scope="galaxy" />
       </div>
+
+      {/* Fleet Log — recent activity. A band of fixed height on desktop so the
+          radar keeps the rest; on a phone it simply follows the gauges. */}
+      {feed && (
+        <div className="shrink-0 mb-2 flex flex-col min-h-0 lg:max-h-[196px]">
+          <div className="flex items-baseline justify-between mb-1.5 shrink-0">
+            <span className="text-[10px] display-font tracking-[0.14em] uppercase text-v2-text-muted">Fleet Log</span>
+            <span className="text-[10px] telemetry-font text-v2-text-muted">recent activity</span>
+          </div>
+          <div className="min-h-0 overflow-y-auto pr-1">{feed}</div>
+        </div>
+      )}
 
       {/* Divider + Readiness radar — hidden on mobile, takes remaining space on desktop */}
       <div className="max-lg:hidden flex flex-1 min-h-0 flex-col">

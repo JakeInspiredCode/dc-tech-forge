@@ -1,7 +1,10 @@
 "use client";
 
+import { getMission, getMissionsForCampaign } from "@/lib/seeds/campaigns";
 import { getState, mutate, mutateMany, uid } from "./store";
 import type {
+  ActivityFields,
+  ActivityKind,
   CardFields,
   DrillFields,
   MissionProgressFields,
@@ -220,6 +223,14 @@ export const queries: Record<string, QueryFn> = {
   },
   "forgeTicketHistory:getAll": () => getState().forgeTicketHistory,
 
+  // forgeActivity
+  // Newest first. Rows logged in the same instant (a mission, then the
+  // campaign it completed) keep their order too: the later one on top.
+  "forgeActivity:getRecent": ({ limit }) => {
+    const rows = getState().forgeActivity;
+    const order = rows.map((_, i) => i).sort((a, b) => rows[b].at.localeCompare(rows[a].at) || b - a);
+    return order.slice(0, limit ?? 50).map((i) => rows[i]);
+  },
 };
 
 // ── Mutations ────────────────────────────────────────────────────────────────
@@ -229,6 +240,18 @@ const newDoc = <T extends object>(fields: T): Doc<T> => ({
   _creationTime: nowTs(),
   ...fields,
 });
+
+// The Fleet Log keeps this many rows; the oldest fall off. It is a feed, not
+// a record — the history tables above are the record.
+const ACTIVITY_KEEP = 200;
+
+// Written by the mutation that does the thing, so nothing that matters can be
+// done without being logged and nothing can be logged that wasn't done.
+// Content ids and numbers only (schema.ts explains why).
+function logActivity(kind: ActivityKind, ref: string, value?: number, at = new Date().toISOString()): void {
+  const doc = newDoc<ActivityFields>(value === undefined ? { kind, ref, at } : { kind, ref, value, at });
+  mutate("forgeActivity", (prev) => [...prev.slice(Math.max(0, prev.length - ACTIVITY_KEEP + 1)), doc]);
+}
 
 function upsertProfileBase(): Doc<ProfileFields> {
   return newDoc({
@@ -358,6 +381,7 @@ export const mutations: Record<string, MutationFn> = {
       overallScore: args.overallScore,
     });
     mutate("forgeSessions", (prev) => [...prev, doc]);
+    logActivity("session_completed", doc.type, doc.cardIds.length, doc.endTime ?? doc.startTime);
     return doc._id;
   },
 
@@ -594,6 +618,7 @@ export const mutations: Record<string, MutationFn> = {
             : p,
         ),
       );
+      for (const id of earn) logActivity("badge_earned", id);
     }
     return { awarded: earn };
   },
@@ -721,6 +746,7 @@ export const mutations: Record<string, MutationFn> = {
   "forgeSpeedRuns:add": async (args) => {
     const doc = newDoc<SpeedRunFields>(args as SpeedRunFields);
     mutate("forgeSpeedRuns", (prev) => [...prev, doc]);
+    logActivity("speed_run", doc.topicId, doc.totalPoints, doc.timestamp);
     return doc._id;
   },
 
@@ -729,6 +755,7 @@ export const mutations: Record<string, MutationFn> = {
   "forgeDrills:add": async (args) => {
     const doc = newDoc<DrillFields>(args as DrillFields);
     mutate("forgeDrills", (prev) => [...prev, doc]);
+    logActivity("drill_completed", doc.scenarioId, doc.overallTermHitRate, doc.timestamp);
     return doc._id;
   },
 
@@ -786,6 +813,8 @@ export const mutations: Record<string, MutationFn> = {
 
   "forgeMissions:submitKnowledgeCheck": async ({ missionId, score, passed, xpEarned }) => {
     const now = new Date().toISOString();
+    const wasAccomplished =
+      getState().forgeMissionProgress.find((m) => m.missionId === missionId)?.status === "accomplished";
     let result = { passed, score, bestScore: score, xpEarned };
     mutate("forgeMissionProgress", (prev) =>
       prev.map((m) => {
@@ -806,6 +835,19 @@ export const mutations: Record<string, MutationFn> = {
         return { ...m, ...patch };
       }),
     );
+    // Log the first pass only: retaking a check for a better score is not news.
+    // A mission with no row (see topUpSeedContent) can't be accomplished, so
+    // check the outcome rather than the intent.
+    const after = getState().forgeMissionProgress.find((m) => m.missionId === missionId);
+    if (passed && !wasAccomplished && after?.status === "accomplished") {
+      logActivity("mission_accomplished", missionId, Math.round(score * 100), now);
+      const mission = getMission(missionId);
+      const siblings = mission ? getMissionsForCampaign(mission.campaignId) : [];
+      const status = new Map(getState().forgeMissionProgress.map((m) => [m.missionId, m.status]));
+      if (mission && siblings.length > 0 && siblings.every((s) => status.get(s.id) === "accomplished")) {
+        logActivity("campaign_completed", mission.campaignId, undefined, now);
+      }
+    }
     return result;
   },
 
@@ -874,6 +916,7 @@ export const mutations: Record<string, MutationFn> = {
       xpEarned,
     });
     mutate("forgeBountyHistory", (prev) => [...prev, doc]);
+    logActivity("bounty_completed", doc.bountyId, undefined, doc.completedAt);
     return doc._id;
   },
 
@@ -890,6 +933,7 @@ export const mutations: Record<string, MutationFn> = {
       completedAt: new Date().toISOString(),
     });
     mutate("forgeDiagnosisHistory", (prev) => [...prev, doc]);
+    logActivity("diagnosis_solved", doc.scenarioId, doc.score, doc.completedAt);
     return doc._id;
   },
 
@@ -906,6 +950,7 @@ export const mutations: Record<string, MutationFn> = {
       completedAt: new Date().toISOString(),
     });
     mutate("forgeQuickDrawHistory", (prev) => [...prev, doc]);
+    logActivity("quick_draw", doc.moduleId, doc.score, doc.completedAt);
     return doc._id;
   },
 
@@ -924,6 +969,7 @@ export const mutations: Record<string, MutationFn> = {
       completedAt: new Date().toISOString(),
     });
     mutate("forgeTicketHistory", (prev) => [...prev, doc]);
+    logActivity("ticket_resolved", doc.difficulty, doc.score, doc.completedAt);
     return doc._id;
   },
 };
