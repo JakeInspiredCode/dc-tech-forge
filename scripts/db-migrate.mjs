@@ -23,7 +23,11 @@ const sql = readFileSync(path.join(here, "..", "supabase", "schema.sql"), "utf8"
 
 // The pooler's certificate is not signed by a CA in the build image's store;
 // the connection is still TLS. The credential in the URL never leaves the build.
-const client = new pg.Client({ connectionString: url, ssl: { rejectUnauthorized: false }, statement_timeout: 60_000 });
+// pg ≥ 8.16 lets `sslmode=require` in the URL override the `ssl` option (and
+// then verifies the chain), so the parameter is dropped from the URL.
+const target = new URL(url);
+target.searchParams.delete("sslmode");
+const client = new pg.Client({ connectionString: target.toString(), ssl: { rejectUnauthorized: false }, statement_timeout: 60_000 });
 
 try {
   await client.connect();
