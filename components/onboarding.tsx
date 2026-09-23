@@ -32,7 +32,7 @@ interface Step {
 const STEPS: Step[] = [
   {
     title: `Welcome to ${BRAND.name}`,
-    body: "Hands-on training for data center technician work — Linux, networking, hardware, power, fiber, and ops. Everything is unlocked, and your progress is saved in this browser. There is no account to create.",
+    body: "Hands-on training for data center technician work — Linux, networking, hardware, power, fiber, and ops. Everything is unlocked, and your progress is saved in this browser. No account is needed — pick a callsign later if you want it on other devices too.",
   },
   {
     anchor: `[data-sector-id="${TOUR_SECTOR_ID}"]`,

@@ -24,6 +24,19 @@ export const STORAGE_KEYS = {
   sampleData: `${NS}:sample-data`,
   /** JSON array of the first-visit hints this browser has dismissed. */
   hintsSeen: `${NS}:hints-seen`,
+  /**
+   * The signed-in pilot: JSON { callsign, code, pilotId }. The code is the
+   * credential — it is to this app what a session token is to a login form.
+   */
+  pilot: `${NS}:pilot`,
+  /** The cloud save's revision this browser last pulled or pushed. */
+  cloudRev: `${NS}:cloud-rev`,
+  /** "1" while local changes have not reached the cloud. */
+  cloudDirty: `${NS}:cloud-dirty`,
+  /** JSON array of Fleet Log rows waiting to be published. */
+  cloudOutbox: `${NS}:cloud-outbox`,
+  /** Epoch ms: activity rows created before this predate sign-in and stay private. */
+  cloudLogMark: `${NS}:cloud-log-mark`,
 } as const;
 
 export const SESSION_KEYS = {

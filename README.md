@@ -4,7 +4,7 @@ A training app for people preparing to work as data center technicians — Linux
 
 **Live:** https://forge.jakebuildsfunthings.com — add `?demo=1` to open it with sample progress already filled in.
 
-It is a fully static, local-first web app: there is no backend and there are no accounts. Everything you do is saved in your own browser.
+It is a static, local-first web app: everything you do is saved in your own browser, and there is nothing to sign up for. Optionally, claim a **callsign** to keep your progress across devices and appear in the shared **Fleet Log**; that part talks to a small Supabase project (see *Cloud*, below).
 
 ## What's in it
 
@@ -29,6 +29,14 @@ It is a fully static, local-first web app: there is no backend and there are no 
 - **Settings → Your data** exports everything to a JSON file and imports it elsewhere. Browser storage is per-origin, so this is how you move progress between devices or browsers.
 - Imported files are treated as untrusted: every record is rebuilt from a whitelist of known fields and type-checked, and a file is rejected whole if any part of it is invalid ([lib/data/backup.ts](lib/data/backup.ts)).
 - **Sample progress** fills a fresh account with a few weeks of made-up activity so you can see the app in use. It is always labelled with a banner, and "Start fresh" clears it.
+
+### Cloud (optional)
+
+- **A callsign, not an account.** Profile → Identity lets you claim a callsign. You get a 128-bit *recovery code* — no email, no password — which is the only way to sign in on another device. Progress here stays local either way.
+- **What is stored:** the callsign, a hash of the code, your save (the backup file minus shipped card content — study state, history, your own cards and stories), and your Fleet Log rows. Rows carry content ids and numbers only; the only text you write that others see is the callsign, and it is checked against a strict pattern in the database.
+- **Sync rules:** every change is pushed a couple of seconds later; on load, a browser with unsaved changes pushes, otherwise it pulls a newer save. Last writer wins. Signing in where both sides have progress asks which to keep.
+- **The boundary:** the browser holds only the public key. What it can reach is exactly the `forge_*` functions and the `fleet_log` view in [supabase/schema.sql](supabase/schema.sql) — no table directly. Anything that comes down is validated like an imported backup before it touches the store.
+- **Deploying:** the schema is applied by every Vercel build ([scripts/db-migrate.mjs](scripts/db-migrate.mjs)) from the connection string the Supabase integration provides; `npm run cloud:smoke` exercises the live project with the public key. A free Supabase project pauses after a week of silence, so [keep-alive.yml](.github/workflows/keep-alive.yml) reads one row twice a week.
 
 ## Tech
 
@@ -92,7 +100,7 @@ vercel.json              Redirects and security headers
 
 ## Security
 
-The app has no API routes, server actions, or middleware, so it is deployed as static files — there is no server runtime to attack.
+The app has no API routes, server actions, or middleware, so it is deployed as static files — there is no server runtime to attack. The only server-side code is [supabase/schema.sql](supabase/schema.sql): a few SQL functions behind row-level security, callable with the public key.
 
 - **Headers** (in [vercel.json](vercel.json)): a Content-Security-Policy limited to same-origin resources, `frame-ancestors 'none'`, `nosniff`, a strict referrer policy, and a locked-down permissions policy. `script-src` allows `'unsafe-inline'` because a static Next.js export cannot use nonces; the primary defence is that the codebase contains no HTML-injection sinks (`dangerouslySetInnerHTML`, `innerHTML`, `eval`).
 - **No third-party requests.** Fonts are self-hosted.

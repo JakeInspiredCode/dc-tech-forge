@@ -4,6 +4,7 @@ import { useEffect, type ReactNode } from "react";
 import { TOPICS } from "@/lib/types";
 import { mutations } from "./operations";
 import { installPersistence } from "./persistence";
+import { installCloudSync } from "@/lib/cloud/sync";
 import { seedIfEmpty, topUpSeedContent } from "./seed";
 import { getState, goLive } from "./store";
 
@@ -46,6 +47,8 @@ export default function DataProvider({ children }: { children: ReactNode }) {
         console.warn("[data] startup did not complete cleanly:", err);
       } finally {
         goLive();
+        // After goLive: hydration and seeding above must not look like edits.
+        installCloudSync();
       }
     };
     void start();

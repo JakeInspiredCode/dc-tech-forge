@@ -16,7 +16,7 @@ import NextUpCta from "@/components/ui/next-up-cta";
 
 import SectorPreviewPanel from "./sector-preview-panel";
 import StatsPanel from "./stats-panel";
-import FleetLog, { ownEntries } from "@/components/activity/fleet-log";
+import FleetLogLive from "@/components/activity/fleet-log-live";
 
 /** Animated energy particles flowing along a bezier curve */
 function EnergyStream({
@@ -87,7 +87,7 @@ function EnergyStream({
   );
 }
 
-import type { ActivityFields, Doc, CampaignProgressFields, MissionProgressFields, ProfileFields, ProgressFields } from "@/lib/data/schema";
+import type { Doc, CampaignProgressFields, MissionProgressFields, ProfileFields, ProgressFields } from "@/lib/data/schema";
 import { nextUp } from "@/lib/mission/next-up";
 import { STORAGE_KEYS } from "@/lib/storage-keys";
 
@@ -102,7 +102,6 @@ export default function GalaxyMap({ tourSectorId = null }: GalaxyMapProps) {
   const campaignStates = useQuery<Doc<CampaignProgressFields>[]>(api.forgeCampaigns.getAllCampaignStates);
   const missionStates = useQuery<Doc<MissionProgressFields>[]>(api.forgeMissions.getAllMissionStates);
   const topicProgress = useQuery<Doc<ProgressFields>[]>(api.forgeProgress.getAll);
-  const activity = useQuery<Doc<ActivityFields>[]>(api.forgeActivity.getRecent, { limit: 12 });
 
   const [hoveredSector, setPreviewSector] = useState<Sector | null>(null);
   const previewSector =
@@ -357,15 +356,7 @@ export default function GalaxyMap({ tourSectorId = null }: GalaxyMapProps) {
                 totalMissions={totalMissions}
                 next={next}
                 topicProgress={topicProgress ?? []}
-                feed={
-                  <FleetLog
-                    dense
-                    max={8}
-                    entries={ownEntries(activity ?? [])}
-                    label="Fleet Log — recent activity"
-                    emptyText="Nothing logged yet. Finish a mission, a drill or a ticket and it appears here."
-                  />
-                }
+                feed={<FleetLogLive dense max={8} />}
               />
             )}
           </div>
