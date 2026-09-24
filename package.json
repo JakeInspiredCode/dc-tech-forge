@@ -7,12 +7,13 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/db-migrate.mjs && next build",
     "start": "node scripts/preview.mjs",
     "typecheck": "next typegen && tsc --noEmit",
     "lint": "eslint .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "cloud:smoke": "node scripts/cloud-smoke.mjs"
   },
   "dependencies": {
     "@fontsource/chakra-petch": "^5.3.0",
@@ -34,6 +35,7 @@
     "eslint": "^9.39.5",
     "eslint-config-next": "^15.5.25",
     "jsdom": "^29.1.1",
+    "pg": "^8.23.0",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.7.0",
     "vitest": "^5.0.1"

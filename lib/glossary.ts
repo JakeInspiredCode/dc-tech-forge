@@ -19,6 +19,8 @@ export const GLOSSARY: GlossaryEntry[] = [
   { term: "Tier", means: "How deep a topic's flashcards go, 1 to 4 — from definitions up to incident scenarios. Reviewing a tier well unlocks the next." },
   { term: "XP", means: "Points for finishing things: missions, reviews, tickets. They measure practice done, nothing else." },
   { term: "Streak", means: "How many days in a row you have studied." },
-  { term: "Fleet Log", means: "The recent-activity list on the home screen and in Profile → History: missions accomplished, badges earned, drills, tickets and study sessions, newest first." },
+  { term: "Fleet Log", means: "The recent-activity list on the home screen: missions accomplished, badges earned, drills, tickets and study sessions, newest first — yours, and every pilot with a callsign." },
+  { term: "Callsign", means: "An optional account name (Profile). With one, your progress is saved to the cloud and follows you to other devices, and what you do appears in the Fleet Log." },
+  { term: "Recovery code", means: "The one secret behind a callsign — issued when you claim it, shown again in Profile on request. Type it on another device to sign in. There is no password and no email." },
   { term: "Sample progress", means: "A pre-filled account for looking around. It is always labelled, and \"Start fresh\" removes it." },
 ];

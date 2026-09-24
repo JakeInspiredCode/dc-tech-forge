@@ -13,6 +13,7 @@ import { BRAND } from "@/lib/brand";
 import { V2 } from "@/lib/design/forge-v2-tokens";
 import { BADGE_DEFS } from "@/lib/types";
 import SessionHistory from "@/components/profile/session-history";
+import PilotCard from "@/components/profile/pilot-card";
 
 const RESET_PHRASE = "RESET";
 const dangerColor = "#ef4444";
@@ -201,6 +202,10 @@ export default function ProfilePage() {
               <ProfileGauge value={earnedBadges.size} label="Badges" color="#a855f7" max={BADGE_DEFS.length} />
               <ProfileGauge value={`${Math.round(profile?.totalSessionMinutes ?? 0)}`} label="Study min" color="#06d6d6" />
             </div>
+
+            {/* Optional account: a callsign, a recovery code, a cloud save. */}
+            <div className="w-full h-px my-4 shrink-0" style={{ background: `linear-gradient(90deg, transparent, ${accentColor}20, transparent)` }} />
+            <PilotCard />
           </div>
         </div>
 

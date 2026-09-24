@@ -181,17 +181,19 @@ export interface TicketHistoryFields {
 // a ticket resolved — written by the mutation that did it. Only content ids
 // and numbers, never free text: the Fleet Log turns ids into names, and rows
 // like these are what other people will see once accounts exist.
-export type ActivityKind =
-  | "mission_accomplished"
-  | "campaign_completed"
-  | "badge_earned"
-  | "speed_run"
-  | "session_completed"
-  | "drill_completed"
-  | "diagnosis_solved"
-  | "quick_draw"
-  | "ticket_resolved"
-  | "bounty_completed";
+export const ACTIVITY_KINDS = [
+  "mission_accomplished",
+  "campaign_completed",
+  "badge_earned",
+  "speed_run",
+  "session_completed",
+  "drill_completed",
+  "diagnosis_solved",
+  "quick_draw",
+  "ticket_resolved",
+  "bounty_completed",
+] as const;
+export type ActivityKind = (typeof ACTIVITY_KINDS)[number];
 
 export interface ActivityFields {
   kind: ActivityKind;
