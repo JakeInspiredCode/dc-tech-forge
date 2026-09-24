@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { Block, ChapterSection } from "@/lib/types/chapter";
-import { getChapterSection } from "@/lib/seeds/chapters";
+import { loadChapterSection } from "@/lib/seeds/chapters/load";
 import {
   Bullets,
   Callout,
@@ -132,10 +132,30 @@ export default function ChapterRenderer({
   onMissionComplete,
 }: ChapterRendererProps) {
   const [lessonScale, cycleLessonScale] = useLessonScale();
-  const section = useMemo<ChapterSection | null>(
-    () => getChapterSection(sectionId),
-    [sectionId]
-  );
+  // One sector's lessons, fetched on demand — importing every chapter made
+  // reading a single lesson download all 64. undefined = still loading.
+  const [section, setSection] = useState<ChapterSection | null | undefined>(undefined);
+  useEffect(() => {
+    let current = true;
+    setSection(undefined);
+    loadChapterSection(sectionId)
+      .then((found) => current && setSection(found))
+      .catch(() => current && setSection(null));
+    return () => {
+      current = false;
+    };
+  }, [sectionId]);
+
+  if (section === undefined) {
+    return (
+      <div
+        role="status"
+        style={{ minHeight: "60vh", background: "#12121F", color: "#AAB4BE", padding: "60px 24px", textAlign: "center" }}
+      >
+        Loading lesson…
+      </div>
+    );
+  }
 
   if (!section) {
     return (
