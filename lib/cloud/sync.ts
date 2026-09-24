@@ -29,6 +29,7 @@ import { fromCloudSave, toCloudSave } from "./save";
 const PUSH_DEBOUNCE_MS = 2500;
 const RATE_LIMIT_RETRY_MS = 1500;
 export const PUBLISHED_EVENT = "dctf:fleet-log-published";
+export const SAVED_EVENT = "dctf:cloud-saved";
 
 // ── Status, for the Profile card ──
 
@@ -161,6 +162,7 @@ export async function pushNow(): Promise<void> {
       // own scheduled push will carry it.
       if (getVersion() === version) write(STORAGE_KEYS.cloudDirty, null);
       setStatus({ state: "synced", at: Date.now() });
+      window.dispatchEvent(new Event(SAVED_EVENT));
     } catch (err) {
       handleFailure(err, "push");
       if (err instanceof CloudError && err.code === "RATE_LIMITED") schedulePush(RATE_LIMIT_RETRY_MS);

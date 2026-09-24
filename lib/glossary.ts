@@ -20,6 +20,7 @@ export const GLOSSARY: GlossaryEntry[] = [
   { term: "XP", means: "Points for finishing things: missions, reviews, tickets. They measure practice done, nothing else." },
   { term: "Streak", means: "How many days in a row you have studied." },
   { term: "Fleet Log", means: "The recent-activity list on the home screen: missions accomplished, badges earned, drills, tickets and study sessions, newest first — yours, and every pilot with a callsign." },
+  { term: "Top pilots", means: "The Fleet Log's second tab: callsigns ranked by XP earned since Monday. Only XP earned after you claimed a callsign counts, and each week starts from zero." },
   { term: "Callsign", means: "An optional account name (Profile). With one, your progress is saved to the cloud and follows you to other devices, and what you do appears in the Fleet Log." },
   { term: "Recovery code", means: "The one secret behind a callsign — issued when you claim it, shown again in Profile on request. Type it on another device to sign in. There is no password and no email." },
   { term: "Sample progress", means: "A pre-filled account for looking around. It is always labelled, and \"Start fresh\" removes it." },

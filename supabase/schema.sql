@@ -34,6 +34,18 @@ create table if not exists public.saves (
   constraint saves_size_cap check (pg_column_size(data) <= 4 * 1024 * 1024)
 );
 
+-- The weekly board: XP earned since Monday. forge_save keeps each pilot's XP
+-- total and, the first time a pilot saves in a week, a baseline for that week —
+-- the total at that moment, so old XP never counts as this week's.
+alter table public.pilots add column if not exists xp_total integer;
+
+create table if not exists public.xp_weeks (
+  pilot_id   uuid not null references public.pilots(id) on delete cascade,
+  week_start date not null,
+  xp_start   integer not null,
+  primary key (pilot_id, week_start)
+);
+
 create table if not exists public.activity (
   id         bigint generated always as identity primary key,
   pilot_id   uuid not null references public.pilots(id) on delete cascade,
@@ -55,7 +67,8 @@ create index if not exists activity_pilot_recent_idx on public.activity (pilot_i
 alter table public.pilots   enable row level security;
 alter table public.saves    enable row level security;
 alter table public.activity enable row level security;
-revoke all on table public.pilots, public.saves, public.activity from anon, authenticated;
+alter table public.xp_weeks enable row level security;
+revoke all on table public.pilots, public.saves, public.activity, public.xp_weeks from anon, authenticated;
 revoke all on all sequences in schema public from anon, authenticated;
 
 -- ── The public face of the log ────────────────────────────────────────────────
@@ -69,6 +82,18 @@ create or replace view public.fleet_log as
   order by a.created_at desc, a.id desc
   limit 100;
 grant select on public.fleet_log to anon, authenticated;
+
+-- Top pilots this week: callsign and XP earned since Monday (UTC). Capped so
+-- a doctored save can't put a silly number on everyone's screen.
+create or replace view public.weekly_board as
+  select p.callsign,
+         least(p.xp_total - w.xp_start, 100000) as xp
+  from public.pilots p
+  join public.xp_weeks w on w.pilot_id = p.id and w.week_start = date_trunc('week', now())::date
+  where p.xp_total is not null and p.xp_total > w.xp_start
+  order by 2 desc, p.last_seen_at desc
+  limit 10;
+grant select on public.weekly_board to anon, authenticated;
 
 -- ── Internal helpers (not callable by anon) ───────────────────────────────────
 
@@ -171,6 +196,9 @@ set search_path = public, extensions, pg_temp as $$
 declare
   v_id uuid;
   v_rev integer;
+  v_xp_text text;
+  v_xp integer;
+  v_prev integer;
 begin
   v_id := public.forge_auth(p_callsign, p_code);
   if p_data is null or jsonb_typeof(p_data) <> 'object' then
@@ -183,6 +211,18 @@ begin
     on conflict (pilot_id) do update
       set data = excluded.data, rev = public.saves.rev + 1, updated_at = now()
     returning rev into v_rev;
+
+  -- XP bookkeeping for the weekly board. The total is what the profile in the
+  -- save says; anything that isn't a sane number leaves the board untouched.
+  v_xp_text := p_data #>> '{data,forgeProfile,0,totalPoints}';
+  if v_xp_text ~ '^[0-9]{1,8}(\.[0-9]+)?$' then
+    v_xp := round(v_xp_text::numeric)::integer;
+    select xp_total into v_prev from public.pilots where id = v_id;
+    insert into public.xp_weeks (pilot_id, week_start, xp_start)
+      values (v_id, date_trunc('week', now())::date, coalesce(v_prev, v_xp))
+      on conflict (pilot_id, week_start) do nothing;
+    update public.pilots set xp_total = v_xp where id = v_id;
+  end if;
   return json_build_object('rev', v_rev);
 exception when check_violation then
   raise exception 'SAVE_TOO_LARGE';

@@ -4,10 +4,10 @@
 // Rows are data from strangers, so each is checked before it is believed;
 // describeActivity then drops any whose ids name nothing shipped.
 
-import { useCallback, useEffect, useRef, useState } from "react";
 import { ACTIVITY_KINDS, type ActivityKind } from "@/lib/data/schema";
 import { CALLSIGN_RE } from "./callsign";
 import { isCloudConfigured } from "./config";
+import { usePolled, type PollStatus } from "./polled";
 import { select } from "./postgrest";
 import { PUBLISHED_EVENT } from "./sync";
 
@@ -41,54 +41,11 @@ export async function fetchFleetLog(limit = 40): Promise<FeedRow[]> {
   return rows.map(validateFeedRow).filter((r): r is FeedRow => r !== null);
 }
 
-export type FeedStatus = "off" | "loading" | "live" | "offline";
+export type FeedStatus = PollStatus;
 
-const POLL_MS = 60_000;
-const MIN_REFRESH_GAP_MS = 5_000;
+const REFRESH_ON = [PUBLISHED_EVENT];
 
 /** The shared log, refreshed every minute while the tab is visible, on focus, and after this browser publishes. */
 export function useFleetLog(limit = 40): { rows: FeedRow[]; status: FeedStatus; refresh: () => void } {
-  const configured = isCloudConfigured();
-  const [rows, setRows] = useState<FeedRow[]>([]);
-  const [status, setStatus] = useState<FeedStatus>(configured ? "loading" : "off");
-  const lastRef = useRef(0);
-
-  const refresh = useCallback(() => {
-    if (!configured) return;
-    const now = Date.now();
-    if (now - lastRef.current < MIN_REFRESH_GAP_MS) return;
-    lastRef.current = now;
-    fetchFleetLog(limit)
-      .then((fresh) => {
-        setRows(fresh);
-        setStatus("live");
-      })
-      .catch(() => setStatus("offline"));
-  }, [configured, limit]);
-
-  useEffect(() => {
-    if (!configured) return;
-    refresh();
-    const timer = setInterval(() => {
-      if (document.visibilityState === "visible") refresh();
-    }, POLL_MS);
-    const onVisible = () => {
-      if (document.visibilityState === "visible") refresh();
-    };
-    document.addEventListener("visibilitychange", onVisible);
-    window.addEventListener("focus", onVisible);
-    const onPublished = () => {
-      lastRef.current = 0;
-      refresh();
-    };
-    window.addEventListener(PUBLISHED_EVENT, onPublished);
-    return () => {
-      clearInterval(timer);
-      document.removeEventListener("visibilitychange", onVisible);
-      window.removeEventListener("focus", onVisible);
-      window.removeEventListener(PUBLISHED_EVENT, onPublished);
-    };
-  }, [configured, refresh]);
-
-  return { rows, status, refresh };
+  return usePolled<FeedRow>(isCloudConfigured(), () => fetchFleetLog(limit), REFRESH_ON);
 }
