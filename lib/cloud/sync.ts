@@ -12,7 +12,6 @@
 //     progress is loaded. A row that the server rejects is dropped; a row it
 //     can't be reached for waits.
 
-import { hasUserActivity } from "@/lib/data/activity";
 import { mutations } from "@/lib/data/operations";
 import { flushPersistenceNow } from "@/lib/data/persistence";
 import { isSampleDataLoaded } from "@/lib/data/sample-flag";
@@ -239,9 +238,9 @@ async function pullIfNewer(): Promise<void> {
     const res = await rpc<{ data: unknown; rev: number }>("forge_load", { p_callsign: pilot.callsign, p_code: pilot.code });
     const rev = Number(res.rev) || 0;
     if (res.data === null) {
-      // A fresh account: whatever is here becomes the save.
-      if (hasUserActivity()) await pushNow();
-      else setStatus({ state: "synced", at: Date.now() });
+      // A fresh account: whatever is here becomes the save — even nothing,
+      // because the first save of a week is the weekly board's baseline.
+      await pushNow();
       return;
     }
     if (rev > readRev()) await adopt(fromCloudSave(res.data), rev);

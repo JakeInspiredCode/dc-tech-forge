@@ -121,7 +121,9 @@ export default function PilotCard() {
       if (problem) throw new CloudError(problem.startsWith("That") ? "CALLSIGN_RESERVED" : "CALLSIGN_INVALID");
       const created = await registerCallsign(name);
       markLogStart();
-      if (hasUserActivity()) await pushLocalSave();
+      // Save at once, even an empty account: the first save of a week is the
+      // weekly board's baseline, and it must predate the first XP earned.
+      await pushLocalSave();
       setShownCode(created.code);
       setMode("fresh-code");
       setCallsign("");
@@ -141,7 +143,7 @@ export default function PilotCard() {
         return;
       }
       if (saveRev > 0) await adoptCloudSave();
-      else if (hasUserActivity()) await pushLocalSave();
+      else await pushLocalSave(); // a fresh account: this browser's progress (or nothing) becomes the save and the week's baseline
       setMode("idle");
     });
 
