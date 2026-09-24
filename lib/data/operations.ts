@@ -1,5 +1,6 @@
 "use client";
 
+import { dispatchMascotEvent } from "@/lib/mascot/types";
 import { getMission, getMissionsForCampaign } from "@/lib/seeds/campaigns";
 import { getState, mutate, mutateMany, uid } from "./store";
 import type {
@@ -619,8 +620,32 @@ export const mutations: Record<string, MutationFn> = {
         ),
       );
       for (const id of earn) logActivity("badge_earned", id);
+      // The celebration is triggered here, not by the screen that called: every
+      // path that awards a badge shows it, and a restore or the sample never does.
+      for (const id of earn) dispatchMascotEvent("badge-earned", { badge: id });
     }
     return { awarded: earn };
+  },
+
+  // A badge for something that isn't in the store — claiming a callsign lives
+  // in the cloud. Idempotent: a second claim from the same browser awards nothing.
+  "forgeProfile:awardBadge": async ({ id }) => {
+    let awarded = false;
+    mutate("forgeProfile", (prev) => {
+      const existing = prev.find((p) => p.profileId === "default");
+      if (!existing) {
+        awarded = true;
+        return [...prev, { ...upsertProfileBase(), badges: [id] }];
+      }
+      if (existing.badges.includes(id)) return prev;
+      awarded = true;
+      return prev.map((p) => (p.profileId === "default" ? { ...p, badges: [...p.badges, id] } : p));
+    });
+    if (awarded) {
+      logActivity("badge_earned", id);
+      dispatchMascotEvent("badge-earned", { badge: id });
+    }
+    return { awarded };
   },
 
   // ── forgeProgress ─────────────────────────────────────────────────────────
@@ -955,6 +980,15 @@ export const mutations: Record<string, MutationFn> = {
   },
 
   // ── forgeTicketHistory ────────────────────────────────────────────────────
+
+  // ── forgeActivity ─────────────────────────────────────────────────────────
+
+  // This browser's copy of the row the server writes at registration. It is
+  // logged before the sign-in mark (lib/cloud/sync.ts), so it stays private
+  // here and is never published a second time.
+  "forgeActivity:joinedFleet": async () => {
+    logActivity("joined_fleet", "");
+  },
 
   "forgeTicketHistory:add": async (args) => {
     const doc = newDoc<TicketHistoryFields>({

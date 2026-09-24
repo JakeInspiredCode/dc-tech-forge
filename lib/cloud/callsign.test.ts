@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { ACTIVITY_KINDS } from "@/lib/data/schema";
 import { CALLSIGN_RE, RESERVED_CALLSIGNS, callsignProblem, formatCode, normalizeCallsign, normalizeCode } from "./callsign";
 
 const sql = readFileSync(join(__dirname, "..", "..", "supabase", "schema.sql"), "utf8");
@@ -12,6 +13,13 @@ describe("callsign rules", () => {
     expect(reserved.length).toBeGreaterThan(10);
     expect([...reserved].sort()).toEqual([...RESERVED_CALLSIGNS].sort());
     expect(sql).toContain(`'${CALLSIGN_RE.source}'`);
+  });
+
+  it("and the Fleet Log kinds, are the same in the database", () => {
+    const block = sql.match(/activity_kind_check check \(kind in \(([\s\S]*?)\)\)/)?.[1] ?? "";
+    const kinds = [...block.matchAll(/'([a-z_]+)'/g)].map((m) => m[1]);
+    expect([...kinds].sort()).toEqual([...ACTIVITY_KINDS].sort());
+    expect(sql).toContain("values (v_id, 'joined_fleet', '')");
   });
 
   it("normalize what people type", () => {

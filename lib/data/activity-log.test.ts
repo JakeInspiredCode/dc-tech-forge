@@ -94,6 +94,33 @@ describe("the Fleet Log", () => {
     expect(JSON.stringify(recent())).not.toMatch(/script|sudo|story/);
   });
 
+  it("logs joining the fleet, and awards the badge for it exactly once", async () => {
+    const { mutations, recent, getState } = await load();
+    const events: string[] = [];
+    const onEvent = (e: Event) => events.push(String((e as CustomEvent).detail?.meta?.badge));
+    window.addEventListener("mascot-trigger", onEvent);
+    await mutations["forgeActivity:joinedFleet"]({});
+    await expect(mutations["forgeProfile:awardBadge"]({ id: "enlisted" })).resolves.toEqual({ awarded: true });
+    await expect(mutations["forgeProfile:awardBadge"]({ id: "enlisted" })).resolves.toEqual({ awarded: false });
+    window.removeEventListener("mascot-trigger", onEvent);
+
+    expect(recent().map((r) => [r.kind, r.ref])).toEqual([["badge_earned", "enlisted"], ["joined_fleet", ""]]);
+    expect(getState().forgeProfile[0].badges).toEqual(["enlisted"]);
+    expect(events).toEqual(["enlisted"]); // celebrated once, by the mutation
+  });
+
+  it("celebrates every badge checkAndAwardBadges hands out, from the mutation itself", async () => {
+    const { mutations } = await load();
+    const events: string[] = [];
+    const onEvent = (e: Event) => events.push(String((e as CustomEvent).detail?.meta?.badge));
+    window.addEventListener("mascot-trigger", onEvent);
+    await mutations["forgeSessions:add"]({ type: "daily-training", startTime: "2026-09-20T10:00:00.000Z", cardIds: ["a"], answers: [] });
+    const { awarded } = await mutations["forgeProfile:checkAndAwardBadges"]({});
+    window.removeEventListener("mascot-trigger", onEvent);
+    expect(awarded.length).toBeGreaterThan(0);
+    expect(events.sort()).toEqual([...awarded].sort());
+  });
+
   it("keeps the newest 200 rows, newest first", async () => {
     const { mutations, recent } = await load();
     for (let i = 0; i < 205; i++) await mutations["forgeTicketHistory:add"](ticket(i));
