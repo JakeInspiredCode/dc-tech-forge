@@ -1,12 +1,18 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useCards, useRecentSessions, useSpeedRunsRecent } from "@/lib/convex-hooks";
+import FleetLog, { ownEntries } from "@/components/activity/fleet-log";
+import { describeActivity } from "@/lib/activity/describe";
+import { useActivityNames } from "@/lib/activity/names";
+import { useCards, useRecentActivity, useRecentSessions, useSpeedRunsRecent } from "@/lib/convex-hooks";
 import { TOPICS } from "@/lib/types";
 
-// Past study sessions and speed runs, searchable by card question.
+// The Fleet Log (everything done, newest first), then past study sessions and
+// speed runs, searchable by card question.
 // Lived on /progress, which production had been redirecting to /profile —
 // so nobody could reach it. It is Profile's History tab now.
+
+type HistoryTab = "activity" | "sessions" | "speed-runs";
 
 const SESSION_LABELS: Record<string, string> = {
   "daily-training": "Daily Training",
@@ -33,7 +39,7 @@ export default function SessionHistory() {
   const cards = useCards();
   const recentSessions = useRecentSessions(40);
   const speedRuns = useSpeedRunsRecent(30);
-  const [historyTab, setHistoryTab] = useState<"sessions" | "speed-runs">("sessions");
+  const [historyTab, setHistoryTab] = useState<HistoryTab>("activity");
   const [historySearch, setHistorySearch] = useState("");
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
@@ -66,8 +72,8 @@ function HistorySection({
   recentSessions: ReturnType<typeof useRecentSessions>;
   speedRuns: ReturnType<typeof useSpeedRunsRecent>;
   cards: ReturnType<typeof useCards>;
-  historyTab: "sessions" | "speed-runs";
-  setHistoryTab: (t: "sessions" | "speed-runs") => void;
+  historyTab: HistoryTab;
+  setHistoryTab: (t: HistoryTab) => void;
   historySearch: string;
   setHistorySearch: (s: string) => void;
   expanded: Set<string>;
@@ -88,6 +94,14 @@ function HistorySection({
 
   const q = historySearch.toLowerCase().trim();
 
+  const activity = useRecentActivity(200);
+  const names = useActivityNames(activity);
+  const filteredActivity = useMemo(() => {
+    const entries = ownEntries(activity);
+    if (!q) return entries;
+    return entries.filter((e) => describeActivity(e, names)?.text.toLowerCase().includes(q));
+  }, [activity, names, q]);
+
   const filteredSessions = useMemo(() => {
     if (!q) return recentSessions;
     return recentSessions.filter((s) =>
@@ -106,21 +120,21 @@ function HistorySection({
 
   return (
     <div>
-      <h2 className="text-lg font-semibold mb-2">Session History</h2>
+      <h2 className="text-lg font-semibold mb-2">History</h2>
       <p className="text-sm text-v2-text-dim mb-4">
-        Browse past sessions and find specific cards you've reviewed.
+        Everything you have done, newest first — then past sessions and speed runs, searchable by card question.
       </p>
 
-      <input aria-label="Search session history by card question"
+      <input aria-label="Search history"
         type="text"
-        placeholder='Search by card question — e.g. "what is iSCSI"'
+        placeholder='Search — e.g. "what is iSCSI" or "badge"'
         value={historySearch}
         onChange={(e) => setHistorySearch(e.target.value)}
         className="w-full bg-v2-bg-surface border border-v2-border rounded-lg px-3 py-2 text-sm mono text-v2-text outline-none focus:border-v2-cyan/50 mb-4 placeholder:text-v2-text-muted"
       />
 
       <div className="flex gap-2 mb-5">
-        {(["sessions", "speed-runs"] as const).map((t) => (
+        {(["activity", "sessions", "speed-runs"] as const).map((t) => (
           <button
             key={t}
             onClick={() => setHistoryTab(t)}
@@ -130,10 +144,26 @@ function HistorySection({
                 : "text-v2-text-dim border-v2-border hover:border-v2-cyan/30"
             }`}
           >
-            {t === "sessions" ? `Sessions (${filteredSessions.length})` : `Speed Runs (${filteredSpeedRuns.length})`}
+            {t === "activity"
+              ? `Activity (${filteredActivity.length})`
+              : t === "sessions"
+                ? `Sessions (${filteredSessions.length})`
+                : `Speed Runs (${filteredSpeedRuns.length})`}
           </button>
         ))}
       </div>
+
+      {historyTab === "activity" && (
+        <FleetLog
+          entries={filteredActivity}
+          label="Fleet Log — everything you have done"
+          emptyText={
+            q
+              ? "No activity matches that search."
+              : "Nothing logged yet. Missions, drills, tickets, badges and study sessions appear here as you do them."
+          }
+        />
+      )}
 
       {historyTab === "sessions" && (
         <div className="space-y-2">

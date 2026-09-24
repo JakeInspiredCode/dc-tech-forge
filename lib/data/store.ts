@@ -18,6 +18,7 @@ function emptyState(): State {
     forgeDiagnosisHistory: [],
     forgeQuickDrawHistory: [],
     forgeTicketHistory: [],
+    forgeActivity: [],
   };
 }
 

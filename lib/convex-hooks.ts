@@ -17,6 +17,7 @@ import type {
   StoryFields,
   SpeedRunFields,
   DrillFields,
+  ActivityFields,
 } from "./data/schema";
 
 type CardDoc = Doc<CardFields>;
@@ -189,4 +190,10 @@ export function useDrillBestScore(scenarioId: string): DrillDoc | null {
     (useQuery(api.forgeDrills.getBestByScenario, { scenarioId }) as DrillDoc | null | undefined) ??
     null
   );
+}
+
+// ── Activity (the Fleet Log) ──
+
+export function useRecentActivity(limit?: number): Doc<ActivityFields>[] {
+  return (useQuery(api.forgeActivity.getRecent, { limit }) as Doc<ActivityFields>[] | undefined) ?? [];
 }

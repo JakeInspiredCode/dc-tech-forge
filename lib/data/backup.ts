@@ -106,6 +106,7 @@ const SPEC: Spec = {
     ticketId: "string", completedAt: "string", difficulty: "string", score: "number",
     commandsUsed: "string[]", answer: "string", usedHint: "boolean", xpEarned: "number", timeMs: "number",
   },
+  forgeActivity: { kind: "string", ref: "string", value: "number?", at: "string" },
 };
 
 // Values the UI indexes or compares with, where an out-of-range number would

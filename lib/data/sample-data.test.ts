@@ -76,6 +76,24 @@ describe("loadSampleData", () => {
       const badgeIds = new Set<string>(BADGE_DEFS.map((b) => b.id));
       for (const badge of state.forgeProfile[0].badges) expect(badgeIds).toContain(badge);
     });
+
+    it("the Fleet Log: every row describes, and none is dated in the future", async () => {
+      const { loadSampleData, getState } = await load();
+      await loadSampleData();
+      const { describeActivity } = await import("@/lib/activity/describe");
+      const { loadNames, LAZY_NAME_KINDS } = await import("@/lib/activity/names");
+      const names = Object.fromEntries(await Promise.all(LAZY_NAME_KINDS.map(async (k) => [k, await loadNames(k)])));
+
+      const rows = getState().forgeActivity;
+      expect(rows.length).toBeGreaterThan(10);
+      for (const row of rows) {
+        expect(describeActivity(row, names), `${row.kind} ${row.ref}`).not.toBeNull();
+        expect(Date.parse(row.at), `${row.kind} ${row.ref}`).toBeLessThanOrEqual(Date.now());
+      }
+      expect(new Set(rows.map((r) => r.kind))).toEqual(
+        new Set(["mission_accomplished", "diagnosis_solved", "quick_draw", "session_completed", "badge_earned"]),
+      );
+    });
   });
 
   describe("agrees with what the app computes", () => {

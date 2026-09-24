@@ -177,6 +177,32 @@ export interface TicketHistoryFields {
   timeMs: number;
 }
 
+// One row per meaningful thing done — a mission accomplished, a badge earned,
+// a ticket resolved — written by the mutation that did it. Only content ids
+// and numbers, never free text: the Fleet Log turns ids into names, and rows
+// like these are what other people will see once accounts exist.
+export type ActivityKind =
+  | "mission_accomplished"
+  | "campaign_completed"
+  | "badge_earned"
+  | "speed_run"
+  | "session_completed"
+  | "drill_completed"
+  | "diagnosis_solved"
+  | "quick_draw"
+  | "ticket_resolved"
+  | "bounty_completed";
+
+export interface ActivityFields {
+  kind: ActivityKind;
+  /** What it was about: a mission, campaign, badge, topic, scenario, module, bounty id, or ticket level. */
+  ref: string;
+  /** Per kind: a percentage for checks, drills and tickets; points for a speed run; cards for a session. */
+  value?: number;
+  /** ISO timestamp. */
+  at: string;
+}
+
 export interface State {
   forgeCards: Doc<CardFields>[];
   forgeReviews: Doc<ReviewFields>[];
@@ -192,6 +218,7 @@ export interface State {
   forgeDiagnosisHistory: Doc<DiagnosisHistoryFields>[];
   forgeQuickDrawHistory: Doc<QuickDrawHistoryFields>[];
   forgeTicketHistory: Doc<TicketHistoryFields>[];
+  forgeActivity: Doc<ActivityFields>[];
 }
 
 export const ENTITY_KEYS: (keyof State)[] = [
@@ -209,6 +236,7 @@ export const ENTITY_KEYS: (keyof State)[] = [
   "forgeDiagnosisHistory",
   "forgeQuickDrawHistory",
   "forgeTicketHistory",
+  "forgeActivity",
 ];
 
 export type { ForgeProfile, TopicProgress, ForgeReview, ForgeSession };

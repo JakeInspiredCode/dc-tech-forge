@@ -28,7 +28,7 @@ import { mutations } from "./operations";
 import { isSampleDataLoaded, setSampleDataFlag } from "./sample-flag";
 import { seedIfEmpty } from "./seed";
 import { ENTITY_KEYS, mutateMany, uid } from "./store";
-import type { CardFields, Doc, ReviewFields, State } from "./schema";
+import type { ActivityKind, CardFields, Doc, ReviewFields, State } from "./schema";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -284,6 +284,32 @@ function buildProfile(prev: State, reviewCount: number): State["forgeProfile"] {
   ];
 }
 
+// The Fleet Log is derived from the rows above, so it can't claim anything the
+// history tables don't show. Badges get dates spread across the streak.
+function buildActivity(
+  s: Pick<State, "forgeSessions" | "forgeProfile" | "forgeDiagnosisHistory" | "forgeQuickDrawHistory" | "forgeMissionProgress">,
+): State["forgeActivity"] {
+  const rows: State["forgeActivity"] = [];
+  const add = (kind: ActivityKind, ref: string, at: string, value?: number) =>
+    rows.push({ _id: uid(), _creationTime: Date.parse(at), kind, ref, at, ...(value === undefined ? {} : { value }) });
+
+  for (const m of s.forgeMissionProgress) {
+    if (m.status === "accomplished" && m.accomplishedAt) add("mission_accomplished", m.missionId, m.accomplishedAt, m.knowledgeCheckScore);
+  }
+  for (const d of s.forgeDiagnosisHistory) add("diagnosis_solved", d.scenarioId, d.completedAt, d.score);
+  for (const q of s.forgeQuickDrawHistory) add("quick_draw", q.moduleId, q.completedAt, q.score);
+  for (const x of s.forgeSessions) add("session_completed", x.type, x.endTime ?? x.startTime, x.cardIds.length);
+  // The two newest badges landed earlier today; the rest are spread back
+  // along the streak. (A row dated later today would read as the future.)
+  s.forgeProfile[0]?.badges.forEach((id, i) => {
+    const at = i < 2
+      ? new Date(Date.now() - (i + 1) * 37 * 60_000).toISOString()
+      : isoDaysAgo(1 + ((i - 2) % (STREAK_DAYS - 1)), 20, 45 - (i % 40));
+    add("badge_earned", id, at);
+  });
+  return rows;
+}
+
 // ── Public API ──
 
 export { hasUserActivity, isSampleDataLoaded };
@@ -309,14 +335,26 @@ export async function loadSampleData(
 
   mutateMany((prev) => {
     const { cards, reviews } = buildCardsAndReviews(prev.forgeCards);
+    const forgeSessions = buildSessions(reviews);
+    const forgeProfile = buildProfile(prev, reviews.length);
+    const forgeDiagnosisHistory = buildDiagnosisHistory();
+    const forgeQuickDrawHistory = buildQuickDrawHistory();
+    const missions = buildMissions(prev);
     return {
       forgeCards: cards,
       forgeReviews: reviews,
-      forgeSessions: buildSessions(reviews),
-      forgeProfile: buildProfile(prev, reviews.length),
-      forgeDiagnosisHistory: buildDiagnosisHistory(),
-      forgeQuickDrawHistory: buildQuickDrawHistory(),
-      ...buildMissions(prev),
+      forgeSessions,
+      forgeProfile,
+      forgeDiagnosisHistory,
+      forgeQuickDrawHistory,
+      ...missions,
+      forgeActivity: buildActivity({
+        forgeSessions,
+        forgeProfile,
+        forgeDiagnosisHistory,
+        forgeQuickDrawHistory,
+        forgeMissionProgress: missions.forgeMissionProgress,
+      }),
     };
   });
 
