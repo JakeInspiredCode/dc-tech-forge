@@ -47,7 +47,7 @@ const STEPS: Step[] = [
   {
     anchor: '[data-tour="nav-tabs"]',
     title: "Four places to work",
-    body: "Missions is your guided path. Arsenal is practice drills on demand. Battlestation is a live ticket simulator. Profile has your progress, backups, and settings.",
+    body: "Missions is your guided path. Arsenal is practice drills on demand. Battlestation is a live ticket simulator. Profile has your progress and settings — claim a callsign there to save it across devices and show up in the Fleet Log.",
   },
 ];
 
