@@ -79,6 +79,8 @@ export function describeActivity(
     }
     case "session_completed":
       return line("▤", "finished a study session", value ? ` — ${Math.round(value)} cards` : "");
+    case "joined_fleet":
+      return line("✦", "joined the fleet!");
     case "bounty_completed": {
       const bounty = getBounty(ref);
       return bounty ? line("◇", "completed the bounty ", { name: bounty.title }) : null;

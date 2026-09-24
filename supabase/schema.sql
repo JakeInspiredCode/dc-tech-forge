@@ -49,14 +49,18 @@ create table if not exists public.xp_weeks (
 create table if not exists public.activity (
   id         bigint generated always as identity primary key,
   pilot_id   uuid not null references public.pilots(id) on delete cascade,
-  kind       text not null check (kind in (
-               'mission_accomplished', 'campaign_completed', 'badge_earned', 'speed_run',
-               'session_completed', 'drill_completed', 'diagnosis_solved', 'quick_draw',
-               'ticket_resolved', 'bounty_completed')),
+  kind       text not null,
   ref        text not null check (ref ~ '^[A-Za-z0-9_.:-]{0,64}$'),
   value      numeric check (value is null or (value >= 0 and value <= 1000000)),
   created_at timestamptz not null default now()
 );
+-- The kinds the client knows (ACTIVITY_KINDS in lib/data/schema.ts; a test keeps
+-- the two lists equal). Re-created on every run so a new kind ships with a build.
+alter table public.activity drop constraint if exists activity_kind_check;
+alter table public.activity add constraint activity_kind_check check (kind in (
+  'mission_accomplished', 'campaign_completed', 'badge_earned', 'speed_run',
+  'session_completed', 'drill_completed', 'diagnosis_solved', 'quick_draw',
+  'ticket_resolved', 'bounty_completed', 'joined_fleet'));
 create index if not exists activity_recent_idx on public.activity (created_at desc, id desc);
 create index if not exists activity_pilot_recent_idx on public.activity (pilot_id, created_at desc);
 
@@ -170,6 +174,9 @@ begin
   v_code := public.forge_new_code();
   insert into public.pilots (callsign, code_hash) values (p_callsign, public.forge_hash(v_code))
     returning id into v_id;
+  -- The one Fleet Log row the server writes itself: exactly once, at the moment
+  -- the callsign exists, so nobody can announce a joining that didn't happen.
+  insert into public.activity (pilot_id, kind, ref) values (v_id, 'joined_fleet', '');
   return json_build_object('pilot_id', v_id, 'code', v_code);
 exception when unique_violation then
   raise exception 'CALLSIGN_TAKEN';

@@ -21,7 +21,7 @@ It is a static, local-first web app: everything you do is saved in your own brow
 - **Spaced repetition.** 374 flashcards are scheduled with the SM-2 algorithm ([lib/sm2.ts](lib/sm2.ts)). You grade each answer 0–5; that sets the card's ease, interval, and next due date. Slow answers (over 15s) are graded down.
 - **Tiers.** Cards run from basic recall (tier 1) to multi-step scenarios (tier 4). A topic's next tier opens once 70% of the current tier is qualified.
 - **Mastery is derived, never stored by hand.** A topic's mastery, tier, and weak flag are recomputed from its cards' review state, so every screen agrees.
-- **Fleet Log.** The home board and Profile → History list what you did most recently — missions accomplished, badges earned, drills, tickets and study sessions — as ids the app turns into words, never as free text.
+- **Fleet Log.** The home board and Profile → History list what you did most recently — missions accomplished, badges earned, drills, tickets and study sessions — as ids the app turns into words, never as free text. Claiming a callsign announces you to the fleet and earns the first badge, **Enlisted**; every badge is celebrated on screen as it lands.
 
 ### Your data
 

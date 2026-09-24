@@ -194,18 +194,13 @@ export default function SpeedRunPage() {
     const accuracy = s.totalCards > 0 ? Math.round((s.correctCards / s.totalCards) * 100) : 0;
     dispatchMascotEvent("speed-run-complete", { accuracy, totalCards: s.totalCards, bestStreak: s.bestStreak });
 
-    // Check for new badges
+    // Check for new badges; any it awards, it celebrates itself.
     try {
-      const badgeResult = await checkBadges({
+      await checkBadges({
         speedRunBestStreak: s.bestStreak,
         speedRunCorrect: s.correctCards,
         speedRunTotal: s.totalCards,
       });
-      if (badgeResult?.awarded) {
-        for (const badge of badgeResult.awarded) {
-          dispatchMascotEvent("badge-earned", { badge });
-        }
-      }
     } catch (e) {
       console.error("Badge check error:", e);
     }

@@ -7,6 +7,7 @@ import { deleteCloudAccount, registerCallsign, rotateCode, signIn, signOut, useP
 import { CloudError } from "@/lib/cloud/postgrest";
 import { adoptCloudSave, markLogStart, pushLocalSave, useSyncStatus } from "@/lib/cloud/sync";
 import { hasUserActivity } from "@/lib/data/activity";
+import { mutations } from "@/lib/data/operations";
 import { isSampleDataLoaded } from "@/lib/data/sample-flag";
 import { subscribe } from "@/lib/data/store";
 import { formatRelativeTime } from "@/lib/activity/describe";
@@ -120,6 +121,11 @@ export default function PilotCard() {
       const problem = callsignProblem(name);
       if (problem) throw new CloudError(problem.startsWith("That") ? "CALLSIGN_RESERVED" : "CALLSIGN_INVALID");
       const created = await registerCallsign(name);
+      // The server has already written "joined the fleet" for everyone to see.
+      // This browser's copy, and the badge for it, are logged before the mark
+      // below, so they stay private rows and nothing is announced twice.
+      await mutations["forgeActivity:joinedFleet"]({});
+      await mutations["forgeProfile:awardBadge"]({ id: "enlisted" });
       markLogStart();
       // Save at once, even an empty account: the first save of a week is the
       // weekly board's baseline, and it must predate the first XP earned.
@@ -209,6 +215,11 @@ export default function PilotCard() {
     <div className="w-full space-y-2">
       {heading("Callsign")}
       <div className="text-[13px] mono text-v2-text">{pilot.callsign}</div>
+      {mode === "fresh-code" && (
+        <p className="text-[12px] leading-snug text-v2-text">
+          Welcome to the fleet, <span style={{ color: cyan }}>{pilot.callsign}</span>. The Fleet Log has your arrival, and your first badge is yours.
+        </p>
+      )}
       <p className="text-[11px] text-v2-text-dim leading-snug" aria-live="polite">{syncLine}</p>
 
       {mode === "choose" && (

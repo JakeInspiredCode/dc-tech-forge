@@ -192,6 +192,7 @@ export const ACTIVITY_KINDS = [
   "quick_draw",
   "ticket_resolved",
   "bounty_completed",
+  "joined_fleet",
 ] as const;
 export type ActivityKind = (typeof ACTIVITY_KINDS)[number];
 

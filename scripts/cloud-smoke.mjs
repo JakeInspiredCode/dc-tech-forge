@@ -72,6 +72,9 @@ try {
   code = reg.code;
   if (/^[0-9a-f]{32}$/.test(code) && typeof reg.pilot_id === "string") ok("forge_register issues a 128-bit code");
   else bad(`forge_register returned ${JSON.stringify(reg)}`);
+  const joined = await raw("GET", `fleet_log?select=kind,ref&callsign=eq.${callsign}`);
+  if (joined.status === 200 && joined.body.length === 1 && joined.body[0].kind === "joined_fleet") ok("registering wrote the 'joined the fleet' row, server-side");
+  else bad(`fleet_log after register: ${JSON.stringify(joined.body)}`);
   await mustFail("claiming it again", rpc("forge_register", { p_callsign: callsign }), "CALLSIGN_TAKEN");
   await mustFail("a reserved name", rpc("forge_register", { p_callsign: "admin" }), "CALLSIGN_RESERVED");
   await mustFail("an invalid name", rpc("forge_register", { p_callsign: "Rack Rat" }), "CALLSIGN_INVALID");
@@ -119,8 +122,10 @@ try {
   await mustFail("a ref with markup", rpc("forge_log", { p_callsign: callsign, p_code: code, p_kind: "badge_earned", p_ref: "<b>hi</b>", p_value: null }), "ACTIVITY_INVALID");
   await mustFail("logging without the code", rpc("forge_log", { p_callsign: callsign, p_code: "f".repeat(32), p_kind: "badge_earned", p_ref: "cards-10", p_value: null }), "AUTH_FAILED");
   const feed = await raw("GET", `fleet_log?select=callsign,kind,ref,value&callsign=eq.${callsign}`);
-  if (feed.status === 200 && feed.body.length === 1 && feed.body[0].kind === "ticket_resolved" && Number(feed.body[0].value) === 92) ok("the row is in fleet_log under the callsign");
+  const ticketRow = feed.status === 200 ? feed.body.find((r) => r.kind === "ticket_resolved") : null;
+  if (ticketRow && Number(ticketRow.value) === 92 && feed.body.length === 2) ok("the row is in fleet_log under the callsign (with the join row)");
   else bad(`fleet_log after logging: ${feed.status} ${JSON.stringify(feed.body)}`);
+  await mustFail("announcing a joining by hand", rpc("forge_log", { p_callsign: callsign, p_code: code, p_kind: "joined_fleet", p_ref: "", p_value: null }).then(() => { throw new Error("ACCEPTED"); }), "ACCEPTED").catch(() => {});
 
   console.log("Rotating the code:");
   const rotated = await rpc("forge_rotate_code", { p_callsign: callsign, p_code: code });

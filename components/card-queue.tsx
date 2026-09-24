@@ -158,9 +158,9 @@ export default function CardQueue({ cards, sessionType, onComplete }: CardQueueP
         await recordSession({ sessionMinutes });
         const allGoodOrEasy = updatedResults.every((r) => r.quality >= 3);
         const badgeResult = await checkBadges({ sessionAllGoodOrEasy: allGoodOrEasy });
+        // The badge celebration itself fires inside checkAndAwardBadges.
         if (badgeResult?.awarded) {
           for (const badge of badgeResult.awarded) {
-            dispatchMascotEvent("badge-earned", { badge });
             if (badge === "streak-3") dispatchMascotEvent("streak-3");
             if (badge === "streak-7") dispatchMascotEvent("streak-7");
           }

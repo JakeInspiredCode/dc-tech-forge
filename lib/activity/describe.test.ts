@@ -17,6 +17,7 @@ describe("describeActivity", () => {
     expect(describeActivity({ kind: "speed_run", ref: "linux", value: 420 })?.text).toBe("scored 420 pts in a Linux Operations Speed Run");
     expect(describeActivity({ kind: "speed_run", ref: "mixed", value: 10 })?.text).toBe("scored 10 pts in a Mixed topics Speed Run");
     expect(describeActivity({ kind: "session_completed", ref: "daily-training", value: 20 })?.text).toBe("finished a study session — 20 cards");
+    expect(describeActivity({ kind: "joined_fleet", ref: "" })?.text).toBe("joined the fleet!");
     expect(describeActivity({ kind: "bounty_completed", ref: ALL_BOUNTIES[0].id })?.text).toBe(`completed the bounty ${ALL_BOUNTIES[0].title}`);
     expect(BADGE_DEFS.some((b) => b.id === "cards-100")).toBe(true);
   });
