@@ -125,7 +125,7 @@ try {
   const ticketRow = feed.status === 200 ? feed.body.find((r) => r.kind === "ticket_resolved") : null;
   if (ticketRow && Number(ticketRow.value) === 92 && feed.body.length === 2) ok("the row is in fleet_log under the callsign (with the join row)");
   else bad(`fleet_log after logging: ${feed.status} ${JSON.stringify(feed.body)}`);
-  await mustFail("announcing a joining by hand", rpc("forge_log", { p_callsign: callsign, p_code: code, p_kind: "joined_fleet", p_ref: "", p_value: null }).then(() => { throw new Error("ACCEPTED"); }), "ACCEPTED").catch(() => {});
+  await mustFail("announcing a joining by hand", rpc("forge_log", { p_callsign: callsign, p_code: code, p_kind: "joined_fleet", p_ref: "", p_value: null }), "ACTIVITY_INVALID");
 
   console.log("Rotating the code:");
   const rotated = await rpc("forge_rotate_code", { p_callsign: callsign, p_code: code });

@@ -261,6 +261,10 @@ declare
   v_row bigint;
 begin
   v_id := public.forge_auth(p_callsign, p_code);
+  -- Only the server announces a joining (forge_register).
+  if p_kind = 'joined_fleet' then
+    raise exception 'ACTIVITY_INVALID';
+  end if;
   if (select count(*) from public.activity where pilot_id = v_id and created_at > now() - interval '1 hour') >= 120 then
     raise exception 'RATE_LIMITED';
   end if;
