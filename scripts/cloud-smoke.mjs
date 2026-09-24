@@ -108,7 +108,7 @@ try {
   if (save3.rev === 3 && Number(stillOnBoard.body?.[0]?.xp) === 60) ok("a save with a nonsense XP total leaves the board untouched");
   else bad(`nonsense XP: rev ${save3.rev}, board ${JSON.stringify(stillOnBoard.body)}`);
   const loaded = await rpc("forge_load", { p_callsign: callsign, p_code: code });
-  if (loaded.rev === 2 && loaded.data?.data?.n === 2) ok("forge_load returns the latest save");
+  if (loaded.rev === 3 && loaded.data?.data?.n === 3) ok("forge_load returns the latest save");
   else bad(`forge_load: ${JSON.stringify(loaded)}`);
 
   console.log("The Fleet Log:");
@@ -128,7 +128,7 @@ try {
   code = rotated.code;
   await mustFail("the old code afterwards", rpc("forge_sign_in", { p_callsign: callsign, p_code: oldCode }), "AUTH_FAILED");
   const again = await rpc("forge_sign_in", { p_callsign: callsign, p_code: code });
-  if (again.save_rev === 2) ok("the new code signs in and sees the save");
+  if (again.save_rev === 3) ok("the new code signs in and sees the save");
   else bad(`sign-in after rotate: ${JSON.stringify(again)}`);
 } catch (err) {
   bad(`unexpected: ${err.message}`);
