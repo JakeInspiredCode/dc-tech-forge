@@ -12,7 +12,6 @@
 //     progress is loaded. A row that the server rejects is dropped; a row it
 //     can't be reached for waits.
 
-import { hasUserActivity } from "@/lib/data/activity";
 import { mutations } from "@/lib/data/operations";
 import { flushPersistenceNow } from "@/lib/data/persistence";
 import { isSampleDataLoaded } from "@/lib/data/sample-flag";
@@ -29,6 +28,7 @@ import { fromCloudSave, toCloudSave } from "./save";
 const PUSH_DEBOUNCE_MS = 2500;
 const RATE_LIMIT_RETRY_MS = 1500;
 export const PUBLISHED_EVENT = "dctf:fleet-log-published";
+export const SAVED_EVENT = "dctf:cloud-saved";
 
 // ── Status, for the Profile card ──
 
@@ -161,6 +161,7 @@ export async function pushNow(): Promise<void> {
       // own scheduled push will carry it.
       if (getVersion() === version) write(STORAGE_KEYS.cloudDirty, null);
       setStatus({ state: "synced", at: Date.now() });
+      window.dispatchEvent(new Event(SAVED_EVENT));
     } catch (err) {
       handleFailure(err, "push");
       if (err instanceof CloudError && err.code === "RATE_LIMITED") schedulePush(RATE_LIMIT_RETRY_MS);
@@ -237,9 +238,9 @@ async function pullIfNewer(): Promise<void> {
     const res = await rpc<{ data: unknown; rev: number }>("forge_load", { p_callsign: pilot.callsign, p_code: pilot.code });
     const rev = Number(res.rev) || 0;
     if (res.data === null) {
-      // A fresh account: whatever is here becomes the save.
-      if (hasUserActivity()) await pushNow();
-      else setStatus({ state: "synced", at: Date.now() });
+      // A fresh account: whatever is here becomes the save — even nothing,
+      // because the first save of a week is the weekly board's baseline.
+      await pushNow();
       return;
     }
     if (rev > readRev()) await adopt(fromCloudSave(res.data), rev);

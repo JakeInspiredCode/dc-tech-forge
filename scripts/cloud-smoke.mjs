@@ -58,6 +58,14 @@ try {
   const view = await raw("GET", "fleet_log?select=id,callsign,kind,ref,value,created_at&limit=3");
   if (view.status === 200 && Array.isArray(view.body)) ok(`fleet_log readable (${view.body.length} rows sampled)`);
   else bad(`fleet_log: ${view.status}`);
+  const board = await raw("GET", "weekly_board?select=callsign,xp&limit=3");
+  if (board.status === 200 && Array.isArray(board.body)) ok(`weekly_board readable (${board.body.length} rows sampled)`);
+  else bad(`weekly_board: ${board.status}`);
+  for (const path of ["xp_weeks?select=*"]) {
+    const { status } = await raw("GET", path);
+    if (status >= 400) ok(`GET /xp_weeks → ${status}`);
+    else bad(`GET /${path} answered ${status} — the table is exposed`);
+  }
 
   console.log("Claiming a callsign:");
   const reg = await rpc("forge_register", { p_callsign: callsign });
@@ -79,17 +87,28 @@ try {
   const empty = await rpc("forge_load", { p_callsign: callsign, p_code: code });
   if (empty.data === null && empty.rev === 0) ok("forge_load: empty");
   else bad(`forge_load: ${JSON.stringify(empty)}`);
-  const save1 = await rpc("forge_save", { p_callsign: callsign, p_code: code, p_data: { app: "smoke", data: { n: 1 } } });
+  const save1 = await rpc("forge_save", { p_callsign: callsign, p_code: code, p_data: { app: "smoke", data: { n: 1, forgeProfile: [{ totalPoints: 100 }] } } });
   if (save1.rev === 1) ok("forge_save: rev 1");
   else bad(`forge_save: ${JSON.stringify(save1)}`);
   await mustFail("saving again within a second", rpc("forge_save", { p_callsign: callsign, p_code: code, p_data: { app: "smoke", data: { n: 2 } } }), "RATE_LIMITED");
   await mustFail("saving a non-object", rpc("forge_save", { p_callsign: callsign, p_code: code, p_data: [1, 2] }), "SAVE_INVALID");
   await sleep(1200);
-  const save2 = await rpc("forge_save", { p_callsign: callsign, p_code: code, p_data: { app: "smoke", data: { n: 2 } } });
+  const onBoardEarly = await raw("GET", `weekly_board?select=callsign,xp&callsign=eq.${callsign}`);
+  if (onBoardEarly.status === 200 && onBoardEarly.body.length === 0) ok("the first save of the week sets the baseline: not on the board yet");
+  else bad(`weekly_board after first save: ${JSON.stringify(onBoardEarly.body)}`);
+  const save2 = await rpc("forge_save", { p_callsign: callsign, p_code: code, p_data: { app: "smoke", data: { n: 2, forgeProfile: [{ totalPoints: 160 }] } } });
   if (save2.rev === 2) ok("forge_save: rev 2 after a second");
   else bad(`forge_save (2): ${JSON.stringify(save2)}`);
+  const onBoard = await raw("GET", `weekly_board?select=callsign,xp&callsign=eq.${callsign}`);
+  if (onBoard.status === 200 && onBoard.body.length === 1 && Number(onBoard.body[0].xp) === 60) ok("weekly_board shows the XP earned since the baseline (60)");
+  else bad(`weekly_board after second save: ${JSON.stringify(onBoard.body)}`);
+  await sleep(1200);
+  const save3 = await rpc("forge_save", { p_callsign: callsign, p_code: code, p_data: { app: "smoke", data: { n: 3, forgeProfile: [{ totalPoints: "<script>" }] } } });
+  const stillOnBoard = await raw("GET", `weekly_board?select=callsign,xp&callsign=eq.${callsign}`);
+  if (save3.rev === 3 && Number(stillOnBoard.body?.[0]?.xp) === 60) ok("a save with a nonsense XP total leaves the board untouched");
+  else bad(`nonsense XP: rev ${save3.rev}, board ${JSON.stringify(stillOnBoard.body)}`);
   const loaded = await rpc("forge_load", { p_callsign: callsign, p_code: code });
-  if (loaded.rev === 2 && loaded.data?.data?.n === 2) ok("forge_load returns the latest save");
+  if (loaded.rev === 3 && loaded.data?.data?.n === 3) ok("forge_load returns the latest save");
   else bad(`forge_load: ${JSON.stringify(loaded)}`);
 
   console.log("The Fleet Log:");
@@ -109,7 +128,7 @@ try {
   code = rotated.code;
   await mustFail("the old code afterwards", rpc("forge_sign_in", { p_callsign: callsign, p_code: oldCode }), "AUTH_FAILED");
   const again = await rpc("forge_sign_in", { p_callsign: callsign, p_code: code });
-  if (again.save_rev === 2) ok("the new code signs in and sees the save");
+  if (again.save_rev === 3) ok("the new code signs in and sees the save");
   else bad(`sign-in after rotate: ${JSON.stringify(again)}`);
 } catch (err) {
   bad(`unexpected: ${err.message}`);
@@ -121,6 +140,9 @@ try {
       const gone = await raw("GET", `fleet_log?select=id&callsign=eq.${callsign}`);
       if (gone.status === 200 && gone.body.length === 0) ok("deletion took the log rows with it");
       else bad(`fleet_log after deletion: ${JSON.stringify(gone.body)}`);
+      const offBoard = await raw("GET", `weekly_board?select=callsign&callsign=eq.${callsign}`);
+      if (offBoard.status === 200 && offBoard.body.length === 0) ok("and off the board");
+      else bad(`weekly_board after deletion: ${JSON.stringify(offBoard.body)}`);
     } catch (err) {
       bad(`cleanup: ${err.message}`);
     }

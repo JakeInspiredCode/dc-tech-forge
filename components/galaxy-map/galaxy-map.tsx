@@ -16,7 +16,7 @@ import NextUpCta from "@/components/ui/next-up-cta";
 
 import SectorPreviewPanel from "./sector-preview-panel";
 import StatsPanel from "./stats-panel";
-import FleetLogLive from "@/components/activity/fleet-log-live";
+import FleetBand from "@/components/activity/fleet-band";
 
 /** Animated energy particles flowing along a bezier curve */
 function EnergyStream({
@@ -356,7 +356,7 @@ export default function GalaxyMap({ tourSectorId = null }: GalaxyMapProps) {
                 totalMissions={totalMissions}
                 next={next}
                 topicProgress={topicProgress ?? []}
-                feed={<FleetLogLive dense max={8} />}
+                feed={<FleetBand dense max={8} />}
               />
             )}
           </div>
